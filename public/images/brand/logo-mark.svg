@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 48" fill="none" role="img" aria-label="Seven Hills">
+  <!-- Seven ascending peaks: the hills, and the growth curve they trace. -->
+  <g fill="currentColor">
+    <polygon points="3,44 9,38 15,44" opacity="0.45"/>
+    <polygon points="12,44 18,33 24,44" opacity="0.54"/>
+    <polygon points="21,44 27,28 33,44" opacity="0.63"/>
+    <polygon points="30,44 36,23 42,44" opacity="0.72"/>
+    <polygon points="39,44 45,18 51,44" opacity="0.81"/>
+    <polygon points="48,44 54,13 60,44" opacity="0.90"/>
+  </g>
+  <polygon points="57,44 63,8 69,44" fill="var(--brand-accent, #12B3A0)"/>
+</svg>

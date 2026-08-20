@@ -1,0 +1,65 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    image: 7hillsdigital/app
+    container_name: 7hills-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/zz-local.ini:ro
+    environment:
+      TZ: Africa/Johannesburg
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - 7hills
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: 7hills-nginx
+    restart: unless-stopped
+    ports:
+      # 8080 (btmedical), 8090 (excellent) and 3700 (listing-scout) are taken.
+      - "8091:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - 7hills
+
+  mysql:
+    image: mysql:8.0
+    container_name: 7hills-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-sevenhills}
+      MYSQL_USER: ${DB_USERNAME:-sevenhills}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootsecret}
+      TZ: Africa/Johannesburg
+    ports:
+      # Exposed for local DB tooling; remove in production.
+      - "33063:3306"
+    volumes:
+      - 7hills-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_ROOT_PASSWORD:-rootsecret}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - 7hills
+
+networks:
+  7hills:
+    driver: bridge
+
+volumes:
+  7hills-mysql:
+    driver: local

@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+
+@source '../views';
+@source '../../app/Filament';
+
+/*
+| Brand colours arrive as CSS custom properties emitted in the page <head>
+| from config/brand.php, so a palette change needs no rebuild. Never hard-code
+| a brand colour anywhere else.
+|
+| Typeface is a system stack on purpose: no Google Fonts call. A site that
+| sells POPIA compliance should not ship every visitor's IP to a third party
+| to fetch a font.
+*/
+@theme {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+        'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+
+    --color-brand: var(--brand-primary);
+    --color-brand-dark: var(--brand-dark);
+    --color-brand-light: var(--brand-light);
+    --color-accent: var(--brand-accent);
+    --color-secondary: var(--brand-secondary);
+    --color-muted: var(--brand-muted);
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        @apply bg-white text-brand antialiased;
+    }
+
+    /* Anchored sections must clear the sticky header. */
+    :target {
+        scroll-margin-top: 6rem;
+    }
+
+    /* Visible focus for keyboard users, everywhere. */
+    :focus-visible {
+        outline: 2px solid var(--brand-accent);
+        outline-offset: 2px;
+    }
+}
+
+/* Custom utilities must be declared with @utility in Tailwind v4 — only
+   then can other rules @apply them. */
+@utility container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3
+           text-sm font-semibold transition focus:outline-none;
+}
+
+@utility btn-accent {
+    @apply btn bg-accent text-brand-dark hover:brightness-95;
+}
+
+@utility btn-brand {
+    @apply btn bg-brand text-white hover:bg-brand-dark;
+}
+
+@utility btn-ghost {
+    @apply btn border border-white/25 text-white hover:bg-white/10;
+}
+
+@utility btn-outline {
+    @apply btn border border-brand/20 text-brand hover:border-brand/50;
+}
+
+@layer components {
+    .eyebrow {
+        @apply text-xs font-semibold uppercase tracking-[0.18em] text-accent;
+    }
+
+    .prose-page :is(h2) {
+        @apply mt-10 mb-3 text-2xl font-bold text-brand;
+    }
+
+    .prose-page :is(h3) {
+        @apply mt-7 mb-2 text-lg font-semibold text-brand;
+    }
+
+    .prose-page :is(p, ul, ol) {
+        @apply mb-4 leading-relaxed text-secondary;
+    }
+
+    .prose-page :is(ul) {
+        @apply list-disc space-y-1 pl-5;
+    }
+
+    .prose-page :is(a) {
+        @apply text-brand underline underline-offset-2 hover:text-accent;
+    }
+}

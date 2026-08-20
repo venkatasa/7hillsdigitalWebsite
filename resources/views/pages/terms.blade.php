@@ -1,0 +1,140 @@
+@php $brand = config('brand'); @endphp
+
+<x-layouts.site title="Terms of service"
+                description="Our commercial terms in plain English: no upfront cost, one month's notice, your domain and data stay yours.">
+
+    <section class="bg-brand text-white">
+        <div class="container-page py-14 sm:py-16">
+            <p class="eyebrow">Terms</p>
+            <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Terms of service</h1>
+            <p class="mt-4 max-w-2xl text-base text-white/70">
+                Written to be read. If anything here is unclear, ask us before you sign up
+                rather than after.
+            </p>
+        </div>
+    </section>
+
+    <section class="container-page py-14 sm:py-16">
+        <div class="prose-page max-w-3xl">
+            <p class="text-sm text-muted">Last updated {{ now()->format('d/m/Y') }}</p>
+
+            <h2>1. Who we are</h2>
+            <p>
+                {{ $brand['legal_name'] }} ("we", "us"), a company in the {{ $brand['parent'] }}
+                group, based in {{ $brand['contact']['city'] }}, {{ $brand['contact']['province'] }},
+                South Africa. Contact: <a href="mailto:{{ $brand['contact']['email'] }}">{{ $brand['contact']['email'] }}</a>.
+            </p>
+
+            <h2>2. What you are paying for</h2>
+            <p>
+                A monthly subscription covering the design and build of your website, hosting,
+                email mailboxes on your domain, SSL, backups, software maintenance and support.
+                The fee is quoted per month and excludes VAT.
+            </p>
+            <p>
+                <strong>This is a subscription, not a purchase.</strong> You are licensed to use
+                the software for as long as you subscribe. Ownership of the platform and its
+                source code remains ours. This is precisely why there is no upfront charge.
+            </p>
+
+            <h2>3. What you own</h2>
+            <ul>
+                <li><strong>Your domain name</strong> is registered in your name and remains yours. If you leave, you take it with you.</li>
+                <li><strong>Your content</strong> — photographs, text, logos and anything else you supply — remains yours.</li>
+                <li><strong>Your data</strong> — listings, contacts, enquiries and documents — remains yours, and we will export it in a standard format on request.</li>
+            </ul>
+
+            <h2>4. Payment</h2>
+            <ul>
+                <li>Nothing is payable until your site goes live.</li>
+                <li>The first invoice is raised on the day the site goes live.</li>
+                <li>Thereafter you are billed monthly in advance.</li>
+                <li>There is no setup fee and no minimum term.</li>
+            </ul>
+            <p>
+                If an invoice goes unpaid we will contact you. If it remains unpaid 30 days after
+                its due date we may suspend the service, having given you at least 7 days' written
+                warning first. Suspension is not deletion — see clause 6.
+            </p>
+
+            <h2>5. Cancelling</h2>
+            <p>
+                You may cancel at any time by giving us {{ \Illuminate\Support\Str::lower($brand['terms']['notice_period']) }}'s
+                notice in writing, including by email. There is no penalty and no exit fee. You pay
+                for the notice month and nothing after it.
+            </p>
+            <p>
+                We may also end the arrangement on one calendar month's notice — for instance if the
+                work is outside what we can support. We will help you move.
+            </p>
+
+            <h2>6. What happens when it ends</h2>
+            <ul>
+                <li>Your website is taken offline at the end of the notice period.</li>
+                <li>Your domain is released to you or to whoever you nominate.</li>
+                <li>We will export your data and mailbox contents on request.</li>
+                <li>We retain your data for 30 days after termination, then delete it. Ask for your export inside that window.</li>
+            </ul>
+
+            <h2>7. What we need from you</h2>
+            <p>
+                We cannot build the site without your content and your answers. If a build stalls
+                for more than 60 days waiting on you, we may close it and ask you to start again
+                when you are ready. Nothing is charged for a build that never went live.
+            </p>
+
+            <h2>8. Acceptable use</h2>
+            <p>
+                You may not use the service to publish unlawful content, to send unsolicited bulk
+                email, or to store material you have no right to publish — including photographs
+                taken from another company's website. You are responsible for the accuracy of what
+                you publish, including prices and property or vehicle details.
+            </p>
+
+            <h2>9. Availability</h2>
+            <p>
+                We aim for 99.5% uptime measured monthly, excluding scheduled maintenance, which we
+                announce in advance and carry out outside business hours wherever we can. We do not
+                offer a financial service credit; what we offer is that we answer the phone.
+            </p>
+
+            <h2>10. Liability</h2>
+            <p>
+                We are liable for the service we provide, but our total liability in any twelve-month
+                period is limited to the fees you paid us in that period. We are not liable for
+                indirect or consequential loss, including lost profit or lost business. Nothing here
+                limits liability that cannot lawfully be limited, including under the Consumer
+                Protection Act.
+            </p>
+
+            <h2>11. Personal information</h2>
+            <p>
+                We process personal information in accordance with the Protection of Personal
+                Information Act. Our <a href="{{ route('privacy') }}">privacy notice</a> explains what
+                we collect and why. Where we host a system that processes your customers' personal
+                information, you are the responsible party and we are your operator.
+            </p>
+
+            <h2>12. Changes</h2>
+            <p>
+                We may change these terms or our prices on 30 days' written notice. If a change does
+                not suit you, cancel — with no minimum term, you are never locked into terms you did
+                not agree to.
+            </p>
+
+            <h2>13. Governing law</h2>
+            <p>
+                These terms are governed by the law of the Republic of South Africa.
+            </p>
+
+            <hr class="my-10 border-brand/10">
+
+            <p class="text-sm text-muted">
+                <strong>Note for {{ $brand['name'] }}:</strong> this document is a plain-English starting
+                point drafted to match how the business actually operates. Have an attorney review it
+                before it governs a paying client relationship.
+            </p>
+        </div>
+    </section>
+
+</x-layouts.site>

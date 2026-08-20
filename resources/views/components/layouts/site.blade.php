@@ -1,0 +1,58 @@
+@props([
+    'title' => null,
+    'description' => null,
+])
+
+@php
+    $brand = config('brand');
+    $pageTitle = $title ? $title.' — '.$brand['name'] : $brand['name'].' — '.$brand['tagline'];
+    $pageDescription = $description ?? $brand['promise'].' Websites, email and business software for South African firms, from '.$brand['contact']['city'].'.';
+@endphp
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ $pageTitle }}</title>
+    <meta name="description" content="{{ $pageDescription }}">
+
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ $brand['name'] }}">
+
+    <link rel="icon" href="{{ asset($brand['logo']['mark']) }}" type="image/svg+xml">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Brand palette as CSS custom properties: config/brand.php is the single
+         source of truth, so a colour change needs no asset rebuild. --}}
+    <style>
+        :root {
+            --brand-primary: {{ $brand['colors']['primary'] }};
+            --brand-accent: {{ $brand['colors']['accent'] }};
+            --brand-secondary: {{ $brand['colors']['secondary'] }};
+            --brand-dark: {{ $brand['colors']['dark'] }};
+            --brand-light: {{ $brand['colors']['light'] }};
+            --brand-muted: {{ $brand['colors']['muted'] }};
+        }
+    </style>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="flex min-h-screen flex-col">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-brand focus:px-4 focus:py-2 focus:text-white">
+        Skip to content
+    </a>
+
+    <x-site-header />
+
+    <main id="main" class="flex-1">
+        {{ $slot }}
+    </main>
+
+    <x-site-footer />
+</body>
+</html>
