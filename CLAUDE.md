@@ -3,6 +3,11 @@
 Project spec and working agreement for this codebase. Keep it current as things
 change.
 
+> Infrastructure, commercial detail and open business decisions live in the
+> homelab runbook: `~/homelab-docs/7hillsdigital.md` (summarised in that repo's
+> `CLAUDE.md` §5). This file is the **code-level** working agreement — the
+> invariants and the reasons behind them.
+
 ## Product
 
 The public marketing site for **Seven Hills Digital**, the technology arm of
@@ -135,3 +140,17 @@ through it is a POPIA problem. Build fictional demo tenants instead.
    Information Regulator and put their details in the privacy notice.
 7. **No storage meter yet.** The pricing page promises we warn clients at 80% of
    their mail allowance. Nothing implements that.
+
+## Version control
+
+Git repo on `main`, initialised 20/08/2026. Commit style: explain **why**, not
+just what — the initial commit records the reasoning behind the invariants above.
+
+**Not yet pushed to Gitea** (`http://192.168.90.164:3000`, hlab001). The push
+token in `~/homelab-docs/secrets.md` is revoked; see §9 of
+`~/homelab-docs/7hillsdigital.md` for the two commands that finish it. The repo
+should be **private** — it carries pricing strategy, commercial terms and
+infrastructure detail.
+
+`/opt/docker/excellent` also has a `.git` dir with no remote configured. Neither
+project has been pushed anywhere.
