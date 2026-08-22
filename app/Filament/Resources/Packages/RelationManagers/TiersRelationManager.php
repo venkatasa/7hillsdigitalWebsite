@@ -42,27 +42,20 @@ class TiersRelationManager extends RelationManager
                     ->minValue(0),
 
                 TextInput::make('mailboxes')
-                    ->label('Mailboxes included')
+                    ->label('Email addresses included')
+                    ->helperText('Leave BLANK for unlimited, which is what every tier currently sells.')
                     ->numeric()
-                    ->required()
-                    ->minValue(1),
-
-                TextInput::make('gb_per_mailbox')
-                    ->label('GB per mailbox')
-                    ->numeric()
-                    ->required()
-                    ->default(1)
                     ->minValue(1),
 
                 TextInput::make('mail_gb')
-                    ->label('Total mail storage (GB)')
+                    ->label('Email storage (GB)')
                     ->numeric()
                     ->required()
                     ->minValue(1),
 
                 TextInput::make('media_gb')
                     ->label('Website storage (GB)')
-                    ->helperText('Separate from mail, so photographs can never fill the inbox.')
+                    ->helperText('Kept separate from email on purpose, so a photo-heavy site can never fill the inbox.')
                     ->numeric()
                     ->required()
                     ->minValue(1),
@@ -86,9 +79,9 @@ class TiersRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('name')->label('Tier')->weight('bold'),
                 TextColumn::make('formatted_price')->label('Per month'),
-                TextColumn::make('mailboxes')->label('Mailboxes'),
-                TextColumn::make('mail_gb')->label('Mail')->suffix('GB'),
-                TextColumn::make('media_gb')->label('Site')->suffix('GB'),
+                TextColumn::make('mailboxes')->label('Addresses')->placeholder('Unlimited'),
+                TextColumn::make('mail_gb')->label('Email')->suffix('GB'),
+                TextColumn::make('media_gb')->label('Website')->suffix('GB'),
                 IconColumn::make('is_default')->label('On the card')->boolean(),
             ])
             ->headerActions([CreateAction::make()->label('Add a tier')])

@@ -85,10 +85,10 @@
                                     </p>
                                 </div>
                                 <ul class="mt-4 space-y-1.5 text-sm text-secondary">
-                                    <li>{{ $tier->mailbox_summary }}</li>
-                                    <li>{{ $tier->mail_gb }}GB mail storage in total</li>
-                                    <li>{{ $tier->media_gb }}GB website storage</li>
-                                    <li>Unlimited aliases and forwarders</li>
+                                    <li><strong class="font-semibold text-brand">{{ $tier->mail_gb }}GB email</strong> + <strong class="font-semibold text-brand">{{ $tier->media_gb }}GB website</strong> storage</li>
+                                    <li>{{ $tier->mailbox_summary }} on your own domain</li>
+                                    <li>Hosting, SSL, backups and support</li>
+                                    <li>The build itself costs nothing</li>
                                 </ul>
                             </div>
                         @endforeach

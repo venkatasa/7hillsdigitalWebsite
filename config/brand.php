@@ -100,6 +100,7 @@ return [
     | terms page, so they live in one place and are quoted, never retyped.
     */
     'terms' => [
+        'build_cost' => 'R0 — the build is free',
         'setup_fee' => 'R0',
         'notice_period' => 'One calendar month',
         'minimum_term' => 'None',
@@ -108,17 +109,32 @@ return [
     ],
 
     /*
-    | Storage model. Mail and site media are quoted SEPARATELY on purpose: a
-    | dealership with 60 cars and twelve photographs each will use ~2GB of
-    | media before a single email is sent. Pooling the two means the photos
-    | eat the mail quota and the client phones to say their email is full.
+    | Who owns what. This is the honest core of a no-upfront offer and it is
+    | quoted on the packages page as well as in /terms — a client should not
+    | have to reach clause 3 to learn that the software is not theirs.
+    */
+    'ownership' => [
+        'ours' => 'The website itself — the design, the code and the platform it runs on — is built at no charge and stays the property of :company.',
+        'yours' => 'Everything you put into it is yours: your listings, your customers, your enquiries, your documents, your email and your domain.',
+        'exit' => 'Cancel and we export the lot and hand it over. The site comes down, because the software was never what you were buying.',
+        'buyout' => 'If you would rather own the site outright, we will quote you a build-and-own package instead. It costs money upfront — that is the trade for keeping it.',
+    ],
+
+    /*
+    | Storage model. Mail and site storage are metered SEPARATELY but sized
+    | symmetrically: the 5 tier is 5GB of each, the 10 tier is 10GB of each.
     |
-    | Mailbox COUNT is what is metered. Aliases and forwarders are unlimited
-    | because they are only routing rules and cost nothing to carry.
+    | Keeping them apart is the point. A dealership with 60 cars and twelve
+    | photographs each will use gigabytes of media — if that came out of the
+    | same pool, the photographs would fill the sales inbox and the client
+    | would phone to say their email is broken. Do not pool them.
+    |
+    | Email ADDRESSES are unlimited: they all draw on the same mail allowance,
+    | so counting them earns us nothing and costs the client goodwill.
     */
     'storage' => [
-        'aliases' => 'Unlimited email aliases and forwarders',
-        'note' => 'Mail storage and website storage are separate allowances, so your photographs can never fill up your inbox.',
+        'aliases' => 'Unlimited email addresses',
+        'note' => 'Your email allowance and your website allowance are separate, so the photographs on your site can never fill up your inbox.',
     ],
 
     /*

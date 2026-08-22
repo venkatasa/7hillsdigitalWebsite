@@ -1,0 +1,65 @@
+[
+    {
+        "file": "1.jpg",
+        "title": "My new view",
+        "creator": "Travis Isaacs",
+        "license": "BY",
+        "license_version": "2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/",
+        "source_url": "https://www.flickr.com/photos/65977087@N00/2922793882"
+    },
+    {
+        "file": "2.jpg",
+        "title": "Academic Life",
+        "creator": "Les Roches",
+        "license": "BY",
+        "license_version": "2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/",
+        "source_url": "https://www.flickr.com/photos/36972190@N06/9676272545"
+    },
+    {
+        "file": "3.jpg",
+        "title": "Chris shares LinkedIn knowledge",
+        "creator": "Gangplank HQ",
+        "license": "BY",
+        "license_version": "2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/",
+        "source_url": "https://www.flickr.com/photos/61212734@N02/5590138055"
+    },
+    {
+        "file": "4.jpg",
+        "title": "Laptop in a coworking space",
+        "creator": "Rawpixel Ltd",
+        "license": "BY",
+        "license_version": "2.0",
+        "license_url": "https://creativecommons.org/licenses/by/2.0/",
+        "source_url": "https://www.flickr.com/photos/147875007@N03/30849309677"
+    },
+    {
+        "file": "5.jpg",
+        "title": "Office",
+        "creator": "Loozrboy",
+        "license": "BY-SA",
+        "license_version": "2.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "source_url": "https://www.flickr.com/photos/30624156@N00/3557932377"
+    },
+    {
+        "file": "6.jpg",
+        "title": "The Gold Building and Occidental Life Building as Seen from Central Avenue, Albuquerque, New Mexico",
+        "creator": "Ken Lund",
+        "license": "BY-SA",
+        "license_version": "2.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "source_url": "https://www.flickr.com/photos/75683070@N00/5273171602"
+    },
+    {
+        "file": "7.jpg",
+        "title": "Office Hours",
+        "creator": "Tanel Teemusk",
+        "license": "BY-SA",
+        "license_version": "2.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "source_url": "https://www.flickr.com/photos/13542896@N00/2608975252"
+    }
+]

@@ -29,7 +29,7 @@
             <span class="text-sm text-muted">/ month</span>
         </div>
         <p class="mt-1 text-xs text-muted">
-            {{ $tier->name }} &middot; {{ $tier->mailbox_summary }} &middot; {{ $tier->media_gb }}GB site storage
+            {{ $tier->storage_summary }} &middot; {{ $tier->mailbox_summary }}
         </p>
     @endif
 

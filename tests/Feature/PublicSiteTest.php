@@ -54,13 +54,13 @@ class PublicSiteTest extends TestCase
     /**
      * Pricing is flat across every product line: the platform underneath is the
      * same, so charging a dealership more than a guesthouse for it is arbitrary
-     * and indefensible on a sales call.
+     * and indefensible on a sales call. R880 for any 5, R1 180 for any 10.
      */
     public function test_pricing_is_flat_across_every_line(): void
     {
         foreach (Package::with('tiers')->get() as $package) {
             foreach ($package->tiers as $tier) {
-                $expected = $tier->mail_gb === 5 ? '880.00' : '1080.00';
+                $expected = $tier->mail_gb === 5 ? '880.00' : '1180.00';
 
                 $this->assertSame(
                     $expected,
@@ -69,6 +69,38 @@ class PublicSiteTest extends TestCase
                 );
             }
         }
+    }
+
+    /**
+     * Email and website storage are separate allowances. Pooling them would let
+     * a dealer's photographs fill the sales inbox — the whole reason they are
+     * quoted apart.
+     */
+    public function test_email_and_website_storage_are_quoted_separately(): void
+    {
+        $this->get('/packages')
+            ->assertOk()
+            ->assertSee('Email storage')
+            ->assertSee('Website storage')
+            ->assertSee('Unlimited');
+    }
+
+    /**
+     * The no-upfront offer only works if the client understands the trade: the
+     * build is free and the software stays ours, but their data and email are
+     * theirs, and they can buy it outright if they would rather.
+     */
+    public function test_the_ownership_bargain_is_stated_on_the_packages_page(): void
+    {
+        $this->get('/packages')
+            ->assertOk()
+            ->assertSee('R880 a month, and nothing to build it')
+            ->assertSee('Who owns what')
+            ->assertSee('Want to own it outright?');
+
+        $this->get('/terms')
+            ->assertOk()
+            ->assertSee('buy the site outright');
     }
 
     /** The official 7Hills palette, not the placeholder it replaced. */

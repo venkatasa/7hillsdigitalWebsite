@@ -34,7 +34,7 @@
 
             <div class="relative" data-reveal data-reveal-delay="140">
                 <div class="overflow-hidden rounded-3xl border border-white/15 shadow-2xl">
-                    <x-demo-art :kind="$demo['art']" :seed="1" :label="$demo['name']" class="aspect-[4/3]" />
+                    <x-demo-art :kind="$demo['art']" :demo="$slug" :seed="0" :label="$demo['name']" class="aspect-[4/3]" />
                 </div>
                 <div class="absolute -bottom-5 -left-4 hidden rounded-2xl bg-white p-4 shadow-xl sm:block">
                     <p class="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted">Latest</p>
@@ -65,7 +65,7 @@
                     <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
                              data-reveal data-reveal-delay="{{ ($i % 3) * 80 }}">
                         <div class="relative overflow-hidden">
-                            <x-demo-art :kind="$demo['art']" :seed="$i + 2" :label="$item['title']"
+                            <x-demo-art :kind="$demo['art']" :demo="$slug" :seed="$i + 1" :label="$item['title']"
                                         class="aspect-[4/3] transition duration-500 group-hover:scale-105" />
                             <span class="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold uppercase tracking-wider"
                                   style="color: var(--demo-primary)">{{ $item['badge'] }}</span>

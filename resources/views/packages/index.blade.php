@@ -40,9 +40,9 @@
                     <tr>
                         <th scope="col" class="px-5 py-3.5 font-semibold">Package</th>
                         <th scope="col" class="px-5 py-3.5 font-semibold">For</th>
-                        <th scope="col" class="px-5 py-3.5 font-semibold">Mailboxes</th>
-                        <th scope="col" class="px-5 py-3.5 font-semibold">Mail storage</th>
-                        <th scope="col" class="px-5 py-3.5 font-semibold">Site storage</th>
+                        <th scope="col" class="px-5 py-3.5 font-semibold">Email addresses</th>
+                        <th scope="col" class="px-5 py-3.5 font-semibold">Email storage</th>
+                        <th scope="col" class="px-5 py-3.5 font-semibold">Website storage</th>
                         <th scope="col" class="px-5 py-3.5 text-right font-semibold">Per month</th>
                     </tr>
                 </thead>
@@ -54,8 +54,8 @@
                                     <a href="{{ route('packages.show', $package) }}" class="hover:text-accent">{{ $tier->name }}</a>
                                 </th>
                                 <td class="px-5 py-3.5 text-secondary">{{ $loop->first ? $package->vertical_label : '' }}</td>
-                                <td class="px-5 py-3.5 text-secondary">{{ $tier->mailboxes }}</td>
-                                <td class="px-5 py-3.5 text-secondary">{{ $tier->mail_gb }}GB <span class="text-muted">({{ $tier->gb_per_mailbox }}GB each)</span></td>
+                                <td class="px-5 py-3.5 text-secondary">{{ $tier->mailboxes ?? 'Unlimited' }}</td>
+                                <td class="px-5 py-3.5 text-secondary">{{ $tier->mail_gb }}GB</td>
                                 <td class="px-5 py-3.5 text-secondary">{{ $tier->media_gb }}GB</td>
                                 <td class="px-5 py-3.5 text-right font-semibold text-brand">{{ $tier->formatted_price }}</td>
                             </tr>
@@ -66,9 +66,81 @@
         </div>
 
         <p class="mt-4 text-xs text-muted">
-            All prices exclude VAT. Unlimited email aliases and forwarders on every tier —
-            only mailboxes are counted.
+            All prices exclude VAT. Every tier carries unlimited email addresses on your own
+            domain, and the build itself costs nothing.
         </p>
+    </section>
+
+    {{-- ── What R880 actually buys, and who owns what ──────────────────── --}}
+    <section class="bg-brand section text-white">
+        <div class="container-page">
+            <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+                <div data-reveal>
+                    <p class="eyebrow-light">What you are actually buying</p>
+                    <h2 class="mt-3 h-section">R880 a month, and nothing to build it.</h2>
+                    <p class="mt-5 leading-relaxed text-white/70">
+                        The website is designed and built at no charge. You start paying the
+                        month it goes live, and the fee covers the site, the hosting, the
+                        email, the security updates and someone to phone.
+                    </p>
+
+                    <ul class="mt-8 space-y-3">
+                        @foreach ([
+                            '5GB of email storage, with unlimited addresses on your own domain',
+                            '5GB of website storage — kept separate, so your photographs can never fill your inbox',
+                            'Hosting, SSL, daily backups and software maintenance',
+                            'Support from the people who built it',
+                        ] as $line)
+                            <li class="flex gap-3">
+                                <svg class="mt-0.5 h-5 w-5 shrink-0 text-mint" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.8 3.8 6.8-6.8a1 1 0 0 1 1.4 0Z" clip-rule="evenodd"/>
+                                </svg>
+                                <span class="text-sm leading-relaxed text-white/80">{{ $line }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <p class="mt-6 text-sm leading-relaxed text-white/60">
+                        The 10 tier doubles both allowances for R1 180.
+                    </p>
+                </div>
+
+                <div class="space-y-6" data-reveal data-reveal-delay="100">
+                    <p class="text-xs font-bold uppercase tracking-[0.18em] text-mint">Who owns what</p>
+
+                    <div class="rounded-2xl border border-white/15 bg-white/[0.04] p-6">
+                        <h3 class="font-display text-base font-bold">Yours, always</h3>
+                        <p class="mt-2 text-sm leading-relaxed text-white/70">
+                            {{ str_replace(':company', $brand['name'], $brand['ownership']['yours']) }}
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-white/15 bg-white/[0.04] p-6">
+                        <h3 class="font-display text-base font-bold">Ours</h3>
+                        <p class="mt-2 text-sm leading-relaxed text-white/70">
+                            {{ str_replace(':company', $brand['name'], $brand['ownership']['ours']) }}
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-white/15 bg-white/[0.04] p-6">
+                        <h3 class="font-display text-base font-bold">If you leave</h3>
+                        <p class="mt-2 text-sm leading-relaxed text-white/70">
+                            {{ str_replace(':company', $brand['name'], $brand['ownership']['exit']) }}
+                        </p>
+                    </div>
+
+                    <div class="rounded-2xl border border-mint/40 bg-mint/[0.08] p-6">
+                        <h3 class="font-display text-base font-bold text-mint">Want to own it outright?</h3>
+                        <p class="mt-2 text-sm leading-relaxed text-white/75">
+                            {{ str_replace(':company', $brand['name'], $brand['ownership']['buyout']) }}
+                        </p>
+                        <a href="{{ route('contact') }}" class="mt-4 inline-flex text-sm font-semibold text-mint underline underline-offset-4 hover:brightness-110">
+                            Ask for a build-and-own quote &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     {{-- ── Optional modules, charged separately ──────────────────────── --}}
@@ -84,9 +156,9 @@
 
             <div class="mt-10 grid gap-6 sm:grid-cols-3">
                 @foreach ([
-                    ['Go from 5GB to 10GB', 'Twice the mailboxes and twice the mail storage. Takes effect the same day; billing changes on your next invoice.'],
-                    ['Go to 20GB', 'For firms with a bigger team or heavy attachment traffic. Priced on the number of mailboxes you need.'],
-                    ['Enterprise email', 'Shared calendars, larger individual mailboxes, and retention rules for regulated industries. Quoted separately.'],
+                    ['Go from 5 to 10', 'Double both allowances — 10GB of email and 10GB of website storage. Takes effect the same day; billing changes on your next invoice.'],
+                    ['Go beyond 10', 'For firms with a bigger team or a photo-heavy site. Priced on what you actually need rather than off a list.'],
+                    ['Enterprise email', 'Shared calendars, much larger individual mailboxes and retention rules for regulated industries. Quoted separately — see the modules below.'],
                 ] as [$heading, $copy])
                     <div class="rounded-xl border border-brand/10 bg-white p-6">
                         <h3 class="text-base font-semibold text-brand">{{ $heading }}</h3>

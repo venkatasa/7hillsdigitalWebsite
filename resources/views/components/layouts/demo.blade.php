@@ -151,8 +151,8 @@
                             <span class="text-white/60">/ month</span>
                         </p>
                         <p class="mt-2 text-sm text-white/60">
-                            {{ $tier->name }}, excl. VAT — {{ $tier->mailbox_summary }},
-                            {{ $tier->media_gb }}GB site storage.
+                            {{ $tier->name }}, excl. VAT — {{ $tier->storage_summary }},
+                            unlimited email addresses, and the build itself free.
                         </p>
                     @endif
 
@@ -178,13 +178,29 @@
 
     {{-- ── Tenant footer ────────────────────────────────────────────────── --}}
     <footer class="py-10 text-sm" style="background: var(--demo-primary)">
-        <div class="container-page flex flex-col gap-3 text-white/60 sm:flex-row sm:items-center sm:justify-between">
-            <p>&copy; {{ now()->year }} {{ $demo['name'] }} — a fictional business, for demonstration.</p>
-            <p>
-                <a href="{{ route('home') }}" class="underline underline-offset-2 hover:text-white">
-                    Website by {{ $brand['name'] }}
-                </a>
-            </p>
+        <div class="container-page">
+            <div class="flex flex-col gap-3 text-white/60 sm:flex-row sm:items-center sm:justify-between">
+                <p>&copy; {{ now()->year }} {{ $demo['name'] }} — a fictional business, for demonstration.</p>
+                <p>
+                    <a href="{{ route('home') }}" class="underline underline-offset-2 hover:text-white">
+                        Website by {{ $brand['name'] }}
+                    </a>
+                </p>
+            </div>
+
+            {{-- CC BY and CC BY-SA oblige us to name the photographer. CC0 and
+                 Public Domain Mark do not, so they are left out. --}}
+            @php $attributions = \App\Support\DemoImages::attributions($slug); @endphp
+
+            @if ($attributions)
+                <details class="mt-6 border-t border-white/10 pt-5 text-xs text-white/40">
+                    <summary class="cursor-pointer hover:text-white/70">Photography credits</summary>
+                    <p class="mt-2 leading-relaxed">
+                        Openly-licensed photographs, used to illustrate a demonstration site:
+                        {{ implode(' · ', $attributions) }}.
+                    </p>
+                </details>
+            @endif
         </div>
     </footer>
 

@@ -28,8 +28,10 @@
             <h2>2. What you are paying for</h2>
             <p>
                 A monthly subscription covering the design and build of your website, hosting,
-                email mailboxes on your domain, SSL, backups, software maintenance and support.
-                The fee is quoted per month and excludes VAT.
+                unlimited email addresses on your own domain, SSL, backups, software maintenance
+                and support. Each tier carries a stated email storage allowance and a separate
+                website storage allowance. The fee is quoted per month and excludes VAT.
+                <strong>The build itself is not charged for.</strong>
             </p>
             <p>
                 <strong>This is a subscription, not a purchase.</strong> You are licensed to use
@@ -50,11 +52,20 @@
                 you own it outright, and the manufacturer's warranty is the one that applies.
             </p>
 
+            <p>
+                <strong>You may buy the site outright instead.</strong> If you would rather own
+                the software rather than subscribe to it, we will quote a build-and-own package:
+                a once-off development fee, after which the code and the design are yours to take
+                anywhere. Hosting, email and support are then optional and quoted separately.
+                That option costs money upfront — which is precisely the trade for keeping it.
+            </p>
+
             <h2>3. What you own</h2>
             <ul>
                 <li><strong>Your domain name</strong> is registered in your name and remains yours. If you leave, you take it with you.</li>
                 <li><strong>Your content</strong> — photographs, text, logos and anything else you supply — remains yours.</li>
                 <li><strong>Your data</strong> — listings, contacts, enquiries and documents — remains yours, and we will export it in a standard format on request.</li>
+                <li><strong>Your email and its contents</strong> remain yours. We will hand over your mailbox data on request.</li>
             </ul>
 
             <h2>4. Payment</h2>

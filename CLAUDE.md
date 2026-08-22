@@ -37,7 +37,15 @@ packages, their copy and — the point of the whole panel — **their prices**.
 ## The five product lines
 
 Each line has two storage tiers (5 and 10), seeded by `PackageSeeder`. Pricing
-is flat: **R880** for any 5, **R1 080** for any 10, excl. VAT.
+is flat: **R880** for any 5, **R1 180** for any 10, excl. VAT.
+
+| Tier | Email storage | Website storage | Addresses | Price |
+|---|---|---|---|---|
+| 5 | 5GB | 5GB | Unlimited | R880 |
+| 10 | 10GB | 10GB | Unlimited | R1 180 |
+
+**The build is free.** Nothing is charged for design and development — that is
+what the monthly fee buys back over time, and it is why the software stays ours.
 
 | Line | Vertical | Slug |
 |---|---|---|
@@ -59,7 +67,8 @@ seeded by `AddOnSeeder` into the `add_ons` table:
 
 | Module | Slug | Price |
 |---|---|---|
-| Invoicing | `invoicing` | **R109** / month, flat |
+| Invoicing | `invoicing` | **R109** / month, flat — so the 5 tier is R880 + R109 |
+| Enterprise email | `enterprise-email` | Quoted on mailbox count and storage |
 | CRM | `crm` | Quoted on contact volume and seats |
 | ERP | `erp` | Scoped and quoted on transaction volume and modules |
 
@@ -121,18 +130,23 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   `/admin/packages` under the Tiers relation manager. `PublicSiteTest` guards
   this by changing a price in the database and asserting the page follows.
 - **Pricing is flat across every product line** — **R880** for any 5 tier,
-  **R1 080** for any 10 tier, excl. VAT. The engine underneath is the same for
+  **R1 180** for any 10 tier, excl. VAT. The engine underneath is the same for
   a dealership and a guesthouse, so charging them differently for it is
   arbitrary and indefensible on a sales call. What varies is the tier: how many
   people need email. `test_pricing_is_flat_across_every_line` guards this.
-- **Mail storage and site storage are metered separately.** A dealership with
-  60 cars will use gigabytes of photographs, and those photographs must never be
-  able to fill the sales inbox. `mail_gb`/`mailboxes` and `media_gb` are separate
-  columns on `package_tiers` and are quoted separately on the site. Do not pool
-  them back together.
-- **Mailboxes are counted; aliases and forwarders are not.** Aliases are routing
-  rules and cost nothing to carry, which is how "unlimited email addresses" and
-  "5 mailboxes at 1GB each" are both true at once.
+- **Email storage and website storage are metered separately, and symmetrically.**
+  5GB of each on the 5 tier, 10GB of each on the 10. A dealership with 60 cars
+  will use gigabytes of photographs, and those photographs must never be able to
+  fill the sales inbox — so `mail_gb` and `media_gb` stay separate columns and
+  are quoted separately on the site. **Do not pool them.**
+- **Email addresses are unlimited.** `mailboxes` is nullable and null means
+  unlimited, which is what every tier sells. They all draw on the same email
+  allowance, so counting them earns nothing and costs goodwill.
+- **Who owns what is stated on the packages page, not just in `/terms`.** The
+  build is free, the software stays ours, the client's data, email and domain
+  are theirs, and a build-and-own buy-out is available on quote. `brand.ownership`
+  holds the wording; both pages quote it. A client should not have to reach
+  clause 3 to learn the site is rented rather than bought.
 - **Add-on modules are charged separately and never bundled.** `AddOn` records
   (Invoicing, CRM, ERP) sit outside the package fee, are priced in the database
   like everything else, and the packages page says "charged separately" in so
@@ -218,8 +232,21 @@ Rules these must keep:
 
 - **Everything in them is invented** — the businesses, the stock, the prices,
   the reviews. Nothing is taken from a real agency, dealer or portal.
-- **No photographs.** `<x-demo-art>` composes an SVG per card, varied by seed,
-  in the tenant's own colours. Never scrape or hotlink an image.
+- **Photographs are downloaded, never hotlinked.** `php artisan demos:import-images`
+  pulls from **Openverse**, restricted to licences permitting commercial use
+  (`cc0,pdm,by,by-sa`), re-encodes them and serves them from our own origin —
+  the no-third-party-assets rule applies to the demos too. `<x-demo-art>` falls
+  back to a composed SVG when the files are absent, so a fresh checkout never
+  renders broken. Never scrape a portal or a dealer's stock.
+- **The importer filters on quality, because Openverse skews archival.** It
+  rejects images below 900px, outside a 1.15–2.2 aspect ratio, below 0.12 mean
+  saturation (which catches scanned monochrome), and anything whose title or
+  tags name a blocked subject — police, military, museum, wreck, vintage and so
+  on. Without those gates a search for "car" returns 1950s dealership archives
+  and liveried police vehicles.
+- **CC BY / CC BY-SA oblige us to credit the photographer.** `DemoImages::attributions()`
+  builds the credit list and the demo footer renders it. Do not strip it while a
+  licensed photo is still in use.
 - **Each tenant carries its own palette**, and that is a deliberate exception to
   the 7Hills colour rule above — five identical green sites would prove nothing.
   The demo's job is to show a prospect that the site carries *their* brand. The
@@ -257,6 +284,12 @@ is tempted.
    there.
 7. **The demo tenants have no back office.** They are public landing pages only.
    The walkthrough they invite has to be given live, off a real install.
+8. **E-commerce is advertised but not specified.** `/demos` offers an online
+   shop "priced separately"; there is no package, no price and no build behind
+   that yet.
+9. **Demo photographs are of other people's houses, cars and machines.** Fine
+   for a page whose own ribbon says everything is invented; a real client's site
+   must use photographs of the real thing.
 
 Settled since the first build: prices (flat R880 / R1 080), and the brand —
 the official 7Hills kit is applied throughout.

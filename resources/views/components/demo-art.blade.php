@@ -2,7 +2,22 @@
     'kind' => 'house',
     'seed' => 0,
     'label' => null,
+    'demo' => null,
 ])
+
+@php
+    // A real photograph if the importer has run; otherwise the composed SVG
+    // below, so a fresh checkout still renders properly.
+    $photo = $demo ? \App\Support\DemoImages::url($demo, (int) $seed) : null;
+@endphp
+
+@if ($photo)
+    <img src="{{ $photo }}"
+         alt="{{ $label ?? '' }}"
+         loading="lazy"
+         decoding="async"
+         {{ $attributes->merge(['class' => 'block h-full w-full object-cover']) }}>
+@else
 
 @php
     /*
@@ -126,3 +141,4 @@
 
     <rect width="400" height="280" fill="url(#fade{{ $id }})"/>
 </svg>
+@endif

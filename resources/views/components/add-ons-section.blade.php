@@ -8,9 +8,10 @@
                 Business software that bolts onto your site.
             </h2>
             <p class="mt-4 text-base leading-relaxed text-secondary">
-                These are <strong class="font-semibold text-brand">charged separately</strong>
-                from your monthly package — none of them is bundled in, and none of them
-                appears on your invoice unless you have asked for it. Add one whenever you
+                These sit <strong class="font-semibold text-brand">on top of your monthly package fee</strong>
+                and are <strong class="font-semibold text-brand">charged separately</strong> —
+                none is bundled in, and none appears on your invoice unless you have asked for
+                it. Invoicing on the 5 tier, for instance, is R880 + R109. Add one whenever you
                 are ready, and drop it the same way.
             </p>
         </div>
@@ -54,7 +55,15 @@
             @endforeach
         </div>
 
-        <p class="mt-8 text-sm text-secondary">
+        <div class="mt-8 flex flex-col gap-3 rounded-xl border border-hairline bg-brand-light px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm leading-relaxed text-secondary">
+                <strong class="font-semibold text-brand">Need software that is not on this list?</strong>
+                Whatever your business runs on, we can build it and add it to the same monthly bill.
+            </p>
+            <a href="{{ route('it-services') }}" class="btn-accent shrink-0">See what else we build</a>
+        </div>
+
+        <p class="mt-5 text-sm text-secondary">
             Not sure which you need?
             <a href="{{ route('contact') }}" class="font-semibold text-accent underline underline-offset-2 hover:text-brand">Tell us how you work</a>
             and we will say plainly whether a module earns its keep for you.

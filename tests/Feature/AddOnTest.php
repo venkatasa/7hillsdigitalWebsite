@@ -25,8 +25,18 @@ class AddOnTest extends TestCase
         $this->get('/packages')
             ->assertOk()
             ->assertSee('Invoicing')
+            ->assertSee('Enterprise email')
             ->assertSee('CRM')
             ->assertSee('ERP');
+    }
+
+    /** Modules are a top-up on the package fee, and the page must say so. */
+    public function test_modules_are_shown_as_a_top_up_on_the_package_fee(): void
+    {
+        $this->get('/packages')
+            ->assertOk()
+            ->assertSee('on top of your monthly')
+            ->assertSee('R880 + R109');
     }
 
     /**

@@ -35,7 +35,7 @@
                          style="--demo-primary: {{ $demo['palette']['primary'] }}; --demo-accent: {{ $demo['palette']['accent'] }}">
                     <a href="{{ route('demos.show', $slug) }}" class="block">
                         <div class="relative overflow-hidden">
-                            <x-demo-art :kind="$demo['art']" :seed="$loop->index + 1" :label="$demo['name']"
+                            <x-demo-art :kind="$demo['art']" :demo="$slug" :seed="0" :label="$demo['name']"
                                         class="aspect-[16/9] transition duration-500 group-hover:scale-105" />
                             <div class="absolute inset-x-0 bottom-0 p-6">
                                 <p class="font-display text-2xl font-extrabold text-white drop-shadow">{{ $demo['name'] }}</p>
@@ -71,6 +71,58 @@
                     </div>
                 </article>
             @endforeach
+        </div>
+    </section>
+
+    {{-- ── Five demos are not the limit ─────────────────────────────────── --}}
+    <section class="container-page pb-4">
+        <div class="overflow-hidden rounded-3xl bg-brand text-white" data-reveal>
+            <div class="grid gap-10 p-8 sm:p-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+                <div>
+                    <p class="eyebrow-light">And these are only five</p>
+                    <h2 class="mt-3 h-section">If it can be listed, we can build it.</h2>
+                    <p class="mt-5 leading-relaxed text-white/70">
+                        Every demo above is the same engine with different labels. Swap
+                        "property" for whatever your business sells and the site works the
+                        same way — equipment, courses, funeral plans, stock, services,
+                        practitioners, venues. If you can put it in a list, we can put it
+                        online and give you the back office to run it.
+                    </p>
+                    <p class="mt-4 leading-relaxed text-white/70">
+                        We have not built a demo for your trade yet. That is not the same as
+                        not being able to.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="rounded-2xl border border-mint/40 bg-mint/[0.08] p-6">
+                        <h3 class="font-display text-base font-bold text-mint">Selling online?</h3>
+                        <p class="mt-2 text-sm leading-relaxed text-white/75">
+                            We do e-commerce too — a proper shop with a cart, checkout, South
+                            African payment gateways and stock that goes down when something
+                            sells. It is priced separately from the packages above because the
+                            work is genuinely different. Ask us.
+                        </p>
+                        <a href="{{ route('contact') }}" class="mt-4 inline-flex text-sm font-semibold text-mint underline underline-offset-4 hover:brightness-110">
+                            Talk to us about an online shop &rarr;
+                        </a>
+                    </div>
+
+                    <div class="rounded-2xl border border-white/15 bg-white/[0.04] p-6">
+                        <h3 class="font-display text-base font-bold">Something else entirely?</h3>
+                        <p class="mt-2 text-sm leading-relaxed text-white/70">
+                            Custom software, digitising paper, automation, IT support,
+                            hardware. It is one call away.
+                        </p>
+                        <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                            <a href="{{ route('it-services') }}" class="font-semibold text-mint underline underline-offset-4 hover:brightness-110">
+                                See what else we build &rarr;
+                            </a>
+                            <span class="text-white/60">{{ config('brand.contact.phone') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 

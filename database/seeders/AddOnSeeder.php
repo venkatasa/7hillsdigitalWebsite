@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
  * Optional business modules, charged on top of the monthly package fee.
  *
  * Invoicing is priced flat because the cost of carrying it does not move with
- * the client. CRM and ERP are quoted on transaction volume — a two-person
+ * the client. Enterprise email, CRM and ERP are quoted — a two-person
  * agency and a fifty-branch operation are not the same job, and pretending
  * otherwise means either overcharging the small one or losing money on the
  * large one.
@@ -46,6 +46,23 @@ class AddOnSeeder extends Seeder
                 ],
             ],
             [
+                'slug' => 'enterprise-email',
+                'name' => 'Enterprise email',
+                'tagline' => 'Bigger mailboxes, shared calendars and retention rules.',
+                'intro' => 'For teams who live in their inbox, or industries that have to keep every message for years. Much larger individual mailboxes than the package allowance, shared calendars and contacts, and retention policies you can actually defend to a regulator.',
+                'price_monthly' => null,
+                'price_basis' => 'Quoted on how many mailboxes you need and how much storage each one carries',
+                'icon_key' => 'mail',
+                'sort' => 2,
+                'what_it_does' => [
+                    'Individual mailboxes far larger than the package allowance',
+                    'Shared calendars, contacts and meeting invitations',
+                    'Retention and archiving rules for regulated industries',
+                    'Mobile and desktop sync that behaves itself',
+                    'Priority handling on mail delivery issues',
+                ],
+            ],
+            [
                 'slug' => 'crm',
                 'name' => 'CRM',
                 'tagline' => 'Every customer, every conversation, in one place your whole team can see.',
@@ -53,7 +70,7 @@ class AddOnSeeder extends Seeder
                 'price_monthly' => null,
                 'price_basis' => 'Quoted on your contact volume and how many staff need access',
                 'icon_key' => 'people',
-                'sort' => 2,
+                'sort' => 3,
                 'what_it_does' => [
                     'One record per customer, with the full contact history attached',
                     'Pipelines and stages that match how your business actually sells',
@@ -71,7 +88,7 @@ class AddOnSeeder extends Seeder
                 'price_monthly' => null,
                 'price_basis' => 'Scoped and quoted on your transaction volume and the modules you need',
                 'icon_key' => 'boxes',
-                'sort' => 3,
+                'sort' => 4,
                 'what_it_does' => [
                     'Stock and inventory with reorder levels',
                     'Purchase orders and supplier records',
