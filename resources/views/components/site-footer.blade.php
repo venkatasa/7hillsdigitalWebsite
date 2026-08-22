@@ -12,7 +12,7 @@
                 back office, and we bill it monthly — nothing upfront, cancel any time.
             </p>
             <p class="mt-5 text-xs uppercase tracking-[0.18em] text-white/40">
-                {{ $brand['trading_as'] }} is a trading name of {{ $brand['legal_name'] }}
+                {{ $brand['contact']['city'] }}, {{ $brand['contact']['province'] }}
             </p>
         </div>
 
@@ -43,7 +43,7 @@
 
     <div class="border-t border-white/10">
         <div class="container-page flex flex-col gap-3 py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
-            <p>&copy; {{ now()->year }} {{ $brand['legal_name'] }}. All rights reserved.</p>
+            <p>&copy; {{ now()->year }} {{ $brand['name'] }}. All rights reserved.</p>
             <p class="max-w-md text-white/60">{{ config('brand.hardware.blurb') }}</p>
             <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <a href="mailto:{{ $brand['contact']['email'] }}" class="hover:text-white">{{ $brand['contact']['email'] }}</a>

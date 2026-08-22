@@ -23,8 +23,7 @@
                 <strong>{{ $brand['legal_name'] }}</strong> ("we", "us"), trading as
                 <strong>{{ $brand['trading_as'] }}</strong>, based in
                 {{ $brand['contact']['city'] }}, {{ $brand['contact']['province'] }}, South Africa.
-                Your agreement is with {{ $brand['legal_name'] }};
-                {{ $brand['trading_as'] }} is a trading name and not a separate company. Contact: <a href="mailto:{{ $brand['contact']['email'] }}">{{ $brand['contact']['email'] }}</a>.
+                Contact: <a href="mailto:{{ $brand['contact']['email'] }}">{{ $brand['contact']['email'] }}</a>.
             </p>
 
             <h2>2. What you are paying for</h2>

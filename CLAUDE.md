@@ -180,9 +180,13 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   a test asserts it.
 - **The contracting entity is `7Hills Holdings (Pty) Ltd`; `7Hills Digital` is a
   trading name, not a separate company.** `brand.legal_name` is the registered
-  entity and `brand.trading_as` the name we market under. Every agreement,
-  invoice and legal notice is with Holdings, so `/terms`, `/privacy` and the
-  `/about` disclosure table all lead with the registered name.
+  entity, `brand.trading_as` the name we market under.
+- **The group name is kept off the marketing pages.** It appears only where the
+  law wants it: clause 1 of `/privacy`, clause 1 of `/terms`, and the
+  "Registered name" row of the `/about` disclosure table. Not in the hero, not
+  in the footer, not in a meta description. We sell as 7Hills Digital; Holdings
+  is who the contract is with. The footer copyright therefore names the trading
+  name — same legal person, and a copyright line is not a statutory disclosure.
 - **No internal notes on public pages.** The "Note for 7Hills Digital" blocks
   that used to close `/terms` and `/privacy` were addressed to ourselves and
   visible to everybody. Open items belong in this file and in

@@ -10,9 +10,7 @@
         </div>
 
         <div class="container-page relative py-20 sm:py-28 lg:py-32">
-            <p class="eyebrow-light" data-reveal>Part of {{ $brand['parent'] }}</p>
-
-            <h1 class="mt-4 max-w-4xl h-display" data-reveal data-reveal-delay="60">
+            <h1 class="max-w-4xl h-display" data-reveal>
                 Pay nothing until your website is live.
                 <span class="text-mint">Cancel any time.</span>
             </h1>

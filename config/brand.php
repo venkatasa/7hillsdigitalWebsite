@@ -31,8 +31,6 @@ return [
     // The name we trade and market under.
     'trading_as' => env('COMPANY_TRADING_AS', '7Hills Digital'),
 
-    'parent' => env('COMPANY_PARENT', '7Hills Holdings'),
-
     'tagline' => 'Websites, email and the software to run on them.',
 
     // The one-line promise the whole business rests on.

@@ -21,7 +21,7 @@
 @endphp
 
 <x-layouts.site title="About"
-                description="7Hills Digital builds and hosts websites, email and business software for South African firms. Part of 7Hills Holdings.">
+                description="7Hills Digital builds and hosts websites, email and business software for South African firms, from Midrand, Gauteng.">
 
     <section class="bg-brand text-white">
         <div class="container-page section-tight">
@@ -36,9 +36,7 @@
         <div class="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
             <div class="prose-page" data-reveal>
                 <p class="lede text-brand">
-                    {{ $brand['trading_as'] }} is the technology arm of
-                    {{ $brand['legal_name'] }} — a trading name of that company, not a separate
-                    one. We build websites, run email and write the software that businesses use
+                    We build websites, run email and write the software that businesses use
                     to get through the day.
                 </p>
 
