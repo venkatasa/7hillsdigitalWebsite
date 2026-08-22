@@ -292,6 +292,9 @@ is tempted.
 
 ## Open decisions — resolve before this site sees a real prospect
 
+> The statutory items below (3, 4 and 5) have step-by-step instructions, and the
+> exact `.env` keys, in `~/homelab-docs/TODO.md` §3.
+
 1. **Contact details are placeholders** — `COMPANY_PHONE` and `COMPANY_WHATSAPP`
    in `.env` are `+27 00 000 0000`. This is the last placeholder on the site.
 2. **No warning is sent before an allowance runs out.** Email and website
