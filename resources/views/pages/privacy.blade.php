@@ -159,13 +159,20 @@
 
             <h2>10. Cookies</h2>
             <p>
-                This site sets one cookie. It keeps your session secure while you complete a
-                form and is strictly necessary for the site to work; it carries no advertising
-                or tracking identifier. We use no third-party analytics or advertising cookies,
-                and we load no fonts, scripts, images or other assets from third-party servers,
-                so visiting this site does not disclose your visit to anyone else. Administration
-                panels we host for clients additionally set a session and authentication cookie,
-                which are equally necessary.
+                This site sets two cookies, both strictly necessary and neither carrying an
+                advertising or tracking identifier:
+            </p>
+            <ul>
+                <li><strong>a session cookie</strong>, which remembers your form entries between pages; and</li>
+                <li><strong>an XSRF-TOKEN cookie</strong>, which proves a form was submitted from this site and not forged by another.</li>
+            </ul>
+            <p>
+                Because both are strictly necessary for a service you have asked for,
+                they do not require your consent. We use no analytics or advertising cookies, and we
+                load no fonts, scripts, images or other assets from third-party servers, so
+                visiting this site does not disclose your visit to anyone else. Administration
+                panels we host for clients additionally set an authentication cookie, which is
+                equally necessary.
             </p>
 
             <h2>11. Your rights, and how to exercise them</h2>

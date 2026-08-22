@@ -301,6 +301,26 @@ Rules these must keep:
 
 `DemoSiteTest` guards all of the above.
 
+## Live work
+
+The home page carries a **Live work** section listing real client installs, fed
+by `config/clients.php`. It is the deliberate counterweight to the demos: those
+are openly invented, which makes them useless as proof that anyone has actually
+bought this.
+
+The rules are in the file's own header, and `LiveWorkTest` guards them:
+
+- **Name a client only with their permission.** A public reference is theirs to
+  give, not ours to take.
+- **Link the public site only.** Never a back office, never a screenshot of one,
+  and never an invitation to walk through one — see the POPIA note below.
+- **Claim only what is actually running.** The rest of the site sells things that
+  are not built yet; this section is worthless the moment it drifts into
+  aspiration.
+- **Say whose software it is.** `software` names the third party where we host
+  and support rather than wrote it. Letting a prospect assume we built Invoice
+  Ninja is a lie that survives until they Google it.
+
 **Do not demo Excellent Real Estate to prospects.** It is a live client with real
 leads and real applicant ID documents in its back office; walking a prospect
 through it is a POPIA problem. These fictional tenants exist precisely so nobody
@@ -329,9 +349,15 @@ is tempted.
    misrepresentation. Fill them from the CIPC documents.
 5. **No storage meter yet.** The pricing page promises we warn clients at 80% of
    their mail allowance. Nothing implements that.
-6. **The add-on modules do not exist as software yet.** The site sells
-   Invoicing, CRM and ERP; only the offer is built. Do not demo what is not
-   there.
+6. **CRM and ERP do not exist as software yet.** The site sells both; only the
+   offer is built. Do not demo what is not there.
+   **Invoicing is now real** — delivered for Excellent Real Estate as a
+   self-hosted **Invoice Ninja** install (`/opt/docker/invoiceninja`, port 8092,
+   `invoice.excellentrealestate.co.za`). Note what that does and does not settle:
+   the module is deliverable today, but it is third-party software we host and
+   support, not something we wrote. It is billed as the R109 Invoicing add-on.
+   Whether every future client gets Invoice Ninja or something of our own is
+   still open — decide it before the second client, not the tenth.
 7. **The demo tenants have no back office.** They are public landing pages only.
    The walkthrough they invite has to be given live, off a real install.
 8. **E-commerce is advertised but not specified.** `/demos` offers an online

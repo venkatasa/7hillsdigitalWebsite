@@ -85,6 +85,28 @@ class LegalPagesTest extends TestCase
             ->assertSee('complain to the Information Regulator');
     }
 
+    /**
+     * The cookie clause must describe what the site actually sets. Laravel
+     * issues a session cookie AND an XSRF-TOKEN cookie; claiming one was simply
+     * inaccurate, and an inaccurate privacy notice is a worse problem than a
+     * long one.
+     */
+    public function test_the_cookie_clause_matches_what_the_site_actually_sets(): void
+    {
+        $response = $this->get('/contact')->assertOk();
+
+        $names = collect($response->headers->getCookies())->map->getName();
+
+        $this->assertTrue($names->contains(fn ($n) => str_contains($n, 'session')));
+        $this->assertTrue($names->contains('XSRF-TOKEN'));
+
+        $this->get('/privacy')
+            ->assertOk()
+            ->assertSee('two cookies')
+            ->assertSee('XSRF-TOKEN')
+            ->assertSee('do not require your consent');
+    }
+
     /** ECTA s43 obliges us to publish who the customer is contracting with. */
     public function test_the_about_page_publishes_the_ecta_company_disclosures(): void
     {

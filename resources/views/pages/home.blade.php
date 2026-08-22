@@ -236,6 +236,84 @@
         </div>
     </section>
 
+    {{-- ── Live work ─────────────────────────────────────────────────────
+         Real installs, from config/clients.php. The demos elsewhere on this
+         site are openly invented, which makes them useless as proof — this is
+         the section that answers "yes, but has anyone actually bought it".
+
+         Deliberately links public sites only. CLAUDE.md forbids demoing
+         Excellent Real Estate: its panel holds real leads and applicant ID
+         documents, so a walkthrough is a POPIA breach. Nothing here invites
+         one. ──────────────────────────────────────────────────────────── --}}
+    @php $clients = config('clients', []); @endphp
+
+    @if (filled($clients))
+        <section class="container-page section">
+            <div class="max-w-2xl" data-reveal>
+                <p class="eyebrow">Live work</p>
+                <h2 class="mt-3 h-section text-brand">
+                    The demos are invented. This one is a real business, open for
+                    trade this morning.
+                </h2>
+                <p class="mt-4 leading-relaxed text-secondary">
+                    Everything on the demo pages is fiction, and says so. So here is the
+                    other thing — a client running on the platform every day, with their
+                    own stock, their own enquiries and their own invoices going out.
+                </p>
+            </div>
+
+            <div class="mt-12 grid gap-6 md:grid-cols-2">
+                @foreach ($clients as $client)
+                    <article class="card flex h-full flex-col p-7"
+                             data-reveal data-reveal-delay="{{ $loop->index * 80 }}">
+                        <p class="eyebrow">{{ $client['vertical'] }}</p>
+                        <h3 class="mt-2 text-xl font-semibold text-brand">{{ $client['name'] }}</h3>
+
+                        <p class="mt-3 leading-relaxed text-secondary">{{ $client['summary'] }}</p>
+
+                        <ul class="mt-5 space-y-2 text-sm text-secondary">
+                            @foreach ($client['delivered'] as $item)
+                                <li class="flex items-start gap-2.5">
+                                    <svg class="mt-1 h-4 w-4 shrink-0 text-accent" fill="none"
+                                         stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"
+                                         aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="m4.5 12.75 6 6 9-13.5" />
+                                    </svg>
+                                    {{ $item }}
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        <div class="mt-auto pt-6">
+                            {{-- Whose software it is, stated plainly. A prospect who assumes
+                                 we wrote Invoice Ninja finds out the moment they Google it. --}}
+                            <p class="text-xs text-muted">{{ $client['software'] }}</p>
+
+                            @if (! empty($client['url']))
+                                <a href="{{ $client['url'] }}" target="_blank" rel="noopener"
+                                   class="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-accent">
+                                    Visit the live site
+                                    <span aria-hidden="true">&rarr;</span>
+                                </a>
+                            @else
+                                <p class="mt-3 text-sm text-muted">
+                                    Behind the client&rsquo;s login, so there is nothing public to show.
+                                </p>
+                            @endif
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+
+            <p class="mt-8 max-w-2xl text-sm text-muted" data-reveal>
+                We do not walk prospects through a client&rsquo;s back office. It holds their
+                customers&rsquo; personal information, and that is not ours to show. Ask instead
+                for a walkthrough of the same panel on a demo install.
+            </p>
+        </section>
+    @endif
+
     {{-- ── Closing CTA ──────────────────────────────────────────────────── --}}
     <section class="container-page section">
         <div class="rounded-3xl border border-hairline bg-brand-light px-8 py-14 text-center sm:px-14" data-reveal>
