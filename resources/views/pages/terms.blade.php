@@ -4,9 +4,9 @@
                 description="Our commercial terms in plain English: no upfront cost, one month's notice, your domain and data stay yours.">
 
     <section class="bg-brand text-white">
-        <div class="container-page py-14 sm:py-16">
+        <div class="container-page section-tight">
             <p class="eyebrow-light">Terms</p>
-            <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Terms of service</h1>
+            <h1 class="mt-3 h-section">Terms of service</h1>
             <p class="mt-4 max-w-2xl text-base text-white/70">
                 Written to be read. If anything here is unclear, ask us before you sign up
                 rather than after.
@@ -14,7 +14,7 @@
         </div>
     </section>
 
-    <section class="container-page py-14 sm:py-16">
+    <section class="container-page section-tight">
         <div class="prose-page max-w-3xl">
             <p class="text-sm text-muted">Last updated {{ now()->format('d/m/Y') }}</p>
 

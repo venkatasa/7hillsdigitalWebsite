@@ -19,7 +19,7 @@ class PublicSiteTest extends TestCase
 
     public function test_every_public_page_renders(): void
     {
-        foreach (['/', '/packages', '/how-it-works', '/demos', '/about', '/contact', '/terms', '/privacy'] as $path) {
+        foreach (['/', '/packages', '/how-it-works', '/custom-and-it', '/demos', '/about', '/contact', '/terms', '/privacy'] as $path) {
             $this->get($path)->assertOk();
         }
     }
@@ -90,13 +90,32 @@ class PublicSiteTest extends TestCase
     {
         $forbidden = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'unpkg.com', 'googletagmanager.com', 'google-analytics.com'];
 
-        foreach (['/', '/packages', '/contact', '/privacy'] as $path) {
+        foreach (['/', '/packages', '/custom-and-it', '/demos', '/demos/realty', '/contact', '/privacy'] as $path) {
             $html = $this->get($path)->assertOk()->getContent();
 
             foreach ($forbidden as $host) {
                 $this->assertStringNotContainsString($host, $html, "{$path} must not reference {$host}");
             }
         }
+    }
+
+    /**
+     * The five packages are a starting point, not a limit — the site has to say
+     * so, or a prospect whose trade is not listed assumes we cannot help them.
+     */
+    public function test_the_site_says_we_are_not_limited_to_the_five_packages(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Your industry does not have to be one of the five')
+            ->assertSee('You focus on running the business. We will take care of the IT.');
+
+        $this->get('/custom-and-it')
+            ->assertOk()
+            ->assertSee('Custom software')
+            ->assertSee('Automating the repetitive')
+            ->assertSee('IT support')
+            ->assertSee('Hardware and procurement');
     }
 
     public function test_prices_come_from_the_database_not_the_markup(): void

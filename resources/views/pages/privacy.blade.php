@@ -4,16 +4,16 @@
                 description="How Seven Hills Digital collects, uses and protects personal information under POPIA.">
 
     <section class="bg-brand text-white">
-        <div class="container-page py-14 sm:py-16">
+        <div class="container-page section-tight">
             <p class="eyebrow-light">Privacy</p>
-            <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Privacy notice</h1>
+            <h1 class="mt-3 h-section">Privacy notice</h1>
             <p class="mt-4 max-w-2xl text-base text-white/70">
                 What we collect, why we collect it, and what you can make us do about it.
             </p>
         </div>
     </section>
 
-    <section class="container-page py-14 sm:py-16">
+    <section class="container-page section-tight">
         <div class="prose-page max-w-3xl">
             <p class="text-sm text-muted">Last updated {{ now()->format('d/m/Y') }}</p>
 

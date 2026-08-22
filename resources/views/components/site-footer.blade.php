@@ -31,6 +31,7 @@
             <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-mint">Company</h2>
             <ul class="mt-4 space-y-2.5 text-sm">
                 <li><a href="{{ route('how-it-works') }}" class="hover:text-white">How it works</a></li>
+                <li><a href="{{ route('it-services') }}" class="hover:text-white">Custom &amp; managed IT</a></li>
                 <li><a href="{{ route('demos') }}" class="hover:text-white">Demos</a></li>
                 <li><a href="{{ route('about') }}" class="hover:text-white">About</a></li>
                 <li><a href="{{ route('contact') }}" class="hover:text-white">Contact</a></li>
@@ -43,7 +44,7 @@
     <div class="border-t border-white/10">
         <div class="container-page flex flex-col gap-3 py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {{ now()->year }} {{ $brand['legal_name'] }}. All rights reserved.</p>
-            <p class="max-w-md text-white/45">{{ config('brand.hardware.blurb') }}</p>
+            <p class="max-w-md text-white/60">{{ config('brand.hardware.blurb') }}</p>
             <p>
                 <a href="mailto:{{ $brand['contact']['email'] }}" class="hover:text-white">{{ $brand['contact']['email'] }}</a>
                 <span class="mx-2 text-white/25">|</span>

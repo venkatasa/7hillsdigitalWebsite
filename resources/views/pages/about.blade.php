@@ -4,15 +4,15 @@
                 description="Seven Hills Digital builds and hosts websites, email and business software for South African firms. Part of Seven Hills Holdings.">
 
     <section class="bg-brand text-white">
-        <div class="container-page py-16 sm:py-20">
+        <div class="container-page section">
             <p class="eyebrow-light">About us</p>
-            <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+            <h1 class="mt-4 max-w-3xl h-display">
                 The IT department for businesses that were never going to hire one.
             </h1>
         </div>
     </section>
 
-    <section class="container-page py-16 sm:py-20">
+    <section class="container-page section">
         <div class="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
             <div class="prose-page">
                 <p class="text-lg leading-relaxed text-brand">

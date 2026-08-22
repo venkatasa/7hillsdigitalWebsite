@@ -4,7 +4,7 @@
     $tier = $package->defaultTier();
 @endphp
 
-<article class="group relative flex flex-col rounded-2xl border border-brand/10 bg-white p-6 transition hover:border-accent/60 hover:shadow-lg hover:shadow-brand/5">
+<article class="card-hover group relative flex h-full flex-col p-6">
     @if ($package->is_featured)
         <span class="absolute -top-2.5 right-5 rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-dark">
             Most asked for
@@ -16,7 +16,7 @@
             <x-package-icon :name="$package->icon_key" />
         </span>
         <div class="min-w-0">
-            <h3 class="text-lg font-bold text-brand">{{ $package->name }}</h3>
+            <h3 class="font-display text-lg font-bold text-brand">{{ $package->name }}</h3>
             <p class="truncate text-xs font-medium uppercase tracking-wider text-muted">{{ $package->vertical_label }}</p>
         </div>
     </div>
@@ -25,7 +25,7 @@
 
     @if ($tier)
         <div class="mt-5 flex items-baseline gap-1.5 border-t border-brand/10 pt-5">
-            <span class="text-3xl font-bold tracking-tight text-brand">{{ $tier->formatted_price }}</span>
+            <span class="font-display text-3xl font-extrabold tracking-tight text-brand">{{ $tier->formatted_price }}</span>
             <span class="text-sm text-muted">/ month</span>
         </div>
         <p class="mt-1 text-xs text-muted">

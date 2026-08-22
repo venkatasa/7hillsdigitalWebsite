@@ -50,7 +50,7 @@ return [
         'secondary' => env('BRAND_SECONDARY', '#5C6861'),
         'dark' => env('BRAND_DARK', '#122118'),
         'light' => env('BRAND_LIGHT', '#F8FAF9'),
-        'muted' => env('BRAND_MUTED', '#7C8A83'),
+        'muted' => env('BRAND_MUTED', '#64726A'),
         'hairline' => env('BRAND_HAIRLINE', '#E2E8E5'),
     ],
 

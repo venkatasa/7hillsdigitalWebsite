@@ -4,15 +4,15 @@
                 description="From first conversation to live website and email, usually two to three weeks. Nothing to pay until it is live.">
 
     <section class="bg-brand text-white">
-        <div class="container-page py-16 sm:py-20">
+        <div class="container-page section">
             <p class="eyebrow-light">How it works</p>
-            <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+            <h1 class="mt-4 max-w-3xl h-display">
                 Five steps, and you only reach for your wallet at step five.
             </h1>
         </div>
     </section>
 
-    <section class="container-page py-16 sm:py-20">
+    <section class="container-page section">
         <ol class="space-y-12">
             @foreach ([
                 ['A twenty-minute conversation', 'You tell us what the business does, how enquiries reach you today and what drives you mad about it. We tell you which package fits and roughly what it costs. If we are not the right fit we will say so.'],
@@ -34,11 +34,11 @@
         </ol>
     </section>
 
-    <section class="bg-brand-light py-16 sm:py-20">
+    <section class="bg-brand-light section">
         <div class="container-page grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
                 <p class="eyebrow">What we need from you</p>
-                <h2 class="mt-3 text-2xl font-bold tracking-tight text-brand sm:text-3xl">
+                <h2 class="mt-3 h-section text-brand">
                     The build moves at the speed of your photographs.
                 </h2>
                 <p class="mt-4 text-base leading-relaxed text-secondary">
@@ -68,8 +68,8 @@
     </section>
 
     {{-- ── FAQ ──────────────────────────────────────────────────────────── --}}
-    <section class="container-page py-16 sm:py-20">
-        <h2 class="text-2xl font-bold tracking-tight text-brand sm:text-3xl">Questions we get asked</h2>
+    <section class="container-page section">
+        <h2 class="h-section text-brand">Questions we get asked</h2>
 
         <div class="mt-10 divide-y divide-brand/10 border-y border-brand/10">
             @foreach ([

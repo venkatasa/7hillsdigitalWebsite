@@ -14,19 +14,19 @@
                 description="Tell us what your business does and we will show you what your website would look like. Nothing to pay, nothing to sign.">
 
     <section class="bg-brand text-white">
-        <div class="container-page py-16 sm:py-20">
+        <div class="container-page section">
             <p class="eyebrow-light">Get started</p>
-            <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+            <h1 class="mt-4 max-w-3xl h-display">
                 Tell us about your business.
             </h1>
-            <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
+            <p class="mt-6 max-w-2xl lede text-white/75">
                 We will come back to you within one working day with the package that fits
                 and what it would cost. No obligation, and nothing to pay to find out.
             </p>
         </div>
     </section>
 
-    <section class="container-page py-16 sm:py-20">
+    <section class="container-page section">
         <div class="grid gap-12 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
 
             <div>

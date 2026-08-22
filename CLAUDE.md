@@ -20,8 +20,16 @@ software that runs on it. The commercial promise the whole site rests on is
 **no upfront cost, no minimum term, one month's notice to cancel**.
 
 **Visitors** can browse the home page, the packages and each package's own page,
-how-it-works, demos, about, terms and the privacy notice, and submit an enquiry
-from `/contact` (optionally deep-linked from a package: `/contact?package=showroom`).
+how-it-works, `/custom-and-it`, the demos and each demo tenant, about, terms and
+the privacy notice, and submit an enquiry from `/contact` (optionally deep-linked
+from a package: `/contact?package=showroom`).
+
+**The five packages are a starting point, not a limit.** `/custom-and-it` and a
+section on the home page say so explicitly — custom software, digitising paper,
+automation, integrations, IT support and hardware procurement. A prospect whose
+trade is not on the list must never conclude we cannot help them.
+`PublicSiteTest::test_the_site_says_we_are_not_limited_to_the_five_packages`
+guards that message.
 
 **Staff** (logged in at `/admin`) can work the enquiry pipeline and edit the
 packages, their copy and — the point of the whole panel — **their prices**.
@@ -176,16 +184,60 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   are `<x-package-icon>`.
 - **Custom CSS classes are declared with `@utility`, not `@layer components`.**
   Tailwind v4 can only `@apply` a custom class that was registered as a utility.
+- **Layout uses the shared design utilities, not ad-hoc class soup.** `section` /
+  `section-tight` for vertical rhythm, `h-display` / `h-section` / `lede` for
+  type, `card` / `card-hover` for surfaces, `glow` for the blurred shapes behind
+  dark sections. Change the rhythm of the whole site in one place; do not
+  reintroduce `py-16 sm:py-20` by hand.
+- **`data-reveal` is decoration and must never hide content.** The CSS hides
+  those elements and `app.js` reveals them on intersection; anything without JS,
+  or with `prefers-reduced-motion`, sees the page in full. Never put content
+  behind it that the page needs in order to make sense.
+- **`[x-cloak]` must stay in the base layer.** Without it the mobile menu and
+  its close icon flash on every page load.
+- **The desktop nav switches at `lg`, not `md`.** Five nav items plus a CTA and
+  the logo do not fit at 768px.
+- **Body text must clear 4.5:1.** `muted` is `#64726A` (5.05:1 on white) rather
+  than something prettier and lighter — the earlier value failed AA. Emerald on
+  Deep Forest is 2.81:1, which is why `mint` exists.
 
 ## Demos
 
-`Package::$demo_url` is null for every package. The demos page renders "Demo
-being built — ask us for a walkthrough" rather than a broken link, which is the
-honest state until the demo tenants exist.
+Five fictional tenants, one per line, defined in **`config/demos.php`** and
+rendered by a single template (`demos/show.blade.php`) inside `x-layouts.demo`:
+
+| Demo | Slug | Package |
+|---|---|---|
+| Seven Hills Realty | `realty` | Listings |
+| Seven Hills Auto | `auto` | Showroom |
+| Seven Hills Careers | `careers` | Careers |
+| Seven Hills Stay | `stay` | Stay |
+| Seven Hills Plant Hire | `plant` | Business |
+
+Rules these must keep:
+
+- **Everything in them is invented** — the businesses, the stock, the prices,
+  the reviews. Nothing is taken from a real agency, dealer or portal.
+- **No photographs.** `<x-demo-art>` composes an SVG per card, varied by seed,
+  in the tenant's own colours. Never scrape or hotlink an image.
+- **Each tenant carries its own palette**, and that is a deliberate exception to
+  the 7Hills colour rule above — five identical green sites would prove nothing.
+  The demo's job is to show a prospect that the site carries *their* brand. The
+  7Hills palette governs the marketing site only.
+- **The enquiry form is inert** (`disabled`, `onsubmit="return false"`). A demo
+  must never collect a real person's details.
+- **`noindex, nofollow` on every demo**, so a fiction never outranks the real
+  site or a client's.
+- **Every demo closes with the back-office pitch**, because that section is the
+  actual sales conversation — the public half is not what earns the fee. Prices
+  in it come from the live `PackageTier`, so a price change follows everywhere.
+
+`DemoSiteTest` guards all of the above.
 
 **Do not demo Excellent Real Estate to prospects.** It is a live client with real
 leads and real applicant ID documents in its back office; walking a prospect
-through it is a POPIA problem. Build fictional demo tenants instead.
+through it is a POPIA problem. These fictional tenants exist precisely so nobody
+is tempted.
 
 ## Open decisions — resolve before this site sees a real prospect
 
@@ -203,6 +255,8 @@ through it is a POPIA problem. Build fictional demo tenants instead.
 6. **The add-on modules do not exist as software yet.** The site sells
    Invoicing, CRM and ERP; only the offer is built. Do not demo what is not
    there.
+7. **The demo tenants have no back office.** They are public landing pages only.
+   The walkthrough they invite has to be given live, off a real install.
 
 Settled since the first build: prices (flat R880 / R1 080), and the brand —
 the official 7Hills kit is applied throughout.

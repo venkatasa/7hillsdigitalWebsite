@@ -45,6 +45,22 @@ class Package extends Model
         return $this->tiers->firstWhere('is_default', true) ?? $this->tiers->first();
     }
 
+    /**
+     * The demo tenant built for this line, if there is one. Demos live in
+     * config/demos.php rather than the database — they are fixed marketing
+     * assets, not something staff edit.
+     */
+    public function demoSlug(): ?string
+    {
+        foreach (config('demos', []) as $slug => $demo) {
+            if (($demo['package'] ?? null) === $this->slug) {
+                return $slug;
+            }
+        }
+
+        return null;
+    }
+
     public function scopePublished($query)
     {
         return $query->where('is_published', true);

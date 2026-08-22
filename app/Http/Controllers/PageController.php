@@ -20,6 +20,11 @@ class PageController extends Controller
         return view('pages.how-it-works');
     }
 
+    public function itServices()
+    {
+        return view('pages.it-services');
+    }
+
     public function demos()
     {
         return view('pages.demos', [

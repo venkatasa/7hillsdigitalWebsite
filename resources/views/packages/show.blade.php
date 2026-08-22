@@ -2,7 +2,7 @@
                 :description="$package->tagline.' '.\Illuminate\Support\Str::limit($package->intro, 130)">
 
     <section class="bg-brand text-white">
-        <div class="container-page py-16 sm:py-20">
+        <div class="container-page section">
             <nav aria-label="Breadcrumb" class="text-sm text-white/50">
                 <a href="{{ route('packages.index') }}" class="hover:text-white">Packages</a>
                 <span class="mx-2" aria-hidden="true">/</span>
@@ -15,7 +15,7 @@
                 </span>
                 <div>
                     <p class="eyebrow-light">{{ $package->vertical_label }}</p>
-                    <h1 class="mt-1.5 text-4xl font-bold tracking-tight sm:text-5xl">{{ $package->name }}</h1>
+                    <h1 class="mt-1.5 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">{{ $package->name }}</h1>
                 </div>
             </div>
 
@@ -24,7 +24,10 @@
 
             <div class="mt-9 flex flex-wrap gap-3">
                 <a href="{{ route('contact', ['package' => $package->slug]) }}" class="btn-mint">Ask about {{ $package->name }}</a>
-                @if ($package->demo_url)
+                @php $demoSlug = $package->demoSlug(); @endphp
+                @if ($demoSlug)
+                    <a href="{{ route('demos.show', $demoSlug) }}" class="btn-ghost">See a live {{ $package->name }} site</a>
+                @elseif ($package->demo_url)
                     <a href="{{ $package->demo_url }}" class="btn-ghost">See the demo</a>
                 @else
                     <a href="{{ route('demos') }}" class="btn-ghost">See the demos</a>
@@ -34,11 +37,11 @@
     </section>
 
     {{-- ── What you get ─────────────────────────────────────────────────── --}}
-    <section class="container-page py-16 sm:py-20">
+    <section class="container-page section">
         <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
             <div>
                 <p class="eyebrow">What you get</p>
-                <h2 class="mt-3 text-2xl font-bold tracking-tight text-brand sm:text-3xl">
+                <h2 class="mt-3 h-section text-brand">
                     Built the way {{ \Illuminate\Support\Str::lower($package->vertical_label) }} actually work.
                 </h2>
 
@@ -104,10 +107,10 @@
 
     {{-- ── Built for ────────────────────────────────────────────────────── --}}
     @if ($package->built_for)
-        <section class="bg-brand-light py-16 sm:py-20">
+        <section class="bg-brand-light section">
             <div class="container-page">
                 <p class="eyebrow">Who it suits</p>
-                <h2 class="mt-3 text-2xl font-bold tracking-tight text-brand sm:text-3xl">{{ $package->name }} is built for</h2>
+                <h2 class="mt-3 h-section text-brand">{{ $package->name }} is built for</h2>
                 <ul class="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     @foreach ($package->built_for as $who)
                         <li class="rounded-lg border border-brand/10 bg-white px-5 py-4 text-sm font-medium text-brand">{{ $who }}</li>
@@ -118,8 +121,8 @@
     @endif
 
     {{-- ── Other packages ───────────────────────────────────────────────── --}}
-    <section class="container-page py-16 sm:py-20">
-        <h2 class="text-2xl font-bold tracking-tight text-brand sm:text-3xl">Not quite your trade?</h2>
+    <section class="container-page section">
+        <h2 class="h-section text-brand">Not quite your trade?</h2>
         <p class="mt-3 max-w-2xl text-sm leading-relaxed text-secondary">
             The other packages run on the same platform. If none of them fit, Business is
             the one that bends to suit you.

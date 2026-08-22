@@ -4,12 +4,12 @@
                 description="Monthly packages for estate agencies, car dealerships, recruitment agencies, guesthouses and everyone else. No upfront cost, cancel any time.">
 
     <section class="bg-brand text-white">
-        <div class="container-page py-16 sm:py-20">
+        <div class="container-page section">
             <p class="eyebrow-light">Packages</p>
-            <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+            <h1 class="mt-4 max-w-3xl h-display">
                 One monthly fee. Website, email, hosting and support.
             </h1>
-            <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/70">
+            <p class="mt-6 max-w-2xl lede text-white/75">
                 Every package starts on the 5GB tier and moves up when you need more
                 people on email. Nothing to pay until your site is live.
             </p>
@@ -17,7 +17,7 @@
     </section>
 
     {{-- ── Package cards ────────────────────────────────────────────────── --}}
-    <section class="container-page py-16 sm:py-20">
+    <section class="container-page section">
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             @foreach ($packages as $package)
                 <x-package-card :package="$package" />
@@ -26,8 +26,8 @@
     </section>
 
     {{-- ── Full comparison ──────────────────────────────────────────────── --}}
-    <section class="container-page pb-16 sm:pb-20">
-        <h2 class="text-2xl font-bold tracking-tight text-brand sm:text-3xl">Every tier, side by side</h2>
+    <section class="container-page pb-16 sm:pb-20 lg:pb-24">
+        <h2 class="h-section text-brand">Every tier, side by side</h2>
         <p class="mt-3 max-w-2xl text-sm leading-relaxed text-secondary">
             Mail storage and website storage are separate allowances. That is deliberate:
             a dealership with sixty cars will use gigabytes of photographs, and those
@@ -75,10 +75,10 @@
     <x-add-ons-section :add-ons="$addOns" />
 
     {{-- ── Upgrades ─────────────────────────────────────────────────────── --}}
-    <section class="bg-brand-light py-16 sm:py-20">
+    <section class="bg-brand-light section">
         <div class="container-page">
             <p class="eyebrow">When you outgrow it</p>
-            <h2 class="mt-3 max-w-2xl text-2xl font-bold tracking-tight text-brand sm:text-3xl">
+            <h2 class="mt-3 max-w-2xl h-section text-brand">
                 Move up a tier the month you need to, not a month before.
             </h2>
 
@@ -103,7 +103,7 @@
     </section>
 
     {{-- ── Terms strip ──────────────────────────────────────────────────── --}}
-    <section class="container-page py-16 sm:py-20">
+    <section class="container-page section">
         <div class="grid gap-8 rounded-2xl border border-brand/10 p-8 sm:grid-cols-2 lg:grid-cols-4 sm:p-10">
             @foreach ([
                 ['Setup fee', $brand['terms']['setup_fee']],
