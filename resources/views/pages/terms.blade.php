@@ -37,6 +37,19 @@
                 source code remains ours. This is precisely why there is no upfront charge.
             </p>
 
+            <p>
+                <strong>Optional modules are charged separately.</strong> Invoicing, CRM, ERP and
+                anything else described on our site as an add-on are not included in the package
+                fee. Nothing is added to your invoice unless you have asked for it in writing,
+                and you can drop a module on the same one month's notice as the package itself.
+            </p>
+
+            <p>
+                <strong>Hardware is not part of this agreement.</strong> If we source equipment
+                for you — laptops, routers, networking — it is quoted and invoiced separately,
+                you own it outright, and the manufacturer's warranty is the one that applies.
+            </p>
+
             <h2>3. What you own</h2>
             <ul>
                 <li><strong>Your domain name</strong> is registered in your name and remains yours. If you leave, you take it with you.</li>

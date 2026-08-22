@@ -193,8 +193,9 @@ through it is a POPIA problem. Build fictional demo tenants instead.
    in `.env` are `+27 00 000 0000`. This is the last placeholder on the site.
 2. **The mail/media split is an assumption**, not a signed-off decision — 5GB
    mail (5 × 1GB) + 10GB site media on the entry tier, doubling on the 10 tier.
-3. **`/terms` needs an attorney's eye** before it governs a paying relationship,
-   and it does not yet mention the add-on modules or hardware procurement.
+3. **`/terms` needs an attorney's eye** before it governs a paying relationship.
+   It now covers the add-on modules and hardware, but none of it is drafted by
+   a lawyer.
 4. **POPIA requires a registered Information Officer.** Register one with the
    Information Regulator and put their details in the privacy notice.
 5. **No storage meter yet.** The pricing page promises we warn clients at 80% of
