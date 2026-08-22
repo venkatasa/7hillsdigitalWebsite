@@ -51,6 +51,54 @@ class PublicSiteTest extends TestCase
         $this->get('/packages')->assertOk()->assertDontSee($package->tagline);
     }
 
+    /**
+     * Pricing is flat across every product line: the platform underneath is the
+     * same, so charging a dealership more than a guesthouse for it is arbitrary
+     * and indefensible on a sales call.
+     */
+    public function test_pricing_is_flat_across_every_line(): void
+    {
+        foreach (Package::with('tiers')->get() as $package) {
+            foreach ($package->tiers as $tier) {
+                $expected = $tier->mail_gb === 5 ? '880.00' : '1080.00';
+
+                $this->assertSame(
+                    $expected,
+                    $tier->price_monthly,
+                    "{$tier->name} should be R{$expected}",
+                );
+            }
+        }
+    }
+
+    /** The official 7Hills palette, not the placeholder it replaced. */
+    public function test_the_official_brand_palette_is_applied(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('--brand-primary: #1A2E22', escape: false)
+            ->assertSee('--brand-accent: #417956', escape: false)
+            ->assertSee('--brand-mint: #5EB87E', escape: false);
+    }
+
+    /**
+     * The privacy notice promises we load nothing from a third party. Fonts are
+     * self-hosted and bundled at build time, so no page may reference an
+     * external host — if this fails, the privacy notice has become a lie.
+     */
+    public function test_no_page_loads_a_third_party_asset(): void
+    {
+        $forbidden = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdn.jsdelivr.net', 'unpkg.com', 'googletagmanager.com', 'google-analytics.com'];
+
+        foreach (['/', '/packages', '/contact', '/privacy'] as $path) {
+            $html = $this->get($path)->assertOk()->getContent();
+
+            foreach ($forbidden as $host) {
+                $this->assertStringNotContainsString($host, $html, "{$path} must not reference {$host}");
+            }
+        }
+    }
+
     public function test_prices_come_from_the_database_not_the_markup(): void
     {
         $package = Package::where('slug', 'showroom')->first();

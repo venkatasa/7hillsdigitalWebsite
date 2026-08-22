@@ -15,7 +15,7 @@
 
     <section class="bg-brand text-white">
         <div class="container-page py-16 sm:py-20">
-            <p class="eyebrow">Get started</p>
+            <p class="eyebrow-light">Get started</p>
             <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
                 Tell us about your business.
             </h1>

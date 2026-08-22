@@ -5,7 +5,7 @@
 
     <section class="bg-brand text-white">
         <div class="container-page py-16 sm:py-20">
-            <p class="eyebrow">How it works</p>
+            <p class="eyebrow-light">How it works</p>
             <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
                 Five steps, and you only reach for your wallet at step five.
             </h1>

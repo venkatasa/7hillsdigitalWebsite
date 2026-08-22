@@ -10,11 +10,11 @@
         </div>
 
         <div class="container-page relative py-20 sm:py-28">
-            <p class="eyebrow">A {{ $brand['parent'] }} company</p>
+            <p class="eyebrow-light">A {{ $brand['parent'] }} company</p>
 
             <h1 class="mt-4 max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
                 Pay nothing until your website is live.
-                <span class="text-accent">Cancel any time.</span>
+                <span class="text-mint">Cancel any time.</span>
             </h1>
 
             <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/75">
@@ -24,7 +24,7 @@
             </p>
 
             <div class="mt-9 flex flex-wrap gap-3">
-                <a href="{{ route('packages.index') }}" class="btn-accent">See the packages</a>
+                <a href="{{ route('packages.index') }}" class="btn-mint">See the packages</a>
                 <a href="{{ route('demos') }}" class="btn-ghost">Look at a live demo</a>
             </div>
 
@@ -35,7 +35,7 @@
                     ['1 month', 'notice to leave. No penalty, no exit fee, no argument.'],
                 ] as [$figure, $detail])
                     <div>
-                        <dt class="text-2xl font-bold text-accent">{{ $figure }}</dt>
+                        <dt class="text-2xl font-bold text-mint">{{ $figure }}</dt>
                         <dd class="mt-1.5 text-sm leading-relaxed text-white/65">{{ $detail }}</dd>
                     </div>
                 @endforeach
@@ -125,13 +125,36 @@
         <p class="mt-8 text-sm text-muted">
             All prices exclude VAT. <a href="{{ route('packages.index') }}" class="font-medium text-brand underline underline-offset-2">Compare every package and tier &rarr;</a>
         </p>
+
+        {{-- Optional modules: flagged here, priced in full on /packages. --}}
+        @if ($addOns->isNotEmpty())
+            <div class="mt-10 rounded-2xl border border-hairline bg-brand-light px-6 py-6 sm:px-8">
+                <div class="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
+                    <div>
+                        <h3 class="text-base font-bold text-brand">Need more than a website?</h3>
+                        <p class="mt-1 text-sm leading-relaxed text-secondary">
+                            Invoicing, CRM and ERP bolt onto any package — charged separately, never bundled in without asking.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+                        @foreach ($addOns as $addOn)
+                            <span class="text-secondary">
+                                <span class="font-semibold text-brand">{{ $addOn->name }}</span>
+                                {{ $addOn->is_metered ? 'on request' : '+'.$addOn->formatted_price.'/mo' }}
+                            </span>
+                        @endforeach
+                        <a href="{{ route('packages.index') }}#add-ons" class="font-semibold text-accent underline underline-offset-2 hover:text-brand">See what they do &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        @endif
     </section>
 
     {{-- ── The catch ────────────────────────────────────────────────────── --}}
     <section class="bg-brand py-20 text-white sm:py-24">
         <div class="container-page grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
-                <p class="eyebrow">The honest part</p>
+                <p class="eyebrow-light">The honest part</p>
                 <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
                     "So what's the catch?"
                 </h2>
@@ -148,7 +171,7 @@
                     ['Your data leaves with you.', 'Ask on the way out and we export your listings, your contacts and your enquiry history. You gave us that information; it does not become ours.'],
                     ['We do ask you to show up.', 'We cannot write your business into existence. Photos, prices and the answers to our questions have to come from you, or the build stalls and neither of us is happy.'],
                 ] as [$heading, $copy])
-                    <div class="border-l-2 border-accent pl-5">
+                    <div class="border-l-2 border-mint pl-5">
                         <h3 class="text-base font-semibold">{{ $heading }}</h3>
                         <p class="mt-1.5 text-sm leading-relaxed text-white/65">{{ $copy }}</p>
                     </div>

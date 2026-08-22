@@ -11,7 +11,10 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call(PackageSeeder::class);
+        $this->call([
+            PackageSeeder::class,
+            AddOnSeeder::class,
+        ]);
 
         $email = env('ADMIN_EMAIL', 'admin@7hillsdigital.co.za');
 

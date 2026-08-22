@@ -31,8 +31,8 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->brandName(config('brand.name'))
             ->brandLogo(fn () => view('components.filament-brand'))
-            ->brandLogoHeight('2rem')
-            ->favicon(asset(config('brand.logo.mark')))
+            ->brandLogoHeight('2.75rem')
+            ->favicon(asset(config('brand.logo.favicon')))
             // Palette comes from config/brand.php — the same source the public
             // site reads, so the two never drift apart.
             ->colors([

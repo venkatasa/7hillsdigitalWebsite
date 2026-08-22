@@ -10,20 +10,20 @@
             </nav>
 
             <div class="mt-6 flex items-start gap-4">
-                <span class="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-accent">
+                <span class="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-mint">
                     <x-package-icon :name="$package->icon_key" class="h-7 w-7" />
                 </span>
                 <div>
-                    <p class="eyebrow">{{ $package->vertical_label }}</p>
+                    <p class="eyebrow-light">{{ $package->vertical_label }}</p>
                     <h1 class="mt-1.5 text-4xl font-bold tracking-tight sm:text-5xl">{{ $package->name }}</h1>
                 </div>
             </div>
 
-            <p class="mt-6 max-w-2xl text-xl font-medium text-accent">{{ $package->tagline }}</p>
+            <p class="mt-6 max-w-2xl text-xl font-medium text-mint">{{ $package->tagline }}</p>
             <p class="mt-4 max-w-2xl text-base leading-relaxed text-white/70">{{ $package->intro }}</p>
 
             <div class="mt-9 flex flex-wrap gap-3">
-                <a href="{{ route('contact', ['package' => $package->slug]) }}" class="btn-accent">Ask about {{ $package->name }}</a>
+                <a href="{{ route('contact', ['package' => $package->slug]) }}" class="btn-mint">Ask about {{ $package->name }}</a>
                 @if ($package->demo_url)
                     <a href="{{ $package->demo_url }}" class="btn-ghost">See the demo</a>
                 @else

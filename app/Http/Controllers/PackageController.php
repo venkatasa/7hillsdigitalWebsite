@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddOn;
 use App\Models\Package;
 
 class PackageController extends Controller
@@ -10,6 +11,7 @@ class PackageController extends Controller
     {
         return view('packages.index', [
             'packages' => Package::published()->with('tiers')->orderBy('sort')->get(),
+            'addOns' => AddOn::published()->orderBy('sort')->get(),
         ]);
     }
 

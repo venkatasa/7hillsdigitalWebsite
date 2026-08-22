@@ -5,7 +5,7 @@
 
     <section class="bg-brand text-white">
         <div class="container-page py-16 sm:py-20">
-            <p class="eyebrow">Packages</p>
+            <p class="eyebrow-light">Packages</p>
             <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
                 One monthly fee. Website, email, hosting and support.
             </h1>
@@ -71,6 +71,9 @@
         </p>
     </section>
 
+    {{-- ── Optional modules, charged separately ──────────────────────── --}}
+    <x-add-ons-section :add-ons="$addOns" />
+
     {{-- ── Upgrades ─────────────────────────────────────────────────────── --}}
     <section class="bg-brand-light py-16 sm:py-20">
         <div class="container-page">
@@ -118,6 +121,9 @@
         <div class="mt-10 text-center">
             <a href="{{ route('contact') }}" class="btn-accent">Ask us about a package</a>
         </div>
+
+        {{-- Hardware: one quiet line, on purpose. --}}
+        <x-hardware-note class="mt-10 text-center text-xs leading-relaxed text-muted" />
     </section>
 
 </x-layouts.site>

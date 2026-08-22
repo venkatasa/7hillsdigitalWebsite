@@ -8,9 +8,9 @@
 @endphp
 
 <header x-data="{ open: false }" class="sticky top-0 z-40 border-b border-brand/10 bg-white/95 backdrop-blur">
-    <div class="container-page flex h-[68px] items-center justify-between gap-4">
+    <div class="container-page flex h-[80px] items-center justify-between gap-4">
         <a href="{{ route('home') }}" aria-label="{{ config('brand.name') }} home">
-            <x-brand-logo class="h-8" />
+            <x-brand-logo class="h-14" />
         </a>
 
         <nav class="hidden items-center gap-7 md:flex" aria-label="Main">

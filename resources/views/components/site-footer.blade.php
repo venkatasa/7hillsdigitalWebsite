@@ -6,7 +6,7 @@
 <footer class="mt-24 bg-brand-dark text-white/70">
     <div class="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div class="lg:col-span-2">
-            <x-brand-logo inverse class="h-9" />
+            <x-brand-logo inverse class="h-20" />
             <p class="mt-4 max-w-sm text-sm leading-relaxed">
                 {{ $brand['tagline'] }} We build and host the website, the email and the
                 back office, and we bill it monthly — nothing upfront, cancel any time.
@@ -17,7 +17,7 @@
         </div>
 
         <div>
-            <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Packages</h2>
+            <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-mint">Packages</h2>
             <ul class="mt-4 space-y-2.5 text-sm">
                 @foreach ($packages as $package)
                     <li>
@@ -28,7 +28,7 @@
         </div>
 
         <div>
-            <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Company</h2>
+            <h2 class="text-xs font-semibold uppercase tracking-[0.18em] text-mint">Company</h2>
             <ul class="mt-4 space-y-2.5 text-sm">
                 <li><a href="{{ route('how-it-works') }}" class="hover:text-white">How it works</a></li>
                 <li><a href="{{ route('demos') }}" class="hover:text-white">Demos</a></li>
@@ -43,6 +43,7 @@
     <div class="border-t border-white/10">
         <div class="container-page flex flex-col gap-3 py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {{ now()->year }} {{ $brand['legal_name'] }}. All rights reserved.</p>
+            <p class="max-w-md text-white/45">{{ config('brand.hardware.blurb') }}</p>
             <p>
                 <a href="mailto:{{ $brand['contact']['email'] }}" class="hover:text-white">{{ $brand['contact']['email'] }}</a>
                 <span class="mx-2 text-white/25">|</span>

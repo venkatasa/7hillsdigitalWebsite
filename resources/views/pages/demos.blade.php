@@ -3,7 +3,7 @@
 
     <section class="bg-brand text-white">
         <div class="container-page py-16 sm:py-20">
-            <p class="eyebrow">Demos</p>
+            <p class="eyebrow-light">Demos</p>
             <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
                 Look at the real thing before you commit to anything.
             </h1>

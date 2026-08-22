@@ -5,7 +5,7 @@
 
     <section class="bg-brand text-white">
         <div class="container-page py-16 sm:py-20">
-            <p class="eyebrow">About us</p>
+            <p class="eyebrow-light">About us</p>
             <h1 class="mt-3 max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
                 The IT department for businesses that were never going to hire one.
             </h1>

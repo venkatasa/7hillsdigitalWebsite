@@ -8,16 +8,21 @@ use Illuminate\Database\Seeder;
 /**
  * The five product lines.
  *
- * PRICES ARE PLACEHOLDERS. They are pitched at what a Gauteng SMB will carry
- * monthly, but they have not been signed off — every one of them is editable
- * at /admin without touching this file. Change them there before the site
- * goes anywhere near a real prospect.
+ * Prices are the signed-off flat rate: R880 for any 5GB tier, R1 080 for any
+ * 10GB tier. These are what a fresh install starts with — the live numbers are
+ * edited at /admin/packages and are never read from this file at runtime.
  *
  * Storage: mail and site media are quoted separately on purpose. See the
  * 'storage' note in config/brand.php for why.
  */
 class PackageSeeder extends Seeder
 {
+    /** Flat monthly price, excl. VAT, for the 5GB tier of every line. */
+    private const PRICE_5 = 880;
+
+    /** Flat monthly price, excl. VAT, for the 10GB tier of every line. */
+    private const PRICE_10 = 1080;
+
     public function run(): void
     {
         foreach ($this->packages() as $data) {
@@ -32,8 +37,13 @@ class PackageSeeder extends Seeder
         }
     }
 
-    /** Standard 5GB and 10GB tiers for a line, at the given prices. */
-    private function tiers(string $line, float $five, float $ten): array
+    /*
+     * Standard 5GB and 10GB tiers. Pricing is FLAT across every product line:
+     * the engine underneath is the same, so charging a dealership more than a
+     * guesthouse for the same platform is arbitrary and hard to defend on a
+     * sales call. The tier — how many people need email — is what varies.
+     */
+    private function tiers(string $line): array
     {
         return [
             [
@@ -42,7 +52,7 @@ class PackageSeeder extends Seeder
                 'mailboxes' => 5,
                 'gb_per_mailbox' => 1,
                 'media_gb' => 10,
-                'price_monthly' => $five,
+                'price_monthly' => self::PRICE_5,
                 'is_default' => true,
                 'sort' => 1,
             ],
@@ -52,7 +62,7 @@ class PackageSeeder extends Seeder
                 'mailboxes' => 10,
                 'gb_per_mailbox' => 1,
                 'media_gb' => 20,
-                'price_monthly' => $ten,
+                'price_monthly' => self::PRICE_10,
                 'is_default' => false,
                 'sort' => 2,
             ],
@@ -86,7 +96,7 @@ class PackageSeeder extends Seeder
                     'Agencies leaving a portal-only presence',
                     'New agencies opening their doors',
                 ],
-                'tiers' => $this->tiers('Listings', 1495, 1795),
+                'tiers' => $this->tiers('Listings'),
             ],
             [
                 'slug' => 'showroom',
@@ -112,7 +122,7 @@ class PackageSeeder extends Seeder
                     'Dealers selling off Facebook Marketplace today',
                     'Finance and insurance desks that need clean lead data',
                 ],
-                'tiers' => $this->tiers('Showroom', 1495, 1795),
+                'tiers' => $this->tiers('Showroom'),
             ],
             [
                 'slug' => 'careers',
@@ -137,7 +147,7 @@ class PackageSeeder extends Seeder
                     'In-house talent teams hiring at volume',
                     'Agencies still collecting CVs on a Gmail address',
                 ],
-                'tiers' => $this->tiers('Careers', 1295, 1595),
+                'tiers' => $this->tiers('Careers'),
             ],
             [
                 'slug' => 'stay',
@@ -162,7 +172,7 @@ class PackageSeeder extends Seeder
                     'Game and country lodges',
                     'Owners paying platform commission on repeat guests',
                 ],
-                'tiers' => $this->tiers('Stay', 1095, 1395),
+                'tiers' => $this->tiers('Stay'),
             ],
             [
                 'slug' => 'business',
@@ -189,7 +199,7 @@ class PackageSeeder extends Seeder
                     'Clinics and allied health practices',
                     'Contractors and professional services bidding for tenders',
                 ],
-                'tiers' => $this->tiers('Business', 895, 1195),
+                'tiers' => $this->tiers('Business'),
             ],
         ];
     }

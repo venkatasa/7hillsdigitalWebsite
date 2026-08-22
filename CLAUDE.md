@@ -28,7 +28,8 @@ packages, their copy and — the point of the whole panel — **their prices**.
 
 ## The five product lines
 
-Each line has two storage tiers (5 and 10), seeded by `PackageSeeder`:
+Each line has two storage tiers (5 and 10), seeded by `PackageSeeder`. Pricing
+is flat: **R880** for any 5, **R1 080** for any 10, excl. VAT.
 
 | Line | Vertical | Slug |
 |---|---|---|
@@ -42,6 +43,22 @@ Each line has two storage tiers (5 and 10), seeded by `PackageSeeder`:
 labels**, and the four vertical packages are meant to become configurations of
 it rather than four separate codebases. Build shared capability into Business
 first.
+
+## Add-on modules
+
+Optional business software, **charged separately** from the package fee and
+seeded by `AddOnSeeder` into the `add_ons` table:
+
+| Module | Slug | Price |
+|---|---|---|
+| Invoicing | `invoicing` | **R109** / month, flat |
+| CRM | `crm` | Quoted on contact volume and seats |
+| ERP | `erp` | Scoped and quoted on transaction volume and modules |
+
+They appear as their own section on `/packages` (`#add-ons`), as a one-line
+strip on the home page, and are edited at `/admin/add-ons`.
+
+**None of this is built yet** — the site sells the offer. See open decisions.
 
 ## Stack
 
@@ -61,15 +78,45 @@ step. Filament v5 exists but this targets **v4**: layout components live under
 ## Key cross-cutting rules
 
 - **`config/brand.php` is the single source of truth** for colours, logo paths,
-  contact details and the commercial terms. Colours are emitted as CSS variables
-  in the page `<head>` and consumed by Tailwind's `@theme`, and are also fed to
-  the Filament panel. Never hard-code a brand colour, a price or a notice period
-  anywhere else — the terms strip on `/packages` and the terms page both quote
-  `brand.terms`.
+  typography, contact details and the commercial terms. Colours are emitted as
+  CSS variables in the page `<head>` from the config array (add a colour there
+  and it appears automatically) and consumed by Tailwind's `@theme`; they also
+  feed the Filament panel. Never hard-code a brand colour, a price or a notice
+  period anywhere else — the terms strip on `/packages` and the terms page both
+  quote `brand.terms`.
+- **The brand is the official 7Hills kit**, in `public/images/brand/`:
+  `Brand_Guidelines_And_Color_Codes.html` is the authority. Do not introduce a
+  colour, typeface or logo treatment that is not in that document.
+  | Token | Colour | Use |
+  |---|---|---|
+  | `brand` | Deep Forest `#1A2E22` | dark sections, headings |
+  | `accent` | Emerald Forest `#417956` | accents and CTAs **on light** |
+  | `mint` | Vibrant Mint `#5EB87E` | accents and CTAs **on dark** |
+  | `ink` | Charcoal Black `#111111` | body copy |
+- **`accent` and `mint` are not interchangeable.** Emerald on Deep Forest is
+  unreadable, so every dark section uses `mint`, `btn-mint` and `eyebrow-light`;
+  every light section uses `accent`, `btn-accent` and `eyebrow`. Check the
+  background before you pick.
+- **Typography is Montserrat (headings) and Plus Jakarta Sans (body)**, declared
+  in `vite.config.js` and **self-hosted** — fetched from the `@fontsource/*`
+  packages at build time and served from our own origin. Never link a font from
+  Google at runtime; `PublicSiteTest::test_no_page_loads_a_third_party_asset`
+  fails the build if anything does.
+- **The logo artwork is used as supplied.** `logo.png` and `logo-inverse.png`
+  are the 2400px transparent originals with the dead space trimmed so the
+  lockup fills its box; the originals are kept alongside them. The boxed lockup
+  already contains the wordmark, so never set "Seven Hills Digital" in HTML
+  beside it — and never render it below ~56px, where the wordmark stops being
+  legible.
 - **Prices live in the database, never in a Blade file.** `PackageSeeder` sets
-  placeholders on a fresh install; the real numbers are edited at
+  what a fresh install starts with; the live numbers are edited at
   `/admin/packages` under the Tiers relation manager. `PublicSiteTest` guards
   this by changing a price in the database and asserting the page follows.
+- **Pricing is flat across every product line** — **R880** for any 5 tier,
+  **R1 080** for any 10 tier, excl. VAT. The engine underneath is the same for
+  a dealership and a guesthouse, so charging them differently for it is
+  arbitrary and indefensible on a sales call. What varies is the tier: how many
+  people need email. `test_pricing_is_flat_across_every_line` guards this.
 - **Mail storage and site storage are metered separately.** A dealership with
   60 cars will use gigabytes of photographs, and those photographs must never be
   able to fill the sales inbox. `mail_gb`/`mailboxes` and `media_gb` are separate
@@ -78,6 +125,22 @@ step. Filament v5 exists but this targets **v4**: layout components live under
 - **Mailboxes are counted; aliases and forwarders are not.** Aliases are routing
   rules and cost nothing to carry, which is how "unlimited email addresses" and
   "5 mailboxes at 1GB each" are both true at once.
+- **Add-on modules are charged separately and never bundled.** `AddOn` records
+  (Invoicing, CRM, ERP) sit outside the package fee, are priced in the database
+  like everything else, and the packages page says "charged separately" in so
+  many words. A client who finds a module they never asked for on their first
+  invoice is a client who cancels — and with no minimum term, cancelling costs
+  them nothing. `AddOnTest` guards the wording.
+- **A module is either flat-priced or metered, never both.** `price_monthly`
+  set means a rand figure is shown (Invoicing, R109); `price_monthly` null means
+  `price_basis` is shown instead (CRM, ERP — quoted on transaction volume).
+  Quoting one number for a metered module means overcharging the small client
+  or losing money on the large one.
+- **Hardware procurement stays quiet.** One small line on `/packages` and one in
+  the footer, via `<x-hardware-note>` reading `brand.hardware.blurb`. No card,
+  no heading, no section. We will happily source laptops and routers, but
+  giving it real estate makes us read as a reseller rather than a software
+  company.
 - **Enquiries are evidence.** They arrive `new`, nothing auto-advances them, and
   what the prospect submitted is **read-only in the panel** —
   `EnquiryForm` marks those fields `disabled()->dehydrated(false)` so a save
@@ -126,20 +189,22 @@ through it is a POPIA problem. Build fictional demo tenants instead.
 
 ## Open decisions — resolve before this site sees a real prospect
 
-1. **Prices are placeholders.** Every number in `PackageSeeder` is a guess at
-   what a Gauteng SMB will carry monthly. Set the real ones at `/admin/packages`.
+1. **Contact details are placeholders** — `COMPANY_PHONE` and `COMPANY_WHATSAPP`
+   in `.env` are `+27 00 000 0000`. This is the last placeholder on the site.
 2. **The mail/media split is an assumption**, not a signed-off decision — 5GB
    mail (5 × 1GB) + 10GB site media on the entry tier, doubling on the 10 tier.
-3. **Contact details are placeholders** — `COMPANY_PHONE` and `COMPANY_WHATSAPP`
-   in `.env` are `+27 00 000 0000`.
-4. **The brand palette is a placeholder** (navy + teal, chosen to sit apart from
-   Excellent's charcoal + gold). Real artwork goes in `public/images/brand/` as
-   `logo.png` / `logo-inverse.png` and replaces the composed lockup wholesale.
-5. **`/terms` needs an attorney's eye** before it governs a paying relationship.
-6. **POPIA requires a registered Information Officer.** Register one with the
+3. **`/terms` needs an attorney's eye** before it governs a paying relationship,
+   and it does not yet mention the add-on modules or hardware procurement.
+4. **POPIA requires a registered Information Officer.** Register one with the
    Information Regulator and put their details in the privacy notice.
-7. **No storage meter yet.** The pricing page promises we warn clients at 80% of
+5. **No storage meter yet.** The pricing page promises we warn clients at 80% of
    their mail allowance. Nothing implements that.
+6. **The add-on modules do not exist as software yet.** The site sells
+   Invoicing, CRM and ERP; only the offer is built. Do not demo what is not
+   there.
+
+Settled since the first build: prices (flat R880 / R1 080), and the brand —
+the official 7Hills kit is applied throughout.
 
 ## Version control
 

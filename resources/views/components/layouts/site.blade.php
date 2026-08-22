@@ -23,22 +23,28 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:site_name" content="{{ $brand['name'] }}">
+    <meta property="og:image" content="{{ asset($brand['logo']['badge']) }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="theme-color" content="{{ $brand['colors']['primary'] }}">
 
-    <link rel="icon" href="{{ asset($brand['logo']['mark']) }}" type="image/svg+xml">
+    <link rel="icon" href="{{ asset($brand['logo']['favicon']) }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ asset($brand['logo']['badge']) }}">
     <link rel="canonical" href="{{ url()->current() }}">
 
     {{-- Brand palette as CSS custom properties: config/brand.php is the single
-         source of truth, so a colour change needs no asset rebuild. --}}
+         source of truth, so a colour change needs no asset rebuild. Emitted
+         from the config array, so a new colour needs no edit here either. --}}
     <style>
         :root {
-            --brand-primary: {{ $brand['colors']['primary'] }};
-            --brand-accent: {{ $brand['colors']['accent'] }};
-            --brand-secondary: {{ $brand['colors']['secondary'] }};
-            --brand-dark: {{ $brand['colors']['dark'] }};
-            --brand-light: {{ $brand['colors']['light'] }};
-            --brand-muted: {{ $brand['colors']['muted'] }};
+        @foreach ($brand['colors'] as $token => $value)
+            --brand-{{ $token }}: {{ $value }};
+        @endforeach
         }
     </style>
+
+    {{-- Self-hosted Montserrat + Plus Jakarta Sans, bundled at build time.
+         No third-party font request is ever made from a visitor's browser. --}}
+    {{ Vite::fonts() }}
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

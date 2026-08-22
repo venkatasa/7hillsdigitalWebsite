@@ -5,7 +5,7 @@
 
     <section class="bg-brand text-white">
         <div class="container-page py-14 sm:py-16">
-            <p class="eyebrow">Terms</p>
+            <p class="eyebrow-light">Terms</p>
             <h1 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Terms of service</h1>
             <p class="mt-4 max-w-2xl text-base text-white/70">
                 Written to be read. If anything here is unclear, ask us before you sign up

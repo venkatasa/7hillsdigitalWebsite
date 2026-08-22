@@ -10,11 +10,9 @@
 | Change values here (or via .env) and the whole public site and the Filament
 | admin panel follow.
 |
-| The palette is a PLACEHOLDER: a deep harbour navy with a teal accent, chosen
-| to sit apart from Excellent's charcoal-and-gold so the two sites never look
-| like the same agency. Once the real Seven Hills Digital artwork is dropped
-| into brand-assets/, replace the six hex values under 'colors' — nothing else
-| needs to change.
+| Palette, logos and typography all come from the official 7Hills brand kit in
+| public/images/brand/ — see Brand_Guidelines_And_Color_Codes.html. Do not
+| introduce a colour that is not in that document.
 |
 */
 
@@ -32,36 +30,56 @@ return [
     'promise' => 'Pay nothing until your site is live. Cancel any time.',
 
     /*
-    | Brand palette. Consumed in two places:
+    | OFFICIAL 7Hills palette. Consumed in two places:
     |  - resources/css/app.css   (as CSS custom properties, for the public site)
     |  - AdminPanelProvider      (as the Filament primary colour)
+    |
+    | 'accent' (Emerald Forest) is legible on LIGHT surfaces. 'mint' (Vibrant
+    | Mint) is the accent to use on DARK surfaces, where emerald on deep forest
+    | would be unreadable. Do not swap them.
     */
     'colors' => [
-        // Deep harbour navy — headers, footers, body text.
-        'primary' => env('BRAND_PRIMARY', '#0E2436'),
-        // Teal — calls to action, prices, accents.
-        'accent' => env('BRAND_ACCENT', '#12B3A0'),
-        // Slate, for secondary text and surfaces.
-        'secondary' => env('BRAND_SECONDARY', '#4A5A6A'),
-        'dark' => env('BRAND_DARK', '#081724'),
-        'light' => env('BRAND_LIGHT', '#F4F7F9'),
-        'muted' => env('BRAND_MUTED', '#8494A1'),
+        // Deep Forest (Corporate Dark) — dark sections, headings.
+        'primary' => env('BRAND_PRIMARY', '#1A2E22'),
+        // Emerald Forest (Primary) — calls to action and accents on light.
+        'accent' => env('BRAND_ACCENT', '#417956'),
+        // Vibrant Mint (Accent / Dark Mode) — accents on dark surfaces.
+        'mint' => env('BRAND_MINT', '#5EB87E'),
+        // Charcoal Black (Ink) — body copy.
+        'ink' => env('BRAND_INK', '#111111'),
+        'secondary' => env('BRAND_SECONDARY', '#5C6861'),
+        'dark' => env('BRAND_DARK', '#122118'),
+        'light' => env('BRAND_LIGHT', '#F8FAF9'),
+        'muted' => env('BRAND_MUTED', '#7C8A83'),
+        'hairline' => env('BRAND_HAIRLINE', '#E2E8E5'),
     ],
 
     /*
-    | Logo & imagery. Paths are relative to public/. Drop replacements in and
-    | keep the filenames, or change the paths here.
+    | Typography, per the brand guidelines: Montserrat for the logotype and
+    | headings, Plus Jakarta Sans for body copy and interfaces. Both are
+    | self-hosted, bundled at build time by the Vite font plugin — never
+    | linked from Google Fonts at runtime. See vite.config.js.
+    */
+    'fonts' => [
+        'display' => 'Montserrat',
+        'body' => 'Plus Jakarta Sans',
+    ],
+
+    /*
+    | Logo & imagery from the official kit. Paths are relative to public/.
+    | logo.png and logo-inverse.png are the supplied 2400px transparent
+    | artwork with the dead space trimmed off, so the lockup fills its box.
     */
     'logo' => [
-        // Seven ascending peaks, rebuilt as vector. Pure geometry, so it stays
-        // crisp at any size. The wordmark beside it is set in HTML — see
-        // resources/views/components/brand-logo.blade.php.
+        // Primary Boxed — website header and documents. On light backgrounds.
+        'primary' => 'images/brand/logo.png',
+        // Transparent cutout, all white. On dark backgrounds.
+        'inverse' => 'images/brand/logo-inverse.png',
+        // Reversed badge on its own deep-forest field, for social/OG cards.
+        'badge' => 'images/brand/7Hills_Digital_DarkBG_2400px.png',
+        // Fallback vector mark, used only if the artwork above is missing.
         'mark' => 'images/brand/logo-mark.svg',
-
-        // Optional overrides: drop the original artwork in at either path and
-        // it replaces the composed lockup wholesale.
-        'primary' => 'images/brand/logo.png',         // on light backgrounds
-        'inverse' => 'images/brand/logo-inverse.png', // on dark backgrounds
+        'favicon' => 'images/brand/favicon.ico',
     ],
 
     'contact' => [
@@ -101,6 +119,16 @@ return [
     'storage' => [
         'aliases' => 'Unlimited email aliases and forwarders',
         'note' => 'Mail storage and website storage are separate allowances, so your photographs can never fill up your inbox.',
+    ],
+
+    /*
+    | Hardware procurement. Deliberately a QUIET offering — a single small line
+    | on the packages page and one in the footer. It is a service we will
+    | happily provide but it is not what we are selling, and giving it real
+    | estate makes us look like a reseller rather than a software company.
+    */
+    'hardware' => [
+        'blurb' => 'Need laptops, routers or networking kit? We can procure hardware for you too — just ask.',
     ],
 
 ];
