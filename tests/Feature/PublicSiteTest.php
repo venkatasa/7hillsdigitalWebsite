@@ -127,6 +127,28 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('+27 00 000 0000');
     }
 
+    /**
+     * The floating WhatsApp button is the main way a prospect starts a
+     * conversation from a phone, so it belongs on every page, not just contact.
+     */
+    public function test_the_whatsapp_button_is_on_every_public_page(): void
+    {
+        foreach (['/', '/packages', '/packages/showroom', '/custom-and-it', '/demos', '/about', '/contact', '/terms'] as $path) {
+            $this->get($path)
+                ->assertOk()
+                ->assertSee('wa.me/27688596695', escape: false)
+                ->assertSee('Chat to 7Hills Digital on WhatsApp');
+        }
+    }
+
+    /** A demo enquiry should say which demo it came from. */
+    public function test_the_demo_whatsapp_message_names_the_demo(): void
+    {
+        $this->get('/demos/auto')
+            ->assertOk()
+            ->assertSee(rawurlencode('7Hills Auto demo'), escape: false);
+    }
+
     /** The official 7Hills palette, not the placeholder it replaced. */
     public function test_the_official_brand_palette_is_applied(): void
     {

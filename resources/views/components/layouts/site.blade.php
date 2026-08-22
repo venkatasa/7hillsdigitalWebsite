@@ -60,5 +60,7 @@
     </main>
 
     <x-site-footer />
+
+    <x-whatsapp-float />
 </body>
 </html>

@@ -220,6 +220,15 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   Filament theme, so restyling the back office needs no Vite build.
 - **`<x-icon>` is taken by Filament's blade-icons.** The package vertical icons
   are `<x-package-icon>`.
+- **The floating WhatsApp button is on every page**, in both layouts, via
+  `<x-whatsapp-float>`. It is deliberately **WhatsApp's own `#25D366`**, not a
+  7Hills green — the exception to the palette rule exists because the button's
+  whole value is being recognised without being read, and the mark is somebody
+  else's brand, not ours. The message is pre-typed, and on a demo it names the
+  demo, so an enquiry arrives with context instead of "hi".
+- **The WhatsApp number is stored once, in local form.** `App\Support\Whatsapp`
+  converts it to the international form `wa.me` needs. Never store the same
+  number twice in config — the two copies drift.
 - **Custom CSS classes are declared with `@utility`, not `@layer components`.**
   Tailwind v4 can only `@apply` a custom class that was registered as a utility.
 - **Layout uses the shared design utilities, not ad-hoc class soup.** `section` /

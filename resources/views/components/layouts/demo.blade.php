@@ -204,5 +204,7 @@
         </div>
     </footer>
 
+    <x-whatsapp-float :message="'Hi 7Hills Digital, I have been looking at the '.$demo['name'].' demo and would like to know more.'" />
+
 </body>
 </html>
