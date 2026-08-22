@@ -221,11 +221,12 @@ step. Filament v5 exists but this targets **v4**: layout components live under
 - **`<x-icon>` is taken by Filament's blade-icons.** The package vertical icons
   are `<x-package-icon>`.
 - **The floating WhatsApp button is on every page**, in both layouts, via
-  `<x-whatsapp-float>`. It is deliberately **WhatsApp's own `#25D366`**, not a
-  7Hills green — the exception to the palette rule exists because the button's
-  whole value is being recognised without being read, and the mark is somebody
-  else's brand, not ours. The message is pre-typed, and on a demo it names the
-  demo, so an enquiry arrives with context instead of "hi".
+  `<x-whatsapp-float>`. It uses **`mint` with a `brand-dark` glyph** — the same
+  pairing as `btn-mint`, so it stays inside the palette. The glyph must not be
+  white: white on mint is 2.43:1 and fails AA, deep forest on mint is 6.87:1.
+  The WhatsApp mark does the recognising, not the colour. The message is
+  pre-typed, and on a demo it names the demo, so an enquiry arrives with context
+  instead of "hi".
 - **The WhatsApp number is stored once, in local form.** `App\Support\Whatsapp`
   converts it to the international form `wa.me` needs. Never store the same
   number twice in config — the two copies drift.
