@@ -1,4 +1,4 @@
-# Seven Hills Digital — PHP-FPM 8.4 image for Laravel 12 + Filament
+# 7Hills Digital — PHP-FPM 8.4 image for Laravel 12 + Filament
 # Mirrors the Excellent Real Estate image so both stacks stay in step.
 FROM php:8.4-fpm-alpine
 

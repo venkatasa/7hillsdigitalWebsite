@@ -20,7 +20,7 @@
 @endphp
 
 <x-layouts.site title="About"
-                description="Seven Hills Digital builds and hosts websites, email and business software for South African firms. Part of Seven Hills Holdings.">
+                description="7Hills Digital builds and hosts websites, email and business software for South African firms. Part of 7Hills Holdings.">
 
     <section class="bg-brand text-white">
         <div class="container-page section-tight">
@@ -101,7 +101,15 @@
                         </div>
                         <div>
                             <dt class="font-semibold text-brand">Telephone</dt>
-                            <dd class="text-secondary">{{ $brand['contact']['phone'] }}</dd>
+                            <dd>
+                                <a href="tel:{{ preg_replace('/\D+/', '', $brand['contact']['phone']) }}" class="text-secondary hover:text-accent">
+                                    {{ $brand['contact']['phone'] }}
+                                </a>
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="font-semibold text-brand">WhatsApp</dt>
+                            <dd><x-whatsapp-link class="text-secondary hover:text-accent" /></dd>
                         </div>
                         <div>
                             <dt class="font-semibold text-brand">Where</dt>

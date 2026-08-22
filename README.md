@@ -1,7 +1,7 @@
-# Seven Hills Digital
+# 7Hills Digital
 
-Marketing site and sales back office for Seven Hills Digital, the technology arm
-of Seven Hills Holdings.
+Marketing site and sales back office for 7Hills Digital, the technology arm
+of 7Hills Holdings.
 
 Laravel 12 · Filament v4 · MySQL 8 · Tailwind v4 · Docker Compose.
 

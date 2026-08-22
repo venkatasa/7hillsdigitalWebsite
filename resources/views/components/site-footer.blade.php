@@ -45,10 +45,14 @@
         <div class="container-page flex flex-col gap-3 py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {{ now()->year }} {{ $brand['legal_name'] }}. All rights reserved.</p>
             <p class="max-w-md text-white/60">{{ config('brand.hardware.blurb') }}</p>
-            <p>
+            <p class="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <a href="mailto:{{ $brand['contact']['email'] }}" class="hover:text-white">{{ $brand['contact']['email'] }}</a>
-                <span class="mx-2 text-white/25">|</span>
-                {{ $brand['contact']['city'] }}, {{ $brand['contact']['province'] }}
+                <span class="text-white/25">|</span>
+                <a href="tel:{{ preg_replace('/\D+/', '', $brand['contact']['phone']) }}" class="hover:text-white">{{ $brand['contact']['phone'] }}</a>
+                <span class="text-white/25">|</span>
+                <x-whatsapp-link class="hover:text-white" label="WhatsApp" />
+                <span class="text-white/25">|</span>
+                <span>{{ $brand['contact']['city'] }}, {{ $brand['contact']['province'] }}</span>
             </p>
         </div>
     </div>

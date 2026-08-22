@@ -103,6 +103,30 @@ class PublicSiteTest extends TestCase
             ->assertSee('buy the site outright');
     }
 
+    /**
+     * The brand is "7Hills", matching the logo artwork and the guidelines —
+     * never spelt out as "Seven Hills".
+     */
+    public function test_the_brand_is_written_as_7hills_everywhere(): void
+    {
+        foreach (['/', '/packages', '/about', '/privacy', '/terms', '/demos', '/demos/realty'] as $path) {
+            $html = $this->get($path)->assertOk()->getContent();
+
+            $this->assertStringNotContainsString('Seven Hills', $html, "{$path} still spells the brand out");
+            $this->assertStringContainsString('7Hills', $html);
+        }
+    }
+
+    /** The contact number is real, not the placeholder it replaced. */
+    public function test_the_real_contact_number_is_published(): void
+    {
+        $this->get('/contact')
+            ->assertOk()
+            ->assertSee('068 859 6695')
+            ->assertSee('wa.me/27688596695', escape: false)
+            ->assertDontSee('+27 00 000 0000');
+    }
+
     /** The official 7Hills palette, not the placeholder it replaced. */
     public function test_the_official_brand_palette_is_applied(): void
     {

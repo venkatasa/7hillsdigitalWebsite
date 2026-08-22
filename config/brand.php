@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| Seven Hills Digital — brand & company details
+| 7Hills Digital — brand & company details
 |--------------------------------------------------------------------------
 |
 | SINGLE SOURCE OF TRUTH for the site's colours, logo paths and contact
@@ -18,11 +18,11 @@
 
 return [
 
-    'name' => env('APP_NAME', 'Seven Hills Digital'),
+    'name' => env('APP_NAME', '7Hills Digital'),
 
-    'legal_name' => env('COMPANY_LEGAL_NAME', 'Seven Hills Digital (Pty) Ltd'),
+    'legal_name' => env('COMPANY_LEGAL_NAME', '7Hills Digital (Pty) Ltd'),
 
-    'parent' => env('COMPANY_PARENT', 'Seven Hills Holdings'),
+    'parent' => env('COMPANY_PARENT', '7Hills Holdings'),
 
     'tagline' => 'Websites, email and the software to run on them.',
 
@@ -85,8 +85,8 @@ return [
     'contact' => [
         'email' => env('COMPANY_EMAIL', 'hello@7hillsdigital.co.za'),
         'sales_email' => env('COMPANY_SALES_EMAIL', 'sales@7hillsdigital.co.za'),
-        'phone' => env('COMPANY_PHONE', '+27 00 000 0000'),
-        'whatsapp' => env('COMPANY_WHATSAPP', '+27 00 000 0000'),
+        'phone' => env('COMPANY_PHONE', '068 859 6695'),
+        'whatsapp' => env('COMPANY_WHATSAPP', '068 859 6695'),
         'city' => env('COMPANY_CITY', 'Midrand'),
         'province' => env('COMPANY_PROVINCE', 'Gauteng'),
         'country' => 'South Africa',

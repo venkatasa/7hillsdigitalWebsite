@@ -1,4 +1,4 @@
-# Seven Hills Digital — marketing site & sales back office
+# 7Hills Digital — marketing site & sales back office
 
 Project spec and working agreement for this codebase. Keep it current as things
 change.
@@ -10,11 +10,11 @@ change.
 
 ## Product
 
-The public marketing site for **Seven Hills Digital**, the technology arm of
-**Seven Hills Holdings**, plus the back office that works the sales pipeline it
+The public marketing site for **7Hills Digital**, the technology arm of
+**7Hills Holdings**, plus the back office that works the sales pipeline it
 generates.
 
-Seven Hills Digital sells **monthly subscriptions**: it builds, hosts and
+7Hills Digital sells **monthly subscriptions**: it builds, hosts and
 supports a website, email on the client's own domain, and the back-office
 software that runs on it. The commercial promise the whole site rests on is
 **no upfront cost, no minimum term, one month's notice to cancel**.
@@ -122,7 +122,7 @@ step. Filament v5 exists but this targets **v4**: layout components live under
 - **The logo artwork is used as supplied.** `logo.png` and `logo-inverse.png`
   are the 2400px transparent originals with the dead space trimmed so the
   lockup fills its box; the originals are kept alongside them. The boxed lockup
-  already contains the wordmark, so never set "Seven Hills Digital" in HTML
+  already contains the wordmark, so never set "7Hills Digital" in HTML
   beside it — and never render it below ~56px, where the wordmark stops being
   legible.
 - **Prices live in the database, never in a Blade file.** `PackageSeeder` sets
@@ -246,11 +246,11 @@ rendered by a single template (`demos/show.blade.php`) inside `x-layouts.demo`:
 
 | Demo | Slug | Package |
 |---|---|---|
-| Seven Hills Realty | `realty` | Listings |
-| Seven Hills Auto | `auto` | Showroom |
-| Seven Hills Careers | `careers` | Careers |
-| Seven Hills Stay | `stay` | Stay |
-| Seven Hills Plant Hire | `plant` | Business |
+| 7Hills Realty | `realty` | Listings |
+| 7Hills Auto | `auto` | Showroom |
+| 7Hills Careers | `careers` | Careers |
+| 7Hills Stay | `stay` | Stay |
+| 7Hills Plant Hire | `plant` | Business |
 
 Rules these must keep:
 
@@ -292,43 +292,42 @@ is tempted.
 
 ## Open decisions — resolve before this site sees a real prospect
 
-> The statutory items below (3, 4 and 5) have step-by-step instructions, and the
+> The statutory items below (2, 3 and 4) have step-by-step instructions, and the
 > exact `.env` keys, in `~/homelab-docs/TODO.md` §3.
 
-1. **Contact details are placeholders** — `COMPANY_PHONE` and `COMPANY_WHATSAPP`
-   in `.env` are `+27 00 000 0000`. This is the last placeholder on the site.
-2. **No warning is sent before an allowance runs out.** Email and website
+1. **No warning is sent before an allowance runs out.** Email and website
    storage are separate and symmetric (5GB + 5GB, or 10GB + 10GB), which stops
    photographs eating the mail quota — but nothing tells a client they are close
    to either limit. See item 6.
-3. **`/terms` and `/privacy` need an attorney's eye** before they govern a
+2. **`/terms` and `/privacy` need an attorney's eye** before they govern a
    paying relationship. Both are written to be compliant and company-favourable,
    but neither is drafted by a lawyer.
-4. **POPIA requires a registered Information Officer.** Register one with the
+3. **POPIA requires a registered Information Officer.** Register one with the
    Information Regulator and set `COMPANY_INFORMATION_OFFICER` in `.env` — until
    then clause 1 of the privacy notice names nobody, which is itself a
    contravention.
-5. **The ECTA s43 fields in `config/brand.php` are blank.** Registration number,
+4. **The ECTA s43 fields in `config/brand.php` are blank.** Registration number,
    directors, VAT number, physical address and address for service of legal
    documents all render as "—" on `/about`. They are blank rather than invented
    on purpose: publishing a fabricated company number would be a
    misrepresentation. Fill them from the CIPC documents.
-6. **No storage meter yet.** The pricing page promises we warn clients at 80% of
+5. **No storage meter yet.** The pricing page promises we warn clients at 80% of
    their mail allowance. Nothing implements that.
-7. **The add-on modules do not exist as software yet.** The site sells
+6. **The add-on modules do not exist as software yet.** The site sells
    Invoicing, CRM and ERP; only the offer is built. Do not demo what is not
    there.
-8. **The demo tenants have no back office.** They are public landing pages only.
+7. **The demo tenants have no back office.** They are public landing pages only.
    The walkthrough they invite has to be given live, off a real install.
-9. **E-commerce is advertised but not specified.** `/demos` offers an online
+8. **E-commerce is advertised but not specified.** `/demos` offers an online
    shop "priced separately"; there is no package, no price and no build behind
    that yet.
-10. **Demo photographs are of other people's houses, cars and machines.** Fine
+9. **Demo photographs are of other people's houses, cars and machines.** Fine
    for a page whose own ribbon says everything is invented; a real client's site
    must use photographs of the real thing.
 
-Settled since the first build: prices (flat R880 / R1 080), and the brand —
-the official 7Hills kit is applied throughout.
+Settled since the first build: prices (flat R880 / R1 180, build free), the
+contact number (068 859 6695, phone and WhatsApp), the brand name (**7Hills**,
+never spelt out as "Seven Hills" — a test enforces it), and the brand kit.
 
 ## Version control
 

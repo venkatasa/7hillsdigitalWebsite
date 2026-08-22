@@ -131,10 +131,17 @@
                         @endforeach
                     </ol>
 
-                    <div class="mt-7 border-t border-brand/10 pt-5 text-sm">
+                    <div class="mt-7 border-t border-hairline pt-5 text-sm">
                         <p class="font-semibold text-brand">Would rather just phone?</p>
-                        <p class="mt-1.5 text-secondary">{{ $brand['contact']['phone'] }}</p>
-                        <p class="mt-1">
+                        <p class="mt-2">
+                            <a href="tel:{{ preg_replace('/\D+/', '', $brand['contact']['phone']) }}" class="text-secondary hover:text-accent">
+                                {{ $brand['contact']['phone'] }}
+                            </a>
+                        </p>
+                        <p class="mt-2">
+                            <x-whatsapp-link class="text-secondary hover:text-accent" label="WhatsApp us" />
+                        </p>
+                        <p class="mt-2">
                             <a href="mailto:{{ $brand['contact']['sales_email'] }}" class="text-secondary underline underline-offset-2 hover:text-accent">
                                 {{ $brand['contact']['sales_email'] }}
                             </a>

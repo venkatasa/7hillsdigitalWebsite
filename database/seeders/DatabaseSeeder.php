@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $password = env('ADMIN_PASSWORD') ?: Str::password(16, symbols: false);
 
         User::create([
-            'name' => env('ADMIN_NAME', 'Seven Hills Digital'),
+            'name' => env('ADMIN_NAME', '7Hills Digital'),
             'email' => $email,
             'password' => Hash::make($password),
             'email_verified_at' => now(),

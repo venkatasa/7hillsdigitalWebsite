@@ -25,7 +25,7 @@
 return [
 
     'realty' => [
-        'name' => 'Seven Hills Realty',
+        'name' => '7Hills Realty',
         'vertical' => 'Estate agency',
         'package' => 'listings',
         'art' => 'house',
@@ -62,7 +62,7 @@ return [
     ],
 
     'auto' => [
-        'name' => 'Seven Hills Auto',
+        'name' => '7Hills Auto',
         'vertical' => 'Car dealership',
         'package' => 'showroom',
         'art' => 'car',
@@ -99,7 +99,7 @@ return [
     ],
 
     'careers' => [
-        'name' => 'Seven Hills Careers',
+        'name' => '7Hills Careers',
         'vertical' => 'Recruitment agency',
         'package' => 'careers',
         'art' => 'job',
@@ -130,13 +130,13 @@ return [
             ['A database that outlives the vacancy', 'The right candidate for a role we filled last year is still findable when the same role opens again.'],
             ['Employers see progress', 'New, screened, shortlisted, submitted, placed. Clients can see where their vacancy actually is.'],
         ],
-        'testimonial' => ['We had the role open for two months on the job boards and got 300 unusable CVs. Seven Hills sent four people and we hired the second one.', 'Operations Director, logistics group'],
+        'testimonial' => ['We had the role open for two months on the job boards and got 300 unusable CVs. 7Hills sent four people and we hired the second one.', 'Operations Director, logistics group'],
         'contact_title' => 'Hiring, or looking?',
         'contact_copy' => 'Send us the brief or send us your CV. Both go to a person, not an auto-responder.',
     ],
 
     'stay' => [
-        'name' => 'Seven Hills Stay',
+        'name' => '7Hills Stay',
         'vertical' => 'Guesthouse',
         'package' => 'stay',
         'art' => 'room',
@@ -173,7 +173,7 @@ return [
     ],
 
     'plant' => [
-        'name' => 'Seven Hills Plant Hire',
+        'name' => '7Hills Plant Hire',
         'vertical' => 'Plant and tool hire',
         'package' => 'business',
         'art' => 'abstract',

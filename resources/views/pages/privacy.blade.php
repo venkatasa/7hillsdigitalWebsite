@@ -6,7 +6,7 @@
 @endphp
 
 <x-layouts.site title="Privacy notice"
-                description="How Seven Hills Digital collects, uses and protects personal information under the Protection of Personal Information Act, 2013.">
+                description="How 7Hills Digital collects, uses and protects personal information under the Protection of Personal Information Act, 2013.">
 
     <section class="bg-brand text-white">
         <div class="container-page section-tight">
