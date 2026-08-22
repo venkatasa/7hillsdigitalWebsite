@@ -6,6 +6,7 @@
     // rather than being hidden, so an unfilled statutory field is obvious.
     $companyInfo = [
         ['Registered name', $brand['legal_name']],
+        ['Trading as', $brand['trading_as']],
         ['Legal status', 'Private company (Pty) Ltd'],
         ['Registration number', $legal['registration_number']],
         ['Place of registration', $legal['place_of_registration']],
@@ -35,9 +36,10 @@
         <div class="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-16">
             <div class="prose-page" data-reveal>
                 <p class="lede text-brand">
-                    {{ $brand['legal_name'] }} is the technology arm of {{ $brand['parent'] }}.
-                    We build websites, run email and write the software that businesses use to
-                    get through the day.
+                    {{ $brand['trading_as'] }} is the technology arm of
+                    {{ $brand['legal_name'] }} — a trading name of that company, not a separate
+                    one. We build websites, run email and write the software that businesses use
+                    to get through the day.
                 </p>
 
                 <h2>Why we work this way</h2>

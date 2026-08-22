@@ -20,7 +20,16 @@ return [
 
     'name' => env('APP_NAME', '7Hills Digital'),
 
-    'legal_name' => env('COMPANY_LEGAL_NAME', '7Hills Digital (Pty) Ltd'),
+    /*
+    | The CONTRACTING ENTITY. 7Hills Digital is a trading name, not a separate
+    | company — every agreement, invoice and legal notice is with 7Hills
+    | Holdings (Pty) Ltd. ECTA s43 and POPIA both want the registered name, so
+    | this is the value that appears on /about, /terms and /privacy.
+    */
+    'legal_name' => env('COMPANY_LEGAL_NAME', '7Hills Holdings (Pty) Ltd'),
+
+    // The name we trade and market under.
+    'trading_as' => env('COMPANY_TRADING_AS', '7Hills Digital'),
 
     'parent' => env('COMPANY_PARENT', '7Hills Holdings'),
 

@@ -20,9 +20,11 @@
 
             <h2>1. Who we are</h2>
             <p>
-                {{ $brand['legal_name'] }} ("we", "us"), a company in the {{ $brand['parent'] }}
-                group, based in {{ $brand['contact']['city'] }}, {{ $brand['contact']['province'] }},
-                South Africa. Contact: <a href="mailto:{{ $brand['contact']['email'] }}">{{ $brand['contact']['email'] }}</a>.
+                <strong>{{ $brand['legal_name'] }}</strong> ("we", "us"), trading as
+                <strong>{{ $brand['trading_as'] }}</strong>, based in
+                {{ $brand['contact']['city'] }}, {{ $brand['contact']['province'] }}, South Africa.
+                Your agreement is with {{ $brand['legal_name'] }};
+                {{ $brand['trading_as'] }} is a trading name and not a separate company. Contact: <a href="mailto:{{ $brand['contact']['email'] }}">{{ $brand['contact']['email'] }}</a>.
             </p>
 
             <h2>2. What you are paying for</h2>
@@ -152,14 +154,6 @@
             <h2>13. Governing law</h2>
             <p>
                 These terms are governed by the law of the Republic of South Africa.
-            </p>
-
-            <hr class="my-10 border-brand/10">
-
-            <p class="text-sm text-muted">
-                <strong>Note for {{ $brand['name'] }}:</strong> this document is a plain-English starting
-                point drafted to match how the business actually operates. Have an attorney review it
-                before it governs a paying client relationship.
             </p>
         </div>
     </section>

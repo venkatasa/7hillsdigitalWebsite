@@ -107,6 +107,49 @@ class LegalPagesTest extends TestCase
             ->assertSee('do not require your consent');
     }
 
+    /**
+     * The notice is informational, not a consent gate — the cookies it
+     * describes are strictly necessary and cannot be refused without breaking
+     * the site. Offering a reject button that does nothing would be worse than
+     * having no banner, so there must not be one.
+     */
+    public function test_the_cookie_notice_is_a_notice_and_not_a_false_choice(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('two strictly necessary cookies', $html);
+        $this->assertStringContainsString('Got it', $html);
+
+        foreach (['Reject all', 'Decline cookies', 'Manage preferences'] as $fake) {
+            $this->assertStringNotContainsString($fake, $html);
+        }
+    }
+
+    /** The contracting party is the registered company, not the trading name. */
+    public function test_the_registered_entity_is_named_on_the_legal_pages(): void
+    {
+        foreach (['/about', '/terms', '/privacy'] as $path) {
+            $html = $this->get($path)->assertOk()->getContent();
+
+            $this->assertStringContainsString('7Hills Holdings (Pty) Ltd', $html, "{$path} omits the registered entity");
+            $this->assertStringContainsStringIgnoringCase('trading', $html, "{$path} does not explain the trading name");
+        }
+
+        // The statutory table has to spell the relationship out as its own row.
+        $this->get('/about')->assertOk()->assertSee('Trading as');
+    }
+
+    /** Internal notes to ourselves must never ship to visitors. */
+    public function test_no_internal_notes_are_published(): void
+    {
+        foreach (['/terms', '/privacy', '/about'] as $path) {
+            $this->get($path)
+                ->assertOk()
+                ->assertDontSee('Note for 7Hills')
+                ->assertDontSee('have an attorney review');
+        }
+    }
+
     /** ECTA s43 obliges us to publish who the customer is contracting with. */
     public function test_the_about_page_publishes_the_ecta_company_disclosures(): void
     {

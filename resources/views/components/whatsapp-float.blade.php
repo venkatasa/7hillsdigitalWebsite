@@ -20,7 +20,10 @@
 @endphp
 
 @if ($url)
-    <div class="fixed bottom-5 right-5 z-50 print:hidden sm:bottom-6 sm:right-6">
+    {{-- Lifts clear of the cookie notice while that is showing. --}}
+    <div x-data
+         class="fixed right-5 z-50 transition-all duration-300 print:hidden sm:right-6"
+         :class="$store.cookieNotice.open ? 'bottom-28 sm:bottom-24' : 'bottom-5 sm:bottom-6'">
         <a href="{{ $url }}"
            target="_blank"
            rel="noopener"

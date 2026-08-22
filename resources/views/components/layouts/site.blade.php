@@ -62,5 +62,7 @@
     <x-site-footer />
 
     <x-whatsapp-float />
+
+    <x-cookie-notice />
 </body>
 </html>

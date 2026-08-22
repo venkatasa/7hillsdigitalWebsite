@@ -12,7 +12,7 @@
                 back office, and we bill it monthly — nothing upfront, cancel any time.
             </p>
             <p class="mt-5 text-xs uppercase tracking-[0.18em] text-white/40">
-                A {{ $brand['parent'] }} company
+                {{ $brand['trading_as'] }} is a trading name of {{ $brand['legal_name'] }}
             </p>
         </div>
 

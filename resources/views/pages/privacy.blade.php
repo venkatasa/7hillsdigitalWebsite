@@ -29,7 +29,8 @@
 
             <h2>1. Who is responsible for your information</h2>
             <p>
-                The responsible party is <strong>{{ $brand['legal_name'] }}</strong>
+                The responsible party is <strong>{{ $brand['legal_name'] }}</strong>,
+                trading as <strong>{{ $brand['trading_as'] }}</strong>
                 @if ($legal['registration_number'])
                     (registration number {{ $legal['registration_number'] }})
                 @endif
@@ -168,7 +169,9 @@
             </ul>
             <p>
                 Because both are strictly necessary for a service you have asked for,
-                they do not require your consent. We use no analytics or advertising cookies, and we
+                they do not require your consent. Dismissing the cookie notice at the foot of the
+                page stores a single preference in your browser's local storage — not a cookie —
+                so that we do not show it to you again. We use no analytics or advertising cookies, and we
                 load no fonts, scripts, images or other assets from third-party servers, so
                 visiting this site does not disclose your visit to anyone else. Administration
                 panels we host for clients additionally set an authentication cookie, which is
@@ -233,19 +236,6 @@
                 This notice is governed by the law of the Republic of South Africa, and the
                 courts of the Republic have exclusive jurisdiction over any dispute arising from
                 it.
-            </p>
-
-            <hr class="my-10 border-hairline">
-
-            <p class="text-sm text-muted">
-                <strong>Note for {{ $brand['name'] }}:</strong> this notice is drafted to be
-                compliant while conceding nothing that POPIA does not require. Two things still
-                have to happen before it can be relied on. First, register an Information Officer
-                with the Information Regulator and set their details in <code>.env</code> — until
-                then clause 1 names no one, which is itself a contravention. Second, have an
-                attorney review it: the rights in clause 11 are statutory and cannot be drafted
-                away, and a notice that overreaches attracts the Regulator rather than deterring
-                claims.
             </p>
         </div>
     </section>

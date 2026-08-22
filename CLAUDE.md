@@ -178,6 +178,22 @@ step. Filament v5 exists but this targets **v4**: layout components live under
 - **`/terms` and `/privacy` must not contradict each other**, most easily on
   retention. Terms defer to the privacy notice for how long records are kept;
   a test asserts it.
+- **The contracting entity is `7Hills Holdings (Pty) Ltd`; `7Hills Digital` is a
+  trading name, not a separate company.** `brand.legal_name` is the registered
+  entity and `brand.trading_as` the name we market under. Every agreement,
+  invoice and legal notice is with Holdings, so `/terms`, `/privacy` and the
+  `/about` disclosure table all lead with the registered name.
+- **No internal notes on public pages.** The "Note for 7Hills Digital" blocks
+  that used to close `/terms` and `/privacy` were addressed to ourselves and
+  visible to everybody. Open items belong in this file and in
+  `~/homelab-docs/TODO.md`, never in the page. A test guards it.
+- **The cookie notice is a notice, not a consent gate.** The site sets only
+  strictly necessary cookies, which under POPIA and the ECT Act need no consent,
+  so the banner informs and dismisses — there is deliberately no reject button,
+  because one that cannot do anything is theatre and it trains people to dismiss
+  the consent that *does* matter, the POPIA tick on the enquiry form. Dismissal
+  is stored in `localStorage`, not a third cookie, so the notice's own statement
+  about what it sets stays true.
 - **`/about` carries the ECTA s43 disclosures** — registered name, registration
   number, directors, physical and service addresses, service description, price
   basis. Blank statutory fields render as an em-dash rather than being hidden,
