@@ -15,7 +15,7 @@
     <section class="container-page section">
         <ol class="space-y-12">
             @foreach ([
-                ['A twenty-minute conversation', 'You tell us what the business does, how enquiries reach you today and what drives you mad about it. We tell you which package fits and roughly what it costs. If we are not the right fit we will say so.'],
+                ['A twenty-minute conversation', 'You tell us what the business does, how enquiries reach you today and what drives you mad about it. We tell you which package fits, what else we can take off your hands, and roughly what it costs.'],
                 ['You send us your content', 'Photos, prices, your logo if you have one, the names of the people who need email addresses. This is the part only you can do, and it is usually what decides whether the build takes two weeks or two months.'],
                 ['We build it', 'Two to three weeks. You get a link to the real site on a temporary address, with your real content in it — not a mock-up, not a slide deck. Your staff get logins to the back office at the same time.'],
                 ['You go through it with us', 'We sit down and change what needs changing. Wrong colours, missing field, a form that asks the wrong question — that is what this step is for, and it is included.'],

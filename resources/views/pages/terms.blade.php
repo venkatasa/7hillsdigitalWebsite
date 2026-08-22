@@ -96,8 +96,8 @@
             <ul>
                 <li>Your website is taken offline at the end of the notice period.</li>
                 <li>Your domain is released to you or to whoever you nominate.</li>
-                <li>We will export your data and mailbox contents on request.</li>
-                <li>We retain your data for 30 days after termination, then delete it. Ask for your export inside that window.</li>
+                <li>We will export your data and mailbox contents on request, provided your account is paid up. Ask for that export within 30 days of termination.</li>
+                <li>After that window we may remove your data from the live service. We continue to hold records of the engagement for the periods set out in our <a href="{{ route('privacy') }}">privacy notice</a>, because tax and company law require it of us.</li>
             </ul>
 
             <h2>7. What we need from you</h2>
@@ -117,9 +117,12 @@
 
             <h2>9. Availability</h2>
             <p>
-                We aim for 99.5% uptime measured monthly, excluding scheduled maintenance, which we
-                announce in advance and carry out outside business hours wherever we can. We do not
-                offer a financial service credit; what we offer is that we answer the phone.
+                We target 99.5% uptime measured monthly, excluding scheduled maintenance, which we
+                announce in advance and carry out outside business hours wherever we can. That is a
+                target and not a warranty: we do not guarantee uninterrupted or error-free service,
+                and we do not offer a financial service credit. What we offer is that we answer the
+                phone. We are not responsible for downtime caused by your connectivity, your domain
+                registrar, a third-party service, or any cause outside our reasonable control.
             </p>
 
             <h2>10. Liability</h2>

@@ -158,6 +158,30 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   `price_basis` is shown instead (CRM, ERP — quoted on transaction volume).
   Quoting one number for a metered module means overcharging the small client
   or losing money on the large one.
+- **The site never refers work to another supplier.** We bill for everything in
+  IT ourselves, on one invoice, so there is no "we would refer that elsewhere"
+  anywhere on the site. `LegalPagesTest::test_the_site_never_refers_work_elsewhere`
+  fails the build if that language comes back.
+- **Legal pages are drafted in the company's favour, within the law.** The
+  privacy notice leans on contract, legal obligation and legitimate interest
+  ahead of consent (consent can be withdrawn), ties retention to statutory
+  minimums, reserves business-transfer sharing and anonymised reuse, and warrants
+  nothing about security beyond s19's "reasonable measures". What it does **not**
+  do is remove a statutory right — s23/s24 access and correction, s11(3)
+  objection, s69 marketing opt-out and the Regulator complaint route are all
+  stated, because a notice that overreaches invites enforcement rather than
+  deterring claims.
+- **We are the operator, not the responsible party, for client systems.** Clause 2
+  of the privacy notice says so plainly. That is both correct under POPIA s20 and
+  the single most useful risk allocation on the site: obligations to a client's
+  own customers sit with the client.
+- **`/terms` and `/privacy` must not contradict each other**, most easily on
+  retention. Terms defer to the privacy notice for how long records are kept;
+  a test asserts it.
+- **`/about` carries the ECTA s43 disclosures** — registered name, registration
+  number, directors, physical and service addresses, service description, price
+  basis. Blank statutory fields render as an em-dash rather than being hidden,
+  so an unfilled one is obvious.
 - **Hardware procurement stays quiet.** One small line on `/packages` and one in
   the footer, via `<x-hardware-note>` reading `brand.hardware.blurb`. No card,
   no heading, no section. We will happily source laptops and routers, but
@@ -270,24 +294,33 @@ is tempted.
 
 1. **Contact details are placeholders** — `COMPANY_PHONE` and `COMPANY_WHATSAPP`
    in `.env` are `+27 00 000 0000`. This is the last placeholder on the site.
-2. **The mail/media split is an assumption**, not a signed-off decision — 5GB
-   mail (5 × 1GB) + 10GB site media on the entry tier, doubling on the 10 tier.
-3. **`/terms` needs an attorney's eye** before it governs a paying relationship.
-   It now covers the add-on modules and hardware, but none of it is drafted by
-   a lawyer.
+2. **No warning is sent before an allowance runs out.** Email and website
+   storage are separate and symmetric (5GB + 5GB, or 10GB + 10GB), which stops
+   photographs eating the mail quota — but nothing tells a client they are close
+   to either limit. See item 6.
+3. **`/terms` and `/privacy` need an attorney's eye** before they govern a
+   paying relationship. Both are written to be compliant and company-favourable,
+   but neither is drafted by a lawyer.
 4. **POPIA requires a registered Information Officer.** Register one with the
-   Information Regulator and put their details in the privacy notice.
-5. **No storage meter yet.** The pricing page promises we warn clients at 80% of
+   Information Regulator and set `COMPANY_INFORMATION_OFFICER` in `.env` — until
+   then clause 1 of the privacy notice names nobody, which is itself a
+   contravention.
+5. **The ECTA s43 fields in `config/brand.php` are blank.** Registration number,
+   directors, VAT number, physical address and address for service of legal
+   documents all render as "—" on `/about`. They are blank rather than invented
+   on purpose: publishing a fabricated company number would be a
+   misrepresentation. Fill them from the CIPC documents.
+6. **No storage meter yet.** The pricing page promises we warn clients at 80% of
    their mail allowance. Nothing implements that.
-6. **The add-on modules do not exist as software yet.** The site sells
+7. **The add-on modules do not exist as software yet.** The site sells
    Invoicing, CRM and ERP; only the offer is built. Do not demo what is not
    there.
-7. **The demo tenants have no back office.** They are public landing pages only.
+8. **The demo tenants have no back office.** They are public landing pages only.
    The walkthrough they invite has to be given live, off a real install.
-8. **E-commerce is advertised but not specified.** `/demos` offers an online
+9. **E-commerce is advertised but not specified.** `/demos` offers an online
    shop "priced separately"; there is no package, no price and no build behind
    that yet.
-9. **Demo photographs are of other people's houses, cars and machines.** Fine
+10. **Demo photographs are of other people's houses, cars and machines.** Fine
    for a page whose own ribbon says everything is invented; a real client's site
    must use photographs of the real thing.
 

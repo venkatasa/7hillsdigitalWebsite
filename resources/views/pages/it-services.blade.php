@@ -114,24 +114,27 @@
         </div>
     </section>
 
-    {{-- ── Honest limits ────────────────────────────────────────────────── --}}
+    {{-- ── One supplier, one bill ───────────────────────────────────────── --}}
     <section class="bg-brand section text-white">
         <div class="container-page grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div data-reveal>
-                <p class="eyebrow-light">Being straight with you</p>
-                <h2 class="mt-3 h-section">"Anything" has edges.</h2>
+                <p class="eyebrow-light">However you need it billed</p>
+                <h2 class="mt-3 h-section">Whatever your business runs on, it goes on one invoice.</h2>
                 <p class="mt-5 leading-relaxed text-white/70">
-                    We would rather turn work down than take your money and learn on it. So
-                    here is where the line sits.
+                    You should not be juggling a web developer, a support company, a hardware
+                    supplier and three software subscriptions that nobody can explain. We take
+                    the lot, price it around your business, and put it on a single monthly bill
+                    you can actually read.
                 </p>
+                <a href="{{ route('contact') }}" class="btn-mint mt-8">Tell us what you need billed</a>
             </div>
 
             <div class="space-y-6" data-reveal data-reveal-delay="100">
                 @foreach ([
-                    ['What we are good at', 'Business systems: things with records, forms, documents, approvals, reporting and users. Web and mobile-friendly. Hosted by us, supported by us.'],
-                    ['What we will happily take on', 'Integrations with systems that publish a sensible API, hardware procurement and setup, day-to-day IT support, and moving you off paper.'],
-                    ['What we will refer elsewhere', 'Native mobile apps for app stores, embedded and industrial control systems, anything safety-critical, and enterprise ERP migrations that need a team of twenty.'],
-                    ['What we will tell you not to build', 'The feature you have described because a competitor has it, when nobody in your business has asked for it. We would rather keep a client than win a change request.'],
+                    ['One bill for all of it', 'The website, the email, the software, the support and the hardware you asked us to source. One invoice, one due date, one company to phone about it.'],
+                    ['Priced around you, not off a list', 'Some of it is a flat monthly figure, some of it is quoted on what you actually use, and some of it is a once-off. We will tell you plainly which is which before you commit to anything.'],
+                    ['Add and drop as you go', 'Take on a module when you need it and let it go when you do not. Nothing appears on your invoice unless you asked for it, and nothing is locked in.'],
+                    ['It all sits with us', 'When something breaks there is no argument about whose problem it is. If it is on your bill, it is ours to fix.'],
                 ] as [$heading, $copy])
                     <div class="border-l-2 border-mint pl-5">
                         <h3 class="font-display text-base font-bold">{{ $heading }}</h3>
@@ -149,9 +152,8 @@
                 Describe the thing that wastes your week.
             </h2>
             <p class="mx-auto mt-4 max-w-2xl lede text-secondary">
-                If we can fix it, we will tell you roughly what that costs. If we cannot, we
-                will tell you that too, and point you at someone who can. Either way the
-                conversation is free.
+                Whatever it is, we will tell you roughly what it costs to put right and how
+                soon we can start. The conversation itself is free.
             </p>
             <div class="mt-8 flex flex-wrap justify-center gap-3">
                 <a href="{{ route('contact') }}" class="btn-accent btn-lg">Talk to us about custom work</a>

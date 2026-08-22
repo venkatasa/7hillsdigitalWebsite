@@ -92,6 +92,32 @@ return [
         'country' => 'South Africa',
     ],
 
+    /*
+    | Statutory company details.
+    |
+    | Section 43 of the Electronic Communications and Transactions Act obliges a
+    | supplier offering services on a website to publish its legal name and
+    | status, registration number, physical address, an address for the service
+    | of legal documents, and contact details. POPIA additionally requires a
+    | registered Information Officer to be identified.
+    |
+    | EVERY VALUE BELOW IS A PLACEHOLDER. They are not invented registration
+    | numbers — they are blanks, deliberately, because publishing a fabricated
+    | company number would itself be a misrepresentation. Fill them in from the
+    | CIPC registration documents before this site handles a real enquiry.
+    */
+    'legal' => [
+        'registration_number' => env('COMPANY_REG_NUMBER', ''),
+        'vat_number' => env('COMPANY_VAT_NUMBER', ''),
+        'directors' => env('COMPANY_DIRECTORS', ''),
+        'place_of_registration' => env('COMPANY_REG_PLACE', 'Republic of South Africa'),
+        'physical_address' => env('COMPANY_PHYSICAL_ADDRESS', ''),
+        // Where legal process may be served — ECTA s43(1)(f).
+        'service_address' => env('COMPANY_SERVICE_ADDRESS', ''),
+        'information_officer' => env('COMPANY_INFORMATION_OFFICER', ''),
+        'information_officer_email' => env('COMPANY_INFORMATION_OFFICER_EMAIL', ''),
+    ],
+
     // Where new package enquiries land.
     'notify_email' => env('SALES_NOTIFY_EMAIL', 'sales@7hillsdigital.co.za'),
 
