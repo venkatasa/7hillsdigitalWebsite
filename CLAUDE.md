@@ -192,6 +192,12 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   `EnquiryForm` marks those fields `disabled()->dehydrated(false)` so a save
   cannot rewrite what was actually said. `EnquiryResource::canCreate()` returns
   `false`: there is no way to hand-craft one.
+- **Mail authenticates as the domain it sends from.** `MAIL_USERNAME` and
+  `MAIL_FROM_ADDRESS` both sit on `7hillsdigital.co.za`, sending through the
+  host the domain's MX points at, so the published SPF and DKIM cover it.
+  Authenticating as one domain and sending as another is what had Gmail
+  rejecting our mail outright. `php artisan mail:check` verifies the three DNS
+  records and the credentials in one go.
 - **The lead is saved before the notification is sent.** `EnquiryController`
   wraps the mail in a try/catch and logs failures. A mail outage must never cost
   an enquiry at the door — better delivered late from `/admin` than lost.

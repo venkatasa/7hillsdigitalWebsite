@@ -50,6 +50,16 @@ docker compose exec app ./vendor/bin/pint
 docker compose exec app php artisan optimize:clear
 ```
 
+## Checking outbound mail
+
+```bash
+docker compose exec app php artisan mail:check --send=you@example.com
+```
+
+Verifies SPF, DKIM and DMARC for the sending domain, checks the SMTP credentials
+are set and the host is reachable, then optionally sends a test. Gmail rejects
+any domain where neither SPF nor DKIM passes, so run this after any DNS change.
+
 ## Setting the real prices
 
 Prices are **not** in the code. Sign in at `/admin`, open **Packages & pricing**,
