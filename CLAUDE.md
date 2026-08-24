@@ -119,6 +119,12 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   packages at build time and served from our own origin. Never link a font from
   Google at runtime; `PublicSiteTest::test_no_page_loads_a_third_party_asset`
   fails the build if anything does.
+- **Social artwork is generated, not designed by hand or prompted.**
+  `php artisan brand:banner` composites the real `logo-inverse.png`, the hex
+  values from `config/brand.php` and Montserrat from `resources/fonts/`. An
+  image generator cannot reproduce the lockup and mangles lettering, and a
+  hand-made file in Canva drifts from the site the first time a price or a
+  phone number changes. Text is auto-shrunk to Facebook's mobile-safe width.
 - **The logo artwork is used as supplied.** `logo.png` and `logo-inverse.png`
   are the 2400px transparent originals with the dead space trimmed so the
   lockup fills its box; the originals are kept alongside them. The boxed lockup

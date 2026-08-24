@@ -50,6 +50,17 @@ docker compose exec app ./vendor/bin/pint
 docker compose exec app php artisan optimize:clear
 ```
 
+## Social artwork
+
+```bash
+docker compose exec app php artisan brand:banner
+```
+
+Renders a Facebook cover (1640×624) into `storage/app/brand/` from the real logo,
+the hex values in `config/brand.php` and Montserrat at its true weights — so the
+banner cannot drift from the site. `--width`/`--height` for other sizes,
+`--headline` to change the line, `--guides` to draw the Facebook safe areas.
+
 ## Checking outbound mail
 
 ```bash
