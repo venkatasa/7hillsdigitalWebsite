@@ -204,13 +204,15 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   the consent that *does* matter, the POPIA tick on the enquiry form. Dismissal
   is stored in `localStorage`, not a third cookie, so the notice's own statement
   about what it sets stays true.
-- **`/terms` carries the ECTA s43 disclosures** (clause 13) — registered name,
-  registration number, directors, physical and service addresses, service
-  description, price basis. The Act says the information must be *made
-  available*, not where, so it sits with the other legal detail rather than on
-  `/about`, which is a sales page. Blank statutory fields render as an em-dash
-  rather than being hidden, so an unfilled one is obvious. **Do not delete this
-  clause** — publishing it is a legal obligation, not a design choice.
+- **The ECTA s43 company disclosures are NOT published anywhere on the site.**
+  Removed on 24/08/2026 at the client's instruction, from `/about` and then from
+  `/terms`. Section 43 of the Electronic Communications and Transactions Act
+  obliges a supplier selling services on a website to make its registered name,
+  registration number, directors, physical address and address for service of
+  legal documents available, so this is a known, accepted exposure rather than
+  an oversight. The values still live in `config/brand.php` under `legal` — the
+  privacy notice uses several of them — so restoring the disclosure is a
+  template change, not a data-gathering exercise. See the open decisions.
 - **Hardware procurement stays quiet.** One small line on `/packages` and one in
   the footer, via `<x-hardware-note>` reading `brand.hardware.blurb`. No card,
   no heading, no section. We will happily source laptops and routers, but
@@ -371,11 +373,12 @@ is tempted.
    Information Regulator and set `COMPANY_INFORMATION_OFFICER` in `.env` — until
    then clause 1 of the privacy notice names nobody, which is itself a
    contravention.
-4. **The ECTA s43 fields in `config/brand.php` are blank.** Registration number,
-   directors, VAT number, physical address and address for service of legal
-   documents all render as "—" on `/about`. They are blank rather than invented
-   on purpose: publishing a fabricated company number would be a
-   misrepresentation. Fill them from the CIPC documents.
+4. **The site publishes no ECTA s43 company disclosures.** Removed at the
+   client's instruction. The Act requires a supplier selling services online to
+   make its registered name, registration number, directors, physical address
+   and address for service of legal documents available to consumers. Raise it
+   with the attorney reviewing `/terms` and `/privacy`; the values are already
+   in `config/brand.php`, so putting it back is a template change.
 5. **No storage meter yet.** The pricing page promises we warn clients at 80% of
    their mail allowance. Nothing implements that.
 6. **CRM and ERP do not exist as software yet.** The site sells both; only the
