@@ -152,7 +152,7 @@
                         </p>
                         <p class="mt-2 text-sm text-white/60">
                             {{ $tier->name }}, excl. VAT — {{ $tier->storage_summary }},
-                            unlimited email addresses, and the build itself free.
+                            and the build itself free.
                         </p>
                     @endif
 
@@ -160,7 +160,7 @@
                         @foreach ([
                             'Nothing to pay until your site is live',
                             'No minimum term — one month\'s notice to cancel',
-                            'Email on your own domain, included',
+                            'Mailboxes on your own domain from R20 a month, if you want them',
                             'Hosting, SSL, backups and support, included',
                         ] as $line)
                             <li class="flex gap-2.5">

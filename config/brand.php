@@ -31,7 +31,7 @@ return [
     // The name we trade and market under.
     'trading_as' => env('COMPANY_TRADING_AS', '7Hills Digital'),
 
-    'tagline' => 'Websites, email and the software to run on them.',
+    'tagline' => 'Websites, and the software to run your business on.',
 
     // The one-line promise the whole business rests on.
     'promise' => 'Pay nothing until your site is live. Cancel any time.',
@@ -154,20 +154,26 @@ return [
     ],
 
     /*
-    | Storage model. Mail and site storage are metered SEPARATELY but sized
-    | symmetrically: the 5 tier is 5GB of each, the 10 tier is 10GB of each.
+    | Storage model. A package buys the WEBSITE — build, hosting, SSL, backups,
+    | support and an allowance for the site's own content. Email is NOT included
+    | at any tier; it is sold per mailbox as the Enterprise email module.
     |
-    | Keeping them apart is the point. A dealership with 60 cars and twelve
-    | photographs each will use gigabytes of media — if that came out of the
-    | same pool, the photographs would fill the sales inbox and the client
-    | would phone to say their email is broken. Do not pool them.
-    |
-    | Email ADDRESSES are unlimited: they all draw on the same mail allowance,
-    | so counting them earns us nothing and costs the client goodwill.
+    | Do not reintroduce a mail allowance into a package tier. It was taken out
+    | deliberately: most businesses already have email, and the ones that do not
+    | want wildly different amounts of it, so bundling it either overcharges the
+    | client or loses us money.
     */
     'storage' => [
-        'aliases' => 'Unlimited email addresses',
-        'note' => 'Your email allowance and your website allowance are separate, so the photographs on your site can never fill up your inbox.',
+        'note' => 'Your storage allowance covers everything on your website — pages, photographs and documents.',
+        'email_note' => 'Email is not included in the package price. Mailboxes on your own domain start at R20 a month each.',
+    ],
+
+    /*
+    | Volume pricing. Applies across every package and module — said plainly so
+    | a prospect with ten branches asks instead of assuming the list price.
+    */
+    'bulk' => [
+        'note' => 'Buying for several branches, or a lot of mailboxes? Contact us for volume pricing on any package.',
     ],
 
     /*

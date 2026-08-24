@@ -60,7 +60,7 @@ class PublicSiteTest extends TestCase
     {
         foreach (Package::with('tiers')->get() as $package) {
             foreach ($package->tiers as $tier) {
-                $expected = $tier->mail_gb === 5 ? '880.00' : '1180.00';
+                $expected = $tier->media_gb === 5 ? '880.00' : '1180.00';
 
                 $this->assertSame(
                     $expected,
@@ -72,35 +72,17 @@ class PublicSiteTest extends TestCase
     }
 
     /**
-     * Email and website storage are separate allowances. Pooling them would let
-     * a dealer's photographs fill the sales inbox — the whole reason they are
-     * quoted apart.
+     * A package buys the website and nothing else. Email was taken out
+     * deliberately, so the packages page must not imply it is bundled.
      */
-    public function test_email_and_website_storage_are_quoted_separately(): void
+    public function test_packages_do_not_include_email(): void
     {
-        $this->get('/packages')
-            ->assertOk()
-            ->assertSee('Email storage')
-            ->assertSee('Website storage')
-            ->assertSee('Unlimited');
-    }
+        $html = $this->get('/packages')->assertOk()->getContent();
 
-    /**
-     * The no-upfront offer only works if the client understands the trade: the
-     * build is free and the software stays ours, but their data and email are
-     * theirs, and they can buy it outright if they would rather.
-     */
-    public function test_the_ownership_bargain_is_stated_on_the_packages_page(): void
-    {
-        $this->get('/packages')
-            ->assertOk()
-            ->assertSee('R880 a month, and nothing to build it')
-            ->assertSee('Who owns what')
-            ->assertSee('Want to own it outright?');
-
-        $this->get('/terms')
-            ->assertOk()
-            ->assertSee('buy the site outright');
+        $this->assertStringContainsString('Website storage', $html);
+        $this->assertStringNotContainsString('Email storage', $html);
+        $this->assertStringNotContainsString('Email addresses', $html);
+        $this->assertStringNotContainsString('unlimited email', strtolower($html));
     }
 
     /**

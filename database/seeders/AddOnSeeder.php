@@ -9,7 +9,8 @@ use Illuminate\Database\Seeder;
  * Optional business modules, charged on top of the monthly package fee.
  *
  * Invoicing is priced flat because the cost of carrying it does not move with
- * the client. Enterprise email, CRM and ERP are quoted — a two-person
+ * the client. Enterprise email is per mailbox because that is what actually
+ * varies. CRM and ERP are quoted — a two-person
  * agency and a fifty-branch operation are not the same job, and pretending
  * otherwise means either overcharging the small one or losing money on the
  * large one.
@@ -48,18 +49,25 @@ class AddOnSeeder extends Seeder
             [
                 'slug' => 'enterprise-email',
                 'name' => 'Enterprise email',
-                'tagline' => 'Bigger mailboxes, shared calendars and retention rules.',
-                'intro' => 'For teams who live in their inbox, or industries that have to keep every message for years. Much larger individual mailboxes than the package allowance, shared calendars and contacts, and retention policies you can actually defend to a regulator.',
-                'price_monthly' => null,
-                'price_basis' => 'Quoted on how many mailboxes you need and how much storage each one carries',
+                'tagline' => 'Mailboxes on your own domain, from R20 each.',
+                'intro' => 'Email is not bundled into the packages, because most businesses already have it and the ones that do not want very different amounts of it. So it is priced honestly: per mailbox, per month, at the size you actually need.',
+                // The "from" figure the card leads with.
+                'price_monthly' => 20,
+                'price_unit' => 'per mailbox, per month',
+                'price_tiers' => [
+                    ['label' => '5GB mailbox', 'price' => 20],
+                    ['label' => '10GB mailbox', 'price' => 30],
+                ],
+                'price_basis' => null,
                 'icon_key' => 'mail',
                 'sort' => 2,
                 'what_it_does' => [
-                    'Individual mailboxes far larger than the package allowance',
-                    'Shared calendars, contacts and meeting invitations',
-                    'Retention and archiving rules for regulated industries',
-                    'Mobile and desktop sync that behaves itself',
-                    'Priority handling on mail delivery issues',
+                    'Your own domain — yourname@yourbusiness.co.za',
+                    'Webmail, plus IMAP and SMTP for Outlook, Gmail or your phone',
+                    'Shared calendars and contacts',
+                    'Spam and virus filtering',
+                    'We handle the SPF, DKIM and DMARC records, so your mail reaches the inbox',
+                    'Migration from your current provider, at no charge',
                 ],
             ],
             [

@@ -39,12 +39,13 @@ packages, their copy and — the point of the whole panel — **their prices**.
 Each line has two storage tiers (5 and 10), seeded by `PackageSeeder`. Pricing
 is flat: **R880** for any 5, **R1 180** for any 10, excl. VAT.
 
-| Tier | Email storage | Website storage | Addresses | Price |
-|---|---|---|---|---|
-| 5 | 5GB | 5GB | Unlimited | R880 |
-| 10 | 10GB | 10GB | Unlimited | R1 180 |
+| Tier | Website storage | Price |
+|---|---|---|
+| 5 | 5GB | R880 |
+| 10 | 10GB | R1 180 |
 
-**The build is free.** Nothing is charged for design and development — that is
+**A package is the WEBSITE only.** Email is not included at any tier — see the
+add-on modules below. **The build is free.** Nothing is charged for design and development — that is
 what the monthly fee buys back over time, and it is why the software stays ours.
 
 | Line | Vertical | Slug |
@@ -68,7 +69,7 @@ seeded by `AddOnSeeder` into the `add_ons` table:
 | Module | Slug | Price |
 |---|---|---|
 | Invoicing | `invoicing` | **R109** / month, flat — so the 5 tier is R880 + R109 |
-| Enterprise email | `enterprise-email` | Quoted on mailbox count and storage |
+| Enterprise email | `enterprise-email` | **R20** per 5GB mailbox, **R30** per 10GB mailbox, per month |
 | CRM | `crm` | Quoted on contact volume and seats |
 | ERP | `erp` | Scoped and quoted on transaction volume and modules |
 
@@ -140,14 +141,19 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   a dealership and a guesthouse, so charging them differently for it is
   arbitrary and indefensible on a sales call. What varies is the tier: how many
   people need email. `test_pricing_is_flat_across_every_line` guards this.
-- **Email storage and website storage are metered separately, and symmetrically.**
-  5GB of each on the 5 tier, 10GB of each on the 10. A dealership with 60 cars
-  will use gigabytes of photographs, and those photographs must never be able to
-  fill the sales inbox — so `mail_gb` and `media_gb` stay separate columns and
-  are quoted separately on the site. **Do not pool them.**
-- **Email addresses are unlimited.** `mailboxes` is nullable and null means
-  unlimited, which is what every tier sells. They all draw on the same email
-  allowance, so counting them earns nothing and costs goodwill.
+- **Email is NOT in a package, at any tier.** A package tier carries one number,
+  `media_gb`, the website's storage allowance. `mail_gb` and `mailboxes` were
+  dropped from `package_tiers` on 24/08/2026 — do not add them back. Bundling
+  email either overcharges the client who already has it or loses money on the
+  one who needs a lot of it.
+- **Email is sold per mailbox** as the `enterprise-email` module: **R20** for a
+  5GB mailbox, **R30** for a 10GB one, per mailbox per month. Those live in
+  `add_ons.price_tiers`, so they are edited at `/admin/add-ons` like every other
+  price. `PublicSiteTest::test_packages_do_not_include_email` fails the build if
+  a package page starts implying otherwise.
+- **Volume pricing is offered out loud** on the packages page, via
+  `brand.bulk.note`. A prospect with ten branches should ask rather than assume
+  the list price and walk.
 - **Who owns what is stated on the packages page, not just in `/terms`.** The
   build is free, the software stays ours, the client's data, email and domain
   are theirs, and a build-and-own buy-out is available on quote. `brand.ownership`
@@ -159,6 +165,10 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   many words. A client who finds a module they never asked for on their first
   invoice is a client who cancels — and with no minimum term, cancelling costs
   them nothing. `AddOnTest` guards the wording.
+- **A module can be priced as a small table.** `add_ons.price_tiers` holds
+  `[{label, price}]` for something like Enterprise email, where one number will
+  not do; `price_monthly` stays as the "from" figure the card leads with and
+  `price_unit` names what is being charged for.
 - **A module is either flat-priced or metered, never both.** `price_monthly`
   set means a rand figure is shown (Invoicing, R109); `price_monthly` null means
   `price_basis` is shown instead (CRM, ERP — quoted on transaction volume).

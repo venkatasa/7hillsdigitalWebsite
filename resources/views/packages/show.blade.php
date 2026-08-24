@@ -59,8 +59,8 @@
                 <div class="mt-10 rounded-xl bg-brand-light p-6">
                     <h3 class="text-sm font-semibold uppercase tracking-wider text-brand">Plus everything in every package</h3>
                     <p class="mt-2 text-sm leading-relaxed text-secondary">
-                        Email on your own domain, hosting, SSL, daily backups, security updates
-                        and support — included, not extra.
+                        Hosting, SSL, daily backups, security updates and support — included,
+                        not extra. Email is priced separately, from R20 a mailbox a month.
                     </p>
                 </div>
             </div>
@@ -85,10 +85,10 @@
                                     </p>
                                 </div>
                                 <ul class="mt-4 space-y-1.5 text-sm text-secondary">
-                                    <li><strong class="font-semibold text-brand">{{ $tier->mail_gb }}GB email</strong> + <strong class="font-semibold text-brand">{{ $tier->media_gb }}GB website</strong> storage</li>
-                                    <li>{{ $tier->mailbox_summary }} on your own domain</li>
-                                    <li>Hosting, SSL, backups and support</li>
+                                    <li><strong class="font-semibold text-brand">{{ $tier->media_gb }}GB</strong> of website storage</li>
+                                    <li>Hosting, SSL, daily backups and support</li>
                                     <li>The build itself costs nothing</li>
+                                    <li class="text-muted">Email sold separately, from R20 a mailbox</li>
                                 </ul>
                             </div>
                         @endforeach

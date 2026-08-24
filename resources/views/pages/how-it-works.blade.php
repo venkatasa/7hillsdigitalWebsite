@@ -1,7 +1,7 @@
 @php $brand = config('brand'); @endphp
 
 <x-layouts.site title="How it works"
-                description="From first conversation to live website and email, usually two to three weeks. Nothing to pay until it is live.">
+                description="From first conversation to a live website, usually two to three weeks. Nothing to pay until it is live.">
 
     <section class="bg-brand text-white">
         <div class="container-page section">
@@ -16,10 +16,10 @@
         <ol class="space-y-12">
             @foreach ([
                 ['A twenty-minute conversation', 'You tell us what the business does, how enquiries reach you today and what drives you mad about it. We tell you which package fits, what else we can take off your hands, and roughly what it costs.'],
-                ['You send us your content', 'Photos, prices, your logo if you have one, the names of the people who need email addresses. This is the part only you can do, and it is usually what decides whether the build takes two weeks or two months.'],
+                ['You send us your content', 'Photos, prices, and your logo if you have one. This is the part only you can do, and it is usually what decides whether the build takes two weeks or two months.'],
                 ['We build it', 'Two to three weeks. You get a link to the real site on a temporary address, with your real content in it — not a mock-up, not a slide deck. Your staff get logins to the back office at the same time.'],
                 ['You go through it with us', 'We sit down and change what needs changing. Wrong colours, missing field, a form that asks the wrong question — that is what this step is for, and it is included.'],
-                ['We go live, and you pay your first month', 'We point your domain at the site, set up the mailboxes and move your email across. From that day it is one monthly invoice. If it is still not right, you have not lost anything.'],
+                ['We go live, and you pay your first month', 'We point your domain at the site and it goes live. If you have asked for mailboxes we set those up and move your email across at the same time. From that day it is one monthly invoice. If it is still not right, you have not lost anything.'],
             ] as $i => [$heading, $copy])
                 <li class="flex gap-6 sm:gap-8">
                     <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand text-base font-bold text-white">
@@ -75,6 +75,7 @@
             @foreach ([
                 ['If there is nothing to pay upfront, what stops me cancelling in month two?', 'Nothing does, and that is the point. We are betting that a site that brings you enquiries is one you will keep paying for. If it does not, we would rather you left than felt trapped — a client serving out a contract they resent is worse for us than an empty slot.'],
                 ['Do I own the website?', 'You own your domain, your content and your data. You do not own the software — the monthly fee rents it. That is what lets us build with nothing upfront. If you want a site you own outright, we can quote that too, but it will not be R0 to start.'],
+                ['Is email included?', 'No — and that is deliberate. Most businesses already have email, and the ones that do not want very different amounts of it, so bundling it would either overcharge you or lose us money. Mailboxes on your own domain are R20 a month for 5GB and R30 for 10GB. Buying a lot of them? Ask us for volume pricing.'],
                 ['What happens to my email if I leave?', 'Your domain is yours, so you point it wherever you like and your address keeps working. We will hand over your mailbox data in a standard format. We do not hold email hostage.'],
                 ['Can I move my existing website across?', 'Usually. We can carry over your content and your existing addresses so links do not break. If your current site is on a platform we cannot export from, we will tell you before you commit.'],
                 ['Who do I phone when something breaks?', 'Us. Support is in the monthly fee. There is no per-hour charge for fixing something that should have worked.'],

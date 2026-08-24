@@ -1,6 +1,6 @@
 @php $brand = config('brand'); @endphp
 
-<x-layouts.site :description="$brand['promise'].' Websites, email and back-office software for estate agencies, dealerships, recruiters, guesthouses — and any other business that runs on something we can build.'">
+<x-layouts.site :description="$brand['promise'].' Websites and back-office software for estate agencies, dealerships, recruiters, guesthouses — and any other business that runs on something we can build.'">
 
     {{-- ── Hero ─────────────────────────────────────────────────────────── --}}
     <section class="relative overflow-hidden bg-brand text-white">
@@ -16,9 +16,9 @@
             </h1>
 
             <p class="mt-6 max-w-2xl lede text-white/75" data-reveal data-reveal-delay="120">
-                We build the website, set up the email on your own domain, host the lot and
-                keep it running — for one monthly fee. No deposit, no setup cost, no two-year
-                contract to sign before anyone has shown you anything.
+                We build the website, host it and keep it running — for one monthly fee. No
+                deposit, no setup cost, no two-year contract to sign before anyone has shown
+                you anything.
             </p>
 
             <div class="mt-9 flex flex-wrap gap-3" data-reveal data-reveal-delay="180">
@@ -76,7 +76,7 @@
             <div class="max-w-2xl" data-reveal>
                 <p class="eyebrow">In every package</p>
                 <h2 class="mt-3 h-section text-brand">
-                    One fee. The website, the email and the person who fixes it.
+                    One fee. The website, the hosting and the person who fixes it.
                 </h2>
             </div>
 
@@ -84,7 +84,7 @@
                 @foreach ([
                     ['A website built for your trade', 'Not a template with your logo dropped in. The pages, forms and fields are the ones your industry actually needs.'],
                     ['A back office you run yourself', 'Add stock, publish a listing, close a vacancy. No developer, no ticket, no waiting until Tuesday.'],
-                    ['Email on your own domain', 'Mailboxes at yourname@yourbusiness.co.za, plus unlimited aliases and forwarders at no extra cost.'],
+                    ['Email when you want it', 'Mailboxes at yourname@yourbusiness.co.za are not bundled into the fee — they are R20 a month each, so you pay for the ones you actually use.'],
                     ['Hosting, SSL and backups', 'On our servers, with the certificate renewed and the database backed up without you thinking about it.'],
                     ['Updates and security patches', 'The platform is maintained for every client at once, so you are never running last year\'s software.'],
                     ['A human being to phone', 'Support is included. Not a ticket queue in another timezone — the people who built the thing.'],
@@ -220,7 +220,7 @@
 
             <div class="space-y-7" data-reveal data-reveal-delay="100">
                 @foreach ([
-                    ['You are renting, not buying.', 'The monthly fee covers the build, the hosting, the email and the support. Stop paying and the site comes down. You are not buying the software, and the code stays ours — that is exactly why there is nothing to pay upfront.'],
+                    ['You are renting, not buying.', 'The monthly fee covers the build, the hosting and the support. Stop paying and the site comes down. You are not buying the software, and the code stays ours — that is exactly why there is nothing to pay upfront.'],
                     ['Your domain stays yours. Always.', 'It is registered in your name, and if you leave you take it with you. We will never hold a client\'s domain to win an argument.'],
                     ['Your data leaves with you.', 'Ask on the way out and we export your listings, your contacts and your enquiry history. You gave us that information; it does not become ours.'],
                     ['We do ask you to show up.', 'We cannot write your business into existence. Photos, prices and the answers to our questions have to come from you, or the build stalls and neither of us is happy.'],

@@ -12,8 +12,8 @@ use Illuminate\Database\Seeder;
  * 10 tier. These are what a fresh install starts with — the live numbers are
  * edited at /admin/packages and are never read from this file at runtime.
  *
- * Storage: mail and site allowances are separate but symmetric — 5GB of each
- * on the 5 tier, 10GB of each on the 10. See config/brand.php.
+ * A package is the WEBSITE only — email is sold separately as the Enterprise
+ * email module. The tier number is the website storage allowance.
  */
 class PackageSeeder extends Seeder
 {
@@ -48,19 +48,14 @@ class PackageSeeder extends Seeder
         return [
             [
                 'name' => "{$line} 5",
-                'mail_gb' => 5,
                 'media_gb' => 5,
-                // null = unlimited addresses; the count is not what is sold.
-                'mailboxes' => null,
                 'price_monthly' => self::PRICE_5,
                 'is_default' => true,
                 'sort' => 1,
             ],
             [
                 'name' => "{$line} 10",
-                'mail_gb' => 10,
                 'media_gb' => 10,
-                'mailboxes' => null,
                 'price_monthly' => self::PRICE_10,
                 'is_default' => false,
                 'sort' => 2,

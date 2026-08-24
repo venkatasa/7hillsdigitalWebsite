@@ -6,7 +6,7 @@
 @php
     $brand = config('brand');
     $pageTitle = $title ? $title.' — '.$brand['name'] : $brand['name'].' — '.$brand['tagline'];
-    $pageDescription = $description ?? $brand['promise'].' Websites, email and business software for South African firms, from '.$brand['contact']['city'].'.';
+    $pageDescription = $description ?? $brand['promise'].' Websites and business software for South African firms, from '.$brand['contact']['city'].'.';
 @endphp
 
 <!DOCTYPE html>

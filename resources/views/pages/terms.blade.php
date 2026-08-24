@@ -29,9 +29,10 @@
             <h2>2. What you are paying for</h2>
             <p>
                 A monthly subscription covering the design and build of your website, hosting,
-                unlimited email addresses on your own domain, SSL, backups, software maintenance
-                and support. Each tier carries a stated email storage allowance and a separate
-                website storage allowance. The fee is quoted per month and excludes VAT.
+                SSL, backups, software maintenance and support, together with the website storage
+                allowance stated for your tier. The fee is quoted per month and excludes VAT.
+                <strong>Email is not included</strong> — mailboxes on your own domain are charged
+                separately, per mailbox, at the rates shown on our site.
                 <strong>The build itself is not charged for.</strong>
             </p>
             <p>

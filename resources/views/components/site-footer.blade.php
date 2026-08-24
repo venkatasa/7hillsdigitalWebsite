@@ -8,8 +8,8 @@
         <div class="lg:col-span-2">
             <x-brand-logo inverse class="h-20" />
             <p class="mt-4 max-w-sm text-sm leading-relaxed">
-                {{ $brand['tagline'] }} We build and host the website, the email and the
-                back office, and we bill it monthly — nothing upfront, cancel any time.
+                {{ $brand['tagline'] }} We build and host the website and the back office,
+                and we bill it monthly — nothing upfront, cancel any time.
             </p>
             <p class="mt-5 text-xs uppercase tracking-[0.18em] text-white/40">
                 {{ $brand['contact']['city'] }}, {{ $brand['contact']['province'] }}

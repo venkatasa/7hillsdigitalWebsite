@@ -30,14 +30,31 @@
 
                     <div class="mt-5 border-t border-hairline pt-5">
                         @if ($addOn->is_metered)
-                            <p class="text-lg font-bold tracking-tight text-brand">Quoted on request</p>
+                            <p class="font-display text-lg font-bold tracking-tight text-brand">Quoted on request</p>
                             <p class="mt-1 text-xs leading-relaxed text-muted">{{ $addOn->price_basis }}</p>
                         @else
                             <p class="flex items-baseline gap-1.5">
-                                <span class="text-3xl font-bold tracking-tight text-brand">+{{ $addOn->formatted_price }}</span>
+                                @if ($addOn->has_price_tiers)
+                                    <span class="text-sm font-semibold text-muted">from</span>
+                                @endif
+                                <span class="font-display text-3xl font-extrabold tracking-tight text-brand">+{{ $addOn->formatted_price }}</span>
                                 <span class="text-sm text-muted">/ month</span>
                             </p>
-                            <p class="mt-1 text-xs text-muted">Added to your package fee, excl. VAT</p>
+                            <p class="mt-1 text-xs text-muted">
+                                {{ $addOn->price_unit ?? 'Added to your package fee' }}, excl. VAT
+                            </p>
+
+                            {{-- A module priced as a small table rather than one number. --}}
+                            @if ($addOn->has_price_tiers)
+                                <ul class="mt-3 space-y-1.5 rounded-lg bg-brand-light px-4 py-3">
+                                    @foreach ($addOn->price_tiers as $tier)
+                                        <li class="flex items-baseline justify-between gap-3 text-sm">
+                                            <span class="text-secondary">{{ $tier['label'] }}</span>
+                                            <span class="font-semibold text-brand">R{{ number_format((float) $tier['price'], 0, '.', ' ') }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         @endif
                     </div>
 
@@ -55,7 +72,15 @@
             @endforeach
         </div>
 
-        <div class="mt-8 flex flex-col gap-3 rounded-xl border border-hairline bg-brand-light px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+        <div class="mt-8 flex flex-col gap-3 rounded-xl border border-accent/30 bg-accent/[0.06] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm leading-relaxed text-secondary">
+                <strong class="font-semibold text-brand">Buying in bulk?</strong>
+                {{ config('brand.bulk.note') }}
+            </p>
+            <a href="{{ route('contact') }}" class="btn-outline shrink-0">Ask about volume pricing</a>
+        </div>
+
+        <div class="mt-4 flex flex-col gap-3 rounded-xl border border-hairline bg-brand-light px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
             <p class="text-sm leading-relaxed text-secondary">
                 <strong class="font-semibold text-brand">Need software that is not on this list?</strong>
                 Whatever your business runs on, we can build it and add it to the same monthly bill.

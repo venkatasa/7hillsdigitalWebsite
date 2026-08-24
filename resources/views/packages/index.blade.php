@@ -7,11 +7,12 @@
         <div class="container-page section">
             <p class="eyebrow-light">Packages</p>
             <h1 class="mt-4 max-w-3xl h-display">
-                One monthly fee. Website, email, hosting and support.
+                One monthly fee. Your website, built, hosted and supported.
             </h1>
             <p class="mt-6 max-w-2xl lede text-white/75">
-                Every package starts on the 5GB tier and moves up when you need more
-                people on email. Nothing to pay until your site is live.
+                Every package starts on the 5GB tier and moves up when your site outgrows
+                it. Email is priced separately, from R20 a mailbox. Nothing to pay until your
+                site is live.
             </p>
         </div>
     </section>
@@ -29,9 +30,8 @@
     <section class="container-page pb-16 sm:pb-20 lg:pb-24">
         <h2 class="h-section text-brand">Every tier, side by side</h2>
         <p class="mt-3 max-w-2xl text-sm leading-relaxed text-secondary">
-            Mail storage and website storage are separate allowances. That is deliberate:
-            a dealership with sixty cars will use gigabytes of photographs, and those
-            photographs should never be able to fill up the sales inbox.
+            The tier is your website's storage allowance — pages, photographs and documents.
+            A dealership with sixty cars and twelve photographs each will want the larger one.
         </p>
 
         <div class="mt-8 overflow-x-auto rounded-xl border border-brand/10">
@@ -40,8 +40,6 @@
                     <tr>
                         <th scope="col" class="px-5 py-3.5 font-semibold">Package</th>
                         <th scope="col" class="px-5 py-3.5 font-semibold">For</th>
-                        <th scope="col" class="px-5 py-3.5 font-semibold">Email addresses</th>
-                        <th scope="col" class="px-5 py-3.5 font-semibold">Email storage</th>
                         <th scope="col" class="px-5 py-3.5 font-semibold">Website storage</th>
                         <th scope="col" class="px-5 py-3.5 text-right font-semibold">Per month</th>
                     </tr>
@@ -54,8 +52,6 @@
                                     <a href="{{ route('packages.show', $package) }}" class="hover:text-accent">{{ $tier->name }}</a>
                                 </th>
                                 <td class="px-5 py-3.5 text-secondary">{{ $loop->first ? $package->vertical_label : '' }}</td>
-                                <td class="px-5 py-3.5 text-secondary">{{ $tier->mailboxes ?? 'Unlimited' }}</td>
-                                <td class="px-5 py-3.5 text-secondary">{{ $tier->mail_gb }}GB</td>
                                 <td class="px-5 py-3.5 text-secondary">{{ $tier->media_gb }}GB</td>
                                 <td class="px-5 py-3.5 text-right font-semibold text-brand">{{ $tier->formatted_price }}</td>
                             </tr>
@@ -66,8 +62,8 @@
         </div>
 
         <p class="mt-4 text-xs text-muted">
-            All prices exclude VAT. Every tier carries unlimited email addresses on your own
-            domain, and the build itself costs nothing.
+            All prices exclude VAT and cover the website only — the build itself costs
+            nothing. {{ $brand['storage']['email_note'] }}
         </p>
     </section>
 
@@ -81,13 +77,13 @@
                     <p class="mt-5 leading-relaxed text-white/70">
                         The website is designed and built at no charge. You start paying the
                         month it goes live, and the fee covers the site, the hosting, the
-                        email, the security updates and someone to phone.
+                        security updates and someone to phone. Email is separate — see below.
                     </p>
 
                     <ul class="mt-8 space-y-3">
                         @foreach ([
-                            '5GB of email storage, with unlimited addresses on your own domain',
-                            '5GB of website storage — kept separate, so your photographs can never fill your inbox',
+                            '5GB of storage for your pages, photographs and documents',
+                            'Your domain pointed at it, or one registered for you',
                             'Hosting, SSL, daily backups and software maintenance',
                             'Support from the people who built it',
                         ] as $line)
@@ -101,7 +97,7 @@
                     </ul>
 
                     <p class="mt-6 text-sm leading-relaxed text-white/60">
-                        The 10 tier doubles both allowances for R1 180.
+                        The 10 tier doubles the storage for R1 180.
                     </p>
                 </div>
 
@@ -156,9 +152,9 @@
 
             <div class="mt-10 grid gap-6 sm:grid-cols-3">
                 @foreach ([
-                    ['Go from 5 to 10', 'Double both allowances — 10GB of email and 10GB of website storage. Takes effect the same day; billing changes on your next invoice.'],
-                    ['Go beyond 10', 'For firms with a bigger team or a photo-heavy site. Priced on what you actually need rather than off a list.'],
-                    ['Enterprise email', 'Shared calendars, much larger individual mailboxes and retention rules for regulated industries. Quoted separately — see the modules below.'],
+                    ['Go from 5 to 10', 'Double your website storage to 10GB. Takes effect the same day; billing changes on your next invoice.'],
+                    ['Go beyond 10', 'For a photo-heavy site or a large catalogue. Priced on what you actually need rather than off a list.'],
+                    ['Add mailboxes any time', 'Email is not in the package price. Add mailboxes on your own domain from R20 a month each — see the modules below.'],
                 ] as [$heading, $copy])
                     <div class="rounded-xl border border-brand/10 bg-white p-6">
                         <h3 class="text-base font-semibold text-brand">{{ $heading }}</h3>

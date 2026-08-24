@@ -82,6 +82,46 @@ class AddOnTest extends TestCase
         $this->get('/packages')->assertOk()->assertDontSee('Quoted on your contact volume');
     }
 
+    /** Email is sold per mailbox, with the two sizes priced on the page. */
+    public function test_email_is_sold_as_a_priced_add_on(): void
+    {
+        $this->get('/packages')
+            ->assertOk()
+            ->assertSee('Enterprise email')
+            ->assertSee('5GB mailbox')
+            ->assertSee('10GB mailbox')
+            ->assertSee('R20')
+            ->assertSee('R30')
+            ->assertSee('per mailbox, per month');
+    }
+
+    /** Volume pricing has to be offered, or a ten-branch prospect assumes list price. */
+    public function test_bulk_pricing_is_offered(): void
+    {
+        $this->get('/packages')
+            ->assertOk()
+            ->assertSee('Buying in bulk?')
+            ->assertSee('volume pricing');
+    }
+
+    /**
+     * The no-upfront offer only works if the client understands the trade: the
+     * build is free and the software stays ours, but their data and email are
+     * theirs, and they can buy it outright if they would rather.
+     */
+    public function test_the_ownership_bargain_is_stated_on_the_packages_page(): void
+    {
+        $this->get('/packages')
+            ->assertOk()
+            ->assertSee('R880 a month, and nothing to build it')
+            ->assertSee('Who owns what')
+            ->assertSee('Want to own it outright?');
+
+        $this->get('/terms')
+            ->assertOk()
+            ->assertSee('buy the site outright');
+    }
+
     public function test_staff_can_edit_the_modules(): void
     {
         $this->actingAs(User::factory()->create());

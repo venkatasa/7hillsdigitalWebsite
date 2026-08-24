@@ -26,6 +26,7 @@ class AddOn extends Model
     {
         return [
             'what_it_does' => 'array',
+            'price_tiers' => 'array',
             'price_monthly' => 'decimal:2',
             'is_published' => 'boolean',
         ];
@@ -54,5 +55,11 @@ class AddOn extends Model
     public function getIsMeteredAttribute(): bool
     {
         return $this->price_monthly === null;
+    }
+
+    /** A module priced as a small table rather than one number. */
+    public function getHasPriceTiersAttribute(): bool
+    {
+        return ! empty($this->price_tiers);
     }
 }

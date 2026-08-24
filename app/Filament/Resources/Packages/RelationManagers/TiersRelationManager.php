@@ -14,8 +14,11 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 /**
- * The prices. This is where they get changed — never in the seeder, which
- * only sets the placeholders a fresh install starts with.
+ * The prices. This is where they get changed — never in the seeder, which only
+ * sets what a fresh install starts with.
+ *
+ * A tier is website storage and nothing else. Do not add a mail allowance back
+ * here: email is sold per mailbox as the Enterprise email module.
  */
 class TiersRelationManager extends RelationManager
 {
@@ -41,21 +44,9 @@ class TiersRelationManager extends RelationManager
                     ->prefix('R')
                     ->minValue(0),
 
-                TextInput::make('mailboxes')
-                    ->label('Email addresses included')
-                    ->helperText('Leave BLANK for unlimited, which is what every tier currently sells.')
-                    ->numeric()
-                    ->minValue(1),
-
-                TextInput::make('mail_gb')
-                    ->label('Email storage (GB)')
-                    ->numeric()
-                    ->required()
-                    ->minValue(1),
-
                 TextInput::make('media_gb')
                     ->label('Website storage (GB)')
-                    ->helperText('Kept separate from email on purpose, so a photo-heavy site can never fill the inbox.')
+                    ->helperText('The only allowance a package carries — pages, photographs and documents. Email is NOT included in a package; it is sold per mailbox as the Enterprise email module.')
                     ->numeric()
                     ->required()
                     ->minValue(1),
@@ -79,9 +70,7 @@ class TiersRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('name')->label('Tier')->weight('bold'),
                 TextColumn::make('formatted_price')->label('Per month'),
-                TextColumn::make('mailboxes')->label('Addresses')->placeholder('Unlimited'),
-                TextColumn::make('mail_gb')->label('Email')->suffix('GB'),
-                TextColumn::make('media_gb')->label('Website')->suffix('GB'),
+                TextColumn::make('media_gb')->label('Website storage')->suffix('GB'),
                 IconColumn::make('is_default')->label('On the card')->boolean(),
             ])
             ->headerActions([CreateAction::make()->label('Add a tier')])
