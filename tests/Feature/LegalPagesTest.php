@@ -128,15 +128,15 @@ class LegalPagesTest extends TestCase
     /** The contracting party is the registered company, not the trading name. */
     public function test_the_registered_entity_is_named_on_the_legal_pages(): void
     {
-        foreach (['/about', '/terms', '/privacy'] as $path) {
+        foreach (['/terms', '/privacy'] as $path) {
             $html = $this->get($path)->assertOk()->getContent();
 
             $this->assertStringContainsString('7Hills Holdings (Pty) Ltd', $html, "{$path} omits the registered entity");
             $this->assertStringContainsStringIgnoringCase('trading', $html, "{$path} does not explain the trading name");
         }
 
-        // The statutory table has to spell the relationship out as its own row.
-        $this->get('/about')->assertOk()->assertSee('Trading as');
+        // The statutory list has to spell the relationship out as its own row.
+        $this->get('/terms')->assertOk()->assertSee('Trading as');
     }
 
     /** Internal notes to ourselves must never ship to visitors. */
@@ -150,10 +150,14 @@ class LegalPagesTest extends TestCase
         }
     }
 
-    /** ECTA s43 obliges us to publish who the customer is contracting with. */
-    public function test_the_about_page_publishes_the_ecta_company_disclosures(): void
+    /**
+     * ECTA s43 obliges us to publish who the customer is contracting with. It
+     * does not say where, so it lives in the terms rather than cluttering the
+     * About page — but it has to exist somewhere, and this asserts it does.
+     */
+    public function test_the_ecta_company_disclosures_are_published(): void
     {
-        $this->get('/about')
+        $this->get('/terms')
             ->assertOk()
             ->assertSee('Electronic Communications and Transactions Act')
             ->assertSee('Registration number')

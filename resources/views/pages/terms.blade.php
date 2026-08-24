@@ -1,4 +1,7 @@
-@php $brand = config('brand'); @endphp
+@php
+    $brand = config('brand');
+    $legal = $brand['legal'];
+@endphp
 
 <x-layouts.site title="Terms of service"
                 description="Our commercial terms in plain English: no upfront cost, one month's notice, your domain and data stay yours.">
@@ -150,7 +153,47 @@
                 not agree to.
             </p>
 
-            <h2>13. Governing law</h2>
+            <h2>13. Company information</h2>
+            <p>
+                Published in terms of section 43 of the
+                Electronic Communications and Transactions Act, 2002, so that you know who you
+                are contracting with.
+            </p>
+            <ul>
+                @foreach ([
+                    ['Registered name', $brand['legal_name']],
+                    ['Trading as', $brand['trading_as']],
+                    ['Legal status', 'Private company (Pty) Ltd'],
+                    ['Registration number', $legal['registration_number']],
+                    ['Place of registration', $legal['place_of_registration']],
+                    ['VAT number', $legal['vat_number']],
+                    ['Directors', $legal['directors']],
+                    ['Physical address', $legal['physical_address']],
+                    ['Address for service of legal documents', $legal['service_address']],
+                    ['Telephone', $brand['contact']['phone']],
+                    ['Email', $brand['contact']['email']],
+                ] as [$label, $value])
+                    <li><strong>{{ $label }}:</strong> {{ $value ?: '—' }}</li>
+                @endforeach
+            </ul>
+            <p>
+                <strong>Description of services.</strong> Design, development, hosting and support
+                of websites and business software; email services on a client's own domain;
+                optional software modules; IT support; and the procurement of hardware. Supplied
+                on a monthly subscription unless otherwise agreed in writing.
+            </p>
+            <p>
+                <strong>Prices.</strong> All prices shown on this website are in South African rand
+                and exclude VAT. They are an indication only and are confirmed solely in a written
+                quotation from us.
+            </p>
+            <p>
+                <strong>Complaints.</strong> Raise any complaint with us first at
+                <a href="mailto:{{ $brand['contact']['email'] }}">{{ $brand['contact']['email'] }}</a>.
+                We are not a member of any self-regulatory body governing our sector.
+            </p>
+
+            <h2>14. Governing law</h2>
             <p>
                 These terms are governed by the law of the Republic of South Africa.
             </p>

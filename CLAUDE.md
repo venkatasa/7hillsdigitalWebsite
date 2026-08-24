@@ -204,10 +204,13 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   the consent that *does* matter, the POPIA tick on the enquiry form. Dismissal
   is stored in `localStorage`, not a third cookie, so the notice's own statement
   about what it sets stays true.
-- **`/about` carries the ECTA s43 disclosures** — registered name, registration
-  number, directors, physical and service addresses, service description, price
-  basis. Blank statutory fields render as an em-dash rather than being hidden,
-  so an unfilled one is obvious.
+- **`/terms` carries the ECTA s43 disclosures** (clause 13) — registered name,
+  registration number, directors, physical and service addresses, service
+  description, price basis. The Act says the information must be *made
+  available*, not where, so it sits with the other legal detail rather than on
+  `/about`, which is a sales page. Blank statutory fields render as an em-dash
+  rather than being hidden, so an unfilled one is obvious. **Do not delete this
+  clause** — publishing it is a legal obligation, not a design choice.
 - **Hardware procurement stays quiet.** One small line on `/packages` and one in
   the footer, via `<x-hardware-note>` reading `brand.hardware.blurb`. No card,
   no heading, no section. We will happily source laptops and routers, but

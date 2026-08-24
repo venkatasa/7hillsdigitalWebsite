@@ -1,23 +1,5 @@
 @php
     $brand = config('brand');
-    $legal = $brand['legal'];
-
-    // ECTA s43(1) obliges us to publish these. A blank renders as an em-dash
-    // rather than being hidden, so an unfilled statutory field is obvious.
-    $companyInfo = [
-        ['Registered name', $brand['legal_name']],
-        ['Trading as', $brand['trading_as']],
-        ['Legal status', 'Private company (Pty) Ltd'],
-        ['Registration number', $legal['registration_number']],
-        ['Place of registration', $legal['place_of_registration']],
-        ['VAT number', $legal['vat_number']],
-        ['Directors', $legal['directors']],
-        ['Physical address', $legal['physical_address']],
-        ['Address for service of legal documents', $legal['service_address']],
-        ['Telephone', $brand['contact']['phone']],
-        ['Email', $brand['contact']['email']],
-        ['Information Officer', $legal['information_officer']],
-    ];
 @endphp
 
 <x-layouts.site title="About"
@@ -119,57 +101,6 @@
                     <a href="{{ route('contact') }}" class="btn-accent mt-6 w-full">Send us a message</a>
                 </div>
             </aside>
-        </div>
-    </section>
-
-    {{-- ── Statutory company information (ECTA s43) ─────────────────────── --}}
-    <section class="bg-brand-light section-tight">
-        <div class="container-page">
-            <div class="max-w-2xl" data-reveal>
-                <p class="eyebrow">Company information</p>
-                <h2 class="mt-3 h-section text-brand">Who you are actually dealing with.</h2>
-                <p class="mt-4 leading-relaxed text-secondary">
-                    Published in terms of section 43 of the
-                    Electronic Communications and Transactions Act, 2002.
-                </p>
-            </div>
-
-            <div class="mt-10 overflow-hidden rounded-2xl border border-hairline bg-white" data-reveal data-reveal-delay="80">
-                <dl class="divide-y divide-hairline text-sm">
-                    @foreach ($companyInfo as [$label, $value])
-                        <div class="grid gap-1 px-6 py-4 sm:grid-cols-[16rem_1fr] sm:gap-6">
-                            <dt class="font-semibold text-brand">{{ $label }}</dt>
-                            <dd class="{{ $value ? 'text-secondary' : 'text-muted' }}">{{ $value ?: '—' }}</dd>
-                        </div>
-                    @endforeach
-                </dl>
-            </div>
-
-            <div class="mt-8 max-w-3xl space-y-3 text-xs leading-relaxed text-muted" data-reveal>
-                <p>
-                    <strong class="text-secondary">Description of services.</strong> Design, development,
-                    hosting and support of websites and business software; email services on a client's
-                    own domain; optional software modules; IT support; and the procurement of hardware.
-                    Services are supplied on a monthly subscription unless otherwise agreed in writing.
-                </p>
-                <p>
-                    <strong class="text-secondary">Prices.</strong> All prices shown on this website are in
-                    South African rand and exclude VAT. They are an indication only and are confirmed
-                    solely in a written quotation from us. Our
-                    <a href="{{ route('terms') }}" class="underline underline-offset-2 hover:text-accent">terms of service</a>
-                    govern every engagement.
-                </p>
-                <p>
-                    <strong class="text-secondary">General information only.</strong> Nothing on this website
-                    is professional, legal, financial or technical advice, and nothing on it is an offer
-                    capable of acceptance. Specifications, availability and prices may change without notice.
-                </p>
-                <p>
-                    <strong class="text-secondary">Complaints.</strong> Raise any complaint with us first at
-                    <a href="mailto:{{ $brand['contact']['email'] }}" class="underline underline-offset-2 hover:text-accent">{{ $brand['contact']['email'] }}</a>.
-                    We are not a member of any self-regulatory body governing our sector.
-                </p>
-            </div>
         </div>
     </section>
 
