@@ -195,3 +195,245 @@
         @apply text-accent underline underline-offset-2 hover:text-brand;
     }
 }
+
+/* ==========================================================================
+   v2 design system — revamp prototype (docs/revamp/design/DESIGN_SYSTEM.md)
+   Additive only: nothing above this line changes, so the current pages render
+   exactly as before. Depth comes from tints and opacity of the brand tokens;
+   no new hue is introduced.
+   ========================================================================== */
+
+@theme {
+    --container-wide: 80rem;
+    --ease-out-soft: cubic-bezier(.2, .7, .2, 1);
+}
+
+@layer base {
+    :root {
+        --dur-fast: 140ms;
+        --dur-base: 220ms;
+        --dur-slow: 640ms;
+        --surface-raised: color-mix(in oklab, var(--brand-primary) 88%, white);
+        --line-dark: rgb(255 255 255 / 0.08);
+        --line-dark-strong: rgb(255 255 255 / 0.14);
+        --shadow-tint: color-mix(in oklab, var(--brand-dark) 100%, transparent);
+    }
+}
+
+@utility container-wide {
+    @apply mx-auto w-full max-w-[80rem] px-5 sm:px-8;
+}
+
+/* Type ---------------------------------------------------------------------- */
+
+@utility t-hero {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.6rem, 1.4rem + 4.1vw, 4.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+}
+
+@utility t-display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.2rem, 1.4rem + 2.8vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+}
+
+@utility t-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.85rem, 1.3rem + 1.6vw, 2.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+}
+
+@utility t-subtitle {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.15rem, 1rem + 0.5vw, 1.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+}
+
+@utility t-lede {
+    font-size: clamp(1.075rem, 1rem + 0.35vw, 1.3rem);
+    line-height: 1.6;
+    text-wrap: pretty;
+}
+
+@utility t-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+@utility t-figure {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    font-variant-numeric: tabular-nums;
+}
+
+@utility t-index {
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Surfaces ------------------------------------------------------------------ */
+
+@utility band-night {
+    @apply relative isolate overflow-hidden bg-brand-dark text-white;
+}
+
+@utility band-mist {
+    @apply relative isolate bg-brand-light;
+}
+
+@utility band-paper {
+    @apply relative isolate bg-white;
+}
+
+@utility section-v2 {
+    @apply py-20 sm:py-24 lg:py-32;
+}
+
+/* Resting card on light; warms on hover. The spotlight is painted from
+   --mx/--my, which app.js sets on pointermove for fine pointers only. */
+@utility tile {
+    @apply relative isolate overflow-hidden rounded-2xl border border-hairline bg-white;
+    box-shadow: 0 1px 2px -1px color-mix(in oklab, var(--brand-dark) 12%, transparent);
+    transition: border-color var(--dur-fast) var(--ease-out-soft), box-shadow var(--dur-base) var(--ease-out-soft), transform var(--dur-base) var(--ease-out-soft);
+}
+
+@utility tile-dark {
+    @apply relative isolate overflow-hidden rounded-2xl;
+    background: color-mix(in oklab, var(--brand-primary) 82%, var(--brand-dark));
+    border: 1px solid var(--line-dark);
+}
+
+@utility elevate-3 {
+    box-shadow:
+        0 40px 80px -32px color-mix(in oklab, var(--brand-dark) 55%, transparent),
+        0 16px 32px -16px color-mix(in oklab, var(--brand-dark) 35%, transparent);
+}
+
+/* A 1px edge that fades from mint — reserved for two or three featured
+   surfaces per page, never every card. */
+@utility edge-glint {
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(140deg, color-mix(in oklab, var(--brand-mint) 70%, transparent), transparent 42%, transparent 70%, color-mix(in oklab, var(--brand-mint) 25%, transparent));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+}
+
+/* Seven hills, mapped. The contour artwork is a mask, so its colour is always
+   a brand token — no hex lives in the SVG. */
+@utility contours {
+    background-color: var(--brand-mint);
+    -webkit-mask: url('/images/ui/contours.svg') right center / cover no-repeat;
+    mask: url('/images/ui/contours.svg') right center / cover no-repeat;
+    pointer-events: none;
+}
+
+/* Buttons (v2) -------------------------------------------------------------- */
+
+@utility btn-v2 {
+    @apply inline-flex min-h-12 items-center justify-center gap-2.5 rounded-[10px] px-5 text-[0.95rem] font-semibold whitespace-nowrap;
+    transition: transform var(--dur-fast) var(--ease-out-soft), box-shadow var(--dur-fast) var(--ease-out-soft), background-color var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
+}
+
+@utility btn-v2-lg {
+    @apply min-h-14 px-6 text-base;
+}
+
+@layer components {
+    .btn-v2 .btn-arrow {
+        transition: transform var(--dur-fast) var(--ease-out-soft);
+    }
+
+    @media (hover: hover) {
+        .btn-v2:hover { transform: translateY(-1px); }
+        .btn-v2:hover .btn-arrow { transform: translateX(3px); }
+        .btn-v2:active { transform: translateY(0); }
+
+        .tile:hover {
+            border-color: color-mix(in oklab, var(--brand-accent) 35%, var(--brand-hairline));
+            box-shadow: 0 18px 40px -24px color-mix(in oklab, var(--brand-dark) 35%, transparent);
+        }
+    }
+
+    .tile[data-spotlight]::after,
+    .tile-dark[data-spotlight]::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        opacity: 0;
+        background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--brand-mint) 12%, transparent), transparent 60%);
+        transition: opacity var(--dur-base) var(--ease-out-soft);
+        pointer-events: none;
+    }
+
+    .tile[data-spotlight]:hover::after,
+    .tile-dark[data-spotlight]:hover::after {
+        opacity: 1;
+    }
+
+    /* Focus: 2px ring, accent on light and mint on dark. */
+    .on-dark :focus-visible {
+        outline-color: var(--brand-mint);
+    }
+
+    /* Device frames hold their box before the image arrives. */
+    .frame-shot {
+        background: color-mix(in oklab, var(--brand-primary) 92%, white);
+    }
+
+    /* Header over the hero is transparent; past it, paper with blur. */
+    .hdr {
+        transition: background-color var(--dur-base) var(--ease-out-soft), border-color var(--dur-base), box-shadow var(--dur-base);
+    }
+
+    /* Hero depth: frames drift a few pixels with the pointer (desktop only). */
+    [data-depth] {
+        transition: transform 600ms var(--ease-out-soft);
+        will-change: transform;
+    }
+
+    /* Horizontal scrollers on mobile: snap, and hide the bar without hiding
+       the affordance (the next item peeks in). */
+    .snap-row {
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+    .snap-row::-webkit-scrollbar { display: none; }
+    .snap-row > * { scroll-snap-align: start; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .btn-v2, .btn-v2 .btn-arrow, .tile, .hdr, [data-depth] {
+            transition: none !important;
+            transform: none !important;
+        }
+        .tile[data-spotlight]::after, .tile-dark[data-spotlight]::after { display: none; }
+    }
+}

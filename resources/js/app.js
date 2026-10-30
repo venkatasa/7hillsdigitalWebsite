@@ -76,3 +76,37 @@ const reveal = () => {
 };
 
 document.addEventListener('DOMContentLoaded', reveal);
+
+/*
+ | v2 pointer details — the card spotlight and the hero's depth.
+ |
+ | Both are decoration. They run only for a fine pointer (mouse or trackpad)
+ | and never under prefers-reduced-motion, so touch screens and anyone who
+ | asked for less movement get a still, complete page.
+ */
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (finePointer && ! calm) {
+    document.addEventListener('pointermove', (event) => {
+        const tile = event.target.closest?.('[data-spotlight]');
+        if (! tile) return;
+        const box = tile.getBoundingClientRect();
+        tile.style.setProperty('--mx', `${event.clientX - box.left}px`);
+        tile.style.setProperty('--my', `${event.clientY - box.top}px`);
+    }, { passive: true });
+
+    document.querySelectorAll('[data-depth-scene]').forEach((scene) => {
+        const layers = scene.querySelectorAll('[data-depth]');
+        scene.addEventListener('pointermove', (event) => {
+            const box = scene.getBoundingClientRect();
+            const x = (event.clientX - box.left) / box.width - 0.5;
+            const y = (event.clientY - box.top) / box.height - 0.5;
+            layers.forEach((layer) => {
+                const d = Number(layer.dataset.depth || 1) * 6;
+                layer.style.transform = `translate3d(${(x * d).toFixed(2)}px, ${(y * d).toFixed(2)}px, 0)`;
+            });
+        }, { passive: true });
+        scene.addEventListener('pointerleave', () => layers.forEach((l) => { l.style.transform = ''; }));
+    });
+}

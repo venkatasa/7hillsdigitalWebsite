@@ -9,7 +9,9 @@ class PageController extends Controller
 {
     public function home()
     {
-        return view('pages.home', [
+        // The v2 homepage is a prototype for visual approval, served only where
+        // REVAMP_HOME_V2 is switched on (staging). See config/revamp.php.
+        return view(config('revamp.home_v2') ? 'pages.home-v2' : 'pages.home', [
             'packages' => Package::published()->with('tiers')->orderBy('sort')->get(),
             'addOns' => AddOn::published()->orderBy('sort')->get(),
         ]);

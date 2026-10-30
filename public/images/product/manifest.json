@@ -1,0 +1,159 @@
+{
+  "_rules": [
+    "Every image in this folder must have an entry here.",
+    "Allowed sources: demo (public demo tenant pages), staging-fictional (our own software on staging, fictional data only), client-public (a client's PUBLIC site, with written permission for the exact image), illustration.",
+    "Never a client back office. Never stock photography. Never a fabricated dashboard."
+  ],
+  "images": {
+    "demo-realty-desktop": {
+      "file": "images/product/demo-realty-desktop.webp",
+      "source": "demo",
+      "page": "/demos/realty",
+      "captured": "30/10/2026",
+      "width": 1440,
+      "height": 900,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Realty demo site on a desktop browser — a fictional business built on the 7Hills platform."
+    },
+    "demo-realty-mobile": {
+      "file": "images/product/demo-realty-mobile.webp",
+      "source": "demo",
+      "page": "/demos/realty",
+      "captured": "30/10/2026",
+      "width": 780,
+      "height": 1688,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Realty demo site on a phone — a fictional business built on the 7Hills platform."
+    },
+    "demo-auto-desktop": {
+      "file": "images/product/demo-auto-desktop.webp",
+      "source": "demo",
+      "page": "/demos/auto",
+      "captured": "30/10/2026",
+      "width": 1440,
+      "height": 900,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Auto demo site on a desktop browser — a fictional business built on the 7Hills platform."
+    },
+    "demo-auto-mobile": {
+      "file": "images/product/demo-auto-mobile.webp",
+      "source": "demo",
+      "page": "/demos/auto",
+      "captured": "30/10/2026",
+      "width": 780,
+      "height": 1688,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Auto demo site on a phone — a fictional business built on the 7Hills platform."
+    },
+    "demo-careers-desktop": {
+      "file": "images/product/demo-careers-desktop.webp",
+      "source": "demo",
+      "page": "/demos/careers",
+      "captured": "30/10/2026",
+      "width": 1440,
+      "height": 900,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Careers demo site on a desktop browser — a fictional business built on the 7Hills platform."
+    },
+    "demo-careers-mobile": {
+      "file": "images/product/demo-careers-mobile.webp",
+      "source": "demo",
+      "page": "/demos/careers",
+      "captured": "30/10/2026",
+      "width": 780,
+      "height": 1688,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Careers demo site on a phone — a fictional business built on the 7Hills platform."
+    },
+    "demo-stay-desktop": {
+      "file": "images/product/demo-stay-desktop.webp",
+      "source": "demo",
+      "page": "/demos/stay",
+      "captured": "30/10/2026",
+      "width": 1440,
+      "height": 900,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Stay demo site on a desktop browser — a fictional business built on the 7Hills platform."
+    },
+    "demo-stay-mobile": {
+      "file": "images/product/demo-stay-mobile.webp",
+      "source": "demo",
+      "page": "/demos/stay",
+      "captured": "30/10/2026",
+      "width": 780,
+      "height": 1688,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Stay demo site on a phone — a fictional business built on the 7Hills platform."
+    },
+    "demo-plant-desktop": {
+      "file": "images/product/demo-plant-desktop.webp",
+      "source": "demo",
+      "page": "/demos/plant",
+      "captured": "30/10/2026",
+      "width": 1440,
+      "height": 900,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Plant Hire demo site on a desktop browser — a fictional business built on the 7Hills platform."
+    },
+    "demo-plant-mobile": {
+      "file": "images/product/demo-plant-mobile.webp",
+      "source": "demo",
+      "page": "/demos/plant",
+      "captured": "30/10/2026",
+      "width": 780,
+      "height": 1688,
+      "label": "Demo tenant · fictional business",
+      "alt": "The 7Hills Plant Hire demo site on a phone — a fictional business built on the 7Hills platform."
+    },
+    "admin-dashboard": {
+      "file": "images/product/admin-dashboard.webp",
+      "source": "staging-fictional",
+      "page": "/admin",
+      "captured": "30/10/2026",
+      "width": 1440,
+      "height": 900,
+      "label": "Back office · staging install, fictional data",
+      "alt": "The 7Hills back office showing the dashboard, on a staging install with fictional demo enquiries."
+    },
+    "admin-enquiries": {
+      "file": "images/product/admin-enquiries.webp",
+      "source": "staging-fictional",
+      "page": "/admin/enquiries",
+      "captured": "30/10/2026",
+      "width": 1440,
+      "height": 900,
+      "label": "Back office · staging install, fictional data",
+      "alt": "The 7Hills back office showing the enquiries list, on a staging install with fictional demo enquiries."
+    },
+    "admin-packages": {
+      "file": "images/product/admin-packages.webp",
+      "source": "staging-fictional",
+      "page": "/admin/packages",
+      "captured": "30/10/2026",
+      "width": 1440,
+      "height": 900,
+      "label": "Back office · staging install, fictional data",
+      "alt": "The 7Hills back office showing the packages and pricing list, on a staging install with fictional demo enquiries."
+    },
+    "admin-add-ons": {
+      "file": "images/product/admin-add-ons.webp",
+      "source": "staging-fictional",
+      "page": "/admin/add-ons",
+      "captured": "30/10/2026",
+      "width": 1440,
+      "height": 900,
+      "label": "Back office · staging install, fictional data",
+      "alt": "The 7Hills back office showing the add-on modules list, on a staging install with fictional demo enquiries."
+    },
+    "admin-enquiries-mobile": {
+      "file": "images/product/admin-enquiries-mobile.webp",
+      "source": "staging-fictional",
+      "page": "/admin/enquiries",
+      "captured": "30/10/2026",
+      "width": 780,
+      "height": 1688,
+      "label": "Back office · staging install, fictional data",
+      "alt": "The 7Hills back office showing the enquiries list on a phone, on a staging install with fictional demo enquiries."
+    }
+  }
+}
