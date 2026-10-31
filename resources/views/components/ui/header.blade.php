@@ -12,9 +12,10 @@
     $home = request()->routeIs('home') ? '' : route('home');
 
     /*
-     | Service, solution and industry pages arrive in Phases 2–3. Until then
-     | every menu link opens the matching place on the homepage, never a URL
-     | that would 404. Phase 4 replaces /contact with /quote.
+     | Services link to their own pages (Phase 2). Solution and industry pages
+     | arrive in Phase 3: until then solutions open their service line and
+     | industries open their tab on the homepage. Phase 4 replaces /contact
+     | with /quote.
      */
     $quote = route('contact', ['type' => 'project', 'from' => 'header']);
     $solutions = config('revamp.solutions', []);
@@ -83,9 +84,8 @@
                                     <ul class="mt-5 space-y-0.5">
                                         @foreach ($lines as $slug => $l)
                                             <li>
-                                                <a href="{{ $home }}#line-{{ $slug }}"
+                                                <a href="{{ route('services.show', $slug) }}"
                                                    @mouseenter="line = '{{ $slug }}'" @focus="line = '{{ $slug }}'"
-                                                   @click="go($event, 'show-line', '{{ $slug }}')"
                                                    :class="{ 'bg-white/[0.07] text-white': line === '{{ $slug }}', 'text-white/60 hover:text-white': ! (line === '{{ $slug }}') }"
                                                    class="menu-line group flex items-center gap-3.5 rounded-xl px-3.5 py-2.5 {{ $loop->first ? 'bg-white/[0.07] text-white' : 'text-white/60' }}"
                                                    style="--motif-accent: var(--brand-mint)">
@@ -117,7 +117,7 @@
                                             <ul class="mt-7 grid grid-cols-2 gap-x-8 gap-y-1">
                                                 @foreach ($l['services'] as $s)
                                                     <li>
-                                                        <a href="{{ $home }}#line-{{ $slug }}" @click="go($event, 'show-line', '{{ $slug }}')"
+                                                        <a href="{{ \App\Support\Revamp::href($s['slug']) }}"
                                                            class="flex items-center gap-2.5 rounded-lg py-2 text-sm text-white/80 hover:text-mint">
                                                             <span @class(['h-1.5 w-1.5 shrink-0 rounded-full', 'bg-mint' => ! $s['preview'], 'border border-white/40' => $s['preview']]) aria-hidden="true"></span>
                                                             {{ $s['name'] }}
@@ -135,7 +135,7 @@
                                     <p class="text-white/50">{{ $serviceCount }} services, one team, one invoice.</p>
                                     <div class="flex items-center gap-6">
                                         <a href="{{ route('packages.index') }}" class="font-semibold text-white/80 hover:text-white">Ready-to-use platforms</a>
-                                        <a href="{{ $home }}#catalogue" @click="close()" class="font-semibold text-mint hover:brightness-110">The full catalogue &rarr;</a>
+                                        <a href="{{ route('services.index') }}" class="font-semibold text-mint hover:brightness-110">All services &rarr;</a>
                                     </div>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
                                 @if ($key === 'solutions')
                                     @foreach ($solutions as $s)
                                         @continue(isset($s[3]) && ! \App\Support\Revamp::visible($s[3]))
-                                        <a href="{{ $home }}#line-{{ $s[2] }}" @click="go($event, 'show-line', '{{ $s[2] }}')" class="rounded-xl p-3 hover:bg-brand-light">
+                                        <a href="{{ route('services.show', $s[2]) }}" class="rounded-xl p-3 hover:bg-brand-light">
                                             <span class="block text-sm font-semibold text-brand">{{ $s[0] }}</span>
                                             <span class="block text-xs text-muted">{{ $s[1] }}</span>
                                         </a>
@@ -221,7 +221,7 @@
                             @if ($key === 'services')
                                 @foreach ($lines as $slug => $l)
                                     <li>
-                                        <a href="{{ $home }}#line-{{ $slug }}" @click="go($event, 'show-line', '{{ $slug }}')"
+                                        <a href="{{ route('services.show', $slug) }}"
                                            class="flex items-center gap-3 rounded-lg px-2 py-2.5 text-white/80 hover:bg-white/5 hover:text-white" style="--motif-accent: var(--brand-mint)">
                                             <x-ui.motif :name="$l['motif']" class="h-5 w-5 text-white/50" />
                                             <span class="flex-1">{{ $l['name'] }}</span>
@@ -230,10 +230,11 @@
                                         </a>
                                     </li>
                                 @endforeach
+                                <li><a href="{{ route('services.index') }}" class="block rounded-lg px-2 py-2.5 font-semibold text-mint">All services &rarr;</a></li>
                             @elseif ($key === 'solutions')
                                 @foreach ($solutions as $s)
                                     @continue(isset($s[3]) && ! \App\Support\Revamp::visible($s[3]))
-                                    <li><a href="{{ $home }}#line-{{ $s[2] }}" @click="go($event, 'show-line', '{{ $s[2] }}')" class="block rounded-lg px-2 py-2.5 text-white/80 hover:bg-white/5 hover:text-white">{{ $s[0] }}</a></li>
+                                    <li><a href="{{ route('services.show', $s[2]) }}" class="block rounded-lg px-2 py-2.5 text-white/80 hover:bg-white/5 hover:text-white">{{ $s[0] }}</a></li>
                                 @endforeach
                             @else
                                 @foreach ($industries as $slug => $industry)

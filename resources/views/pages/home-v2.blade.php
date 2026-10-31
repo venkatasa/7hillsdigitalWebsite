@@ -97,7 +97,7 @@
             <ol class="container-wide snap-row flex overflow-x-auto lg:grid lg:overflow-visible" style="grid-template-columns: repeat({{ count($lines) }}, minmax(0, 1fr))">
                 @foreach ($lines as $slug => $l)
                     <li class="w-[44%] shrink-0 border-r border-white/10 first:border-l sm:w-[30%] lg:w-auto">
-                        <a href="#line-{{ $slug }}" @click="$dispatch('show-line', '{{ $slug }}')"
+                        <a href="{{ route('services.show', $slug) }}"
                            class="cap-link relative flex h-full flex-col gap-3 px-4 py-5 text-white/70 hover:text-white lg:px-5" style="--motif-accent: var(--brand-mint)">
                             <span class="flex items-center justify-between">
                                 <span class="t-index text-white/40">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
@@ -124,7 +124,7 @@
             <div class="snap-row -mx-5 mt-12 flex gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:mt-14 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
                 @foreach ($featured as $slug => $s)
                     @php $lead = $loop->first; @endphp
-                    <a href="#line-{{ $s['line'] }}" @click="$dispatch('show-line', '{{ $s['line'] }}')"
+                    <a href="{{ Revamp::href($slug) }}"
                        @class([
                            'svc-card tile group flex w-[78%] shrink-0 flex-col p-6 sm:w-auto sm:p-7',
                            'sm:col-span-2 lg:row-span-2' => $lead,
@@ -153,17 +153,17 @@
                         @endif
                         {{-- The lead card shows a screenshot from sm up, and the arrow on phones. --}}
                         <span @class(['svc-arrow mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-accent', 'sm:hidden' => $lead])>
-                            See the line <span aria-hidden="true">&rarr;</span>
+                            {{ Revamp::pageFor($slug) ? 'Read more' : 'See the line' }} <span aria-hidden="true">&rarr;</span>
                         </span>
                     </a>
                 @endforeach
 
-                <a href="#catalogue" class="tile-dark on-dark group flex w-[78%] shrink-0 flex-col justify-between p-6 text-white sm:w-auto sm:p-7" data-reveal data-reveal-delay="400">
+                <a href="{{ route('services.index') }}" class="tile-dark on-dark group flex w-[78%] shrink-0 flex-col justify-between p-6 text-white sm:w-auto sm:p-7" data-reveal data-reveal-delay="400">
                     <div class="contours absolute inset-0 -z-10 opacity-[0.12]" aria-hidden="true"></div>
                     <p class="t-figure text-5xl text-mint">{{ $serviceCount }}</p>
                     <div>
                         <p class="mt-6 font-display text-lg font-bold">Every service, in one list</p>
-                        <span class="svc-arrow mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-mint">The full catalogue <span aria-hidden="true">&darr;</span></span>
+                        <span class="svc-arrow mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-mint">All services <span aria-hidden="true">&rarr;</span></span>
                     </div>
                 </a>
             </div>
@@ -193,7 +193,7 @@
                             {{-- A heading from sm up; on phones the same row is a button that opens the list. --}}
                             <h4 class="nojs-flex hidden items-center gap-3 sm:flex">
                                 <x-ui.motif :name="$l['motif']" class="h-7 w-7 text-brand" />
-                                <span class="font-display text-lg font-bold text-brand">{{ $l['name'] }}</span>
+                                <a href="{{ route('services.show', $slug) }}" class="font-display text-lg font-bold text-brand hover:text-accent">{{ $l['name'] }}</a>
                             </h4>
                             <button type="button" @click="open = ! open" :aria-expanded="open ? 'true' : 'false'" aria-controls="line-list-{{ $slug }}"
                                     class="js-only flex w-full items-center gap-3 text-left sm:hidden">
@@ -208,7 +208,7 @@
                                     @foreach ($l['services'] as $s)
                                         <li class="flex items-baseline gap-2.5 text-[0.92rem] leading-snug text-secondary">
                                             <span @class(['h-1.5 w-1.5 shrink-0 translate-y-[-2px] rounded-full', 'bg-accent' => ! $s['preview'], 'border border-brand/50' => $s['preview']]) aria-hidden="true"></span>
-                                            <span @class(['text-muted' => $s['preview']])>{{ $s['name'] }}@if ($s['preview'])<span class="sr-only"> (preview only)</span>@endif</span>
+                                            <a href="{{ Revamp::href($s['slug']) }}" @class(['hover:text-accent', 'text-muted' => $s['preview']])>{{ $s['name'] }}@if ($s['preview'])<span class="sr-only"> (preview only)</span>@endif</a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -247,7 +247,7 @@
                 @foreach (config('revamp.solutions') as $i => $s)
                     @continue(isset($s[3]) && ! Revamp::visible($s[3]))
                     <li data-reveal data-reveal-delay="{{ $i * 40 }}">
-                        <a href="#line-{{ $s[2] }}" @click="$dispatch('show-line', '{{ $s[2] }}')"
+                        <a href="{{ route('services.show', $s[2]) }}"
                            class="ledger-row group grid grid-cols-[2.25rem_1fr_auto] items-baseline gap-x-4 py-5 sm:py-6">
                             <span class="t-index text-accent">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                             <span>

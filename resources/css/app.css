@@ -528,3 +528,17 @@
         .svc-card .svc-arrow, .svc-card .svc-motif, .ledger-row .ledger-arrow, .cat-line, .cap-link::before, .nav-chevron { transition: none !important; }
     }
 }
+
+/* Service pages (revamp phase 2) ------------------------------------------- */
+@layer components {
+    .faq-icon { transition: transform 220ms var(--ease-out-quint); }
+    .faq[open] .faq-icon { transform: rotate(45deg); }
+    .faq summary:focus-visible { outline: 2px solid var(--brand-accent); outline-offset: 4px; }
+    .faq[open] .faq-body { animation: faq-in 260ms var(--ease-out-quint); }
+    @keyframes faq-in { from { opacity: 0; transform: translateY(-4px); } }
+
+    @media (prefers-reduced-motion: reduce) {
+        .faq-icon { transition: none; }
+        .faq[open] .faq-body { animation: none; }
+    }
+}

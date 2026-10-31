@@ -35,10 +35,12 @@ class Revamp
         $out = [];
 
         foreach (config('revamp.lines', []) as $lineSlug => $line) {
-            foreach ($line['services'] as $slug => [$name, $availability]) {
+            foreach ($line['services'] as $slug => $def) {
+                [$name, $availability] = $def;
                 $out[$slug] = [
                     'slug' => $slug,
                     'name' => $name,
+                    'summary' => $def[2] ?? null,
                     'line' => $lineSlug,
                     'availability' => $availability,
                     'preview' => ! in_array($availability, self::PUBLISHABLE, true),
@@ -125,6 +127,73 @@ class Revamp
             config('revamp.quote_types', []),
             fn ($type) => self::visible($type[2]),
         );
+    }
+
+    /*
+     | Dedicated service pages. Each is a content file in resources/content/services,
+     | gated by the catalogue service it sells (`gate`) and serving the services it
+     | lists under `covers`. A page whose gate may not render does not exist here,
+     | so on production its URL is a 404 like any other unknown page.
+     */
+    public static function pageSlugs(): array
+    {
+        return collect(glob(resource_path('content/services/*.php')))
+            ->map(fn ($f) => basename($f, '.php'))
+            ->sort()->values()->all();
+    }
+
+    public static function page(string $slug): ?array
+    {
+        $file = resource_path("content/services/{$slug}.php");
+
+        if (! preg_match('/^[a-z0-9-]+$/', $slug) || ! is_file($file)) {
+            return null;
+        }
+
+        $page = require $file;
+
+        if (! self::visible($page['gate'])) {
+            return null;
+        }
+
+        return $page + ['slug' => $slug, 'preview' => self::catalogue()[$page['gate']]['preview']];
+    }
+
+    /** Every page that may render here, keyed by slug. */
+    public static function pages(): array
+    {
+        // Menus and catalogues ask for this once per link; build it once per
+        // environment state rather than re-reading every content file each time.
+        static $cache = [];
+        $key = (self::previewing() ? 'preview|' : 'live|').app()->environment();
+
+        return $cache[$key] ??= collect(self::pageSlugs())
+            ->mapWithKeys(fn ($slug) => [$slug => self::page($slug)])
+            ->filter()->all();
+    }
+
+    /** The page that sells a catalogue service, if one may render. */
+    public static function pageFor(string $service): ?string
+    {
+        foreach (self::pages() as $slug => $page) {
+            if ($page['gate'] === $service || in_array($service, $page['covers'] ?? [], true)) {
+                return $slug;
+            }
+        }
+
+        return null;
+    }
+
+    /** Where a catalogue service links: its page if it has one, else its line. */
+    public static function href(string $service): string
+    {
+        if ($page = self::pageFor($service)) {
+            return route('services.show', $page);
+        }
+
+        $line = self::catalogue()[$service]['line'];
+
+        return route('services.show', $line).'#'.$service;
     }
 
     public static function industries(): array

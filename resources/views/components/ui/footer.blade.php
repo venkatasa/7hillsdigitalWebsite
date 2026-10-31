@@ -26,8 +26,9 @@
                 <h2 class="t-label text-mint">Services</h2>
                 <ul class="mt-5 space-y-3 text-sm">
                     @foreach ($lines as $slug => $line)
-                        <li><a href="{{ request()->routeIs('home') ? '' : route('home') }}#line-{{ $slug }}" class="hover:text-white">{{ $line['name'] }}</a></li>
+                        <li><a href="{{ route('services.show', $slug) }}" class="hover:text-white">{{ $line['name'] }}</a></li>
                     @endforeach
+                    <li><a href="{{ route('services.index') }}" class="font-semibold text-mint hover:brightness-110">All services &rarr;</a></li>
                 </ul>
             </div>
             <div>

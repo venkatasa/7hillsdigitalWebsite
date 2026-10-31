@@ -22,7 +22,7 @@ const page = async (w, h, opts = {}) => {
 let p = await page(1440, 900);
 await p.hover('[aria-controls=menu-services]'); await wait(400);
 ok('services menu opens on hover', await vis(p, '#menu-services'));
-await p.hover('#menu-services a[href*="#line-business-applications"]'); await wait(300);
+await p.hover('#menu-services a[href$="/services/business-applications"]'); await wait(300);
 ok('hovering a line shows its services', await p.evaluate(() => [...document.querySelectorAll('#menu-services .menu-pane')].filter((e) => getComputedStyle(e).display !== 'none').map((e) => e.textContent).join('').includes('CRM Systems')));
 ok('only the hovered line is highlighted', await p.evaluate(() => [...document.querySelectorAll('#menu-services .menu-line')].filter((a) => a.classList.contains('text-white') && a.classList.contains('bg-white/[0.07]')).length === 1));
 await p.mouse.move(700, 880); await wait(500);
@@ -32,14 +32,14 @@ ok('menu closes when the pointer leaves', !(await vis(p, '#menu-services')));
 await p.focus('[aria-controls=menu-services]'); await p.keyboard.press('Enter'); await wait(350);
 ok('Enter opens the services menu, aria-expanded true', (await vis(p, '#menu-services')) && await p.evaluate(() => document.querySelector('[aria-controls=menu-services]').getAttribute('aria-expanded') === 'true'));
 await p.keyboard.press('Tab'); await p.keyboard.press('Tab'); await wait(250);
-ok('tabbing onto a line shows that line', await p.evaluate(() => { const a = document.activeElement; const slug = a.getAttribute('href')?.split('#line-')[1]; return !!slug && [...document.querySelectorAll('#menu-services .menu-pane')].some((e) => getComputedStyle(e).display !== 'none' && e.textContent.length > 0); }));
+ok('tabbing onto a line shows that line', await p.evaluate(() => { const a = document.activeElement; if (!a.classList.contains('menu-line')) return false; const name = a.querySelector('span.flex-1').textContent.trim(); return [...document.querySelectorAll('#menu-services .menu-pane')].filter((e) => getComputedStyle(e).display !== 'none').map((e) => e.querySelector('p').textContent.trim()).includes(name); }));
 await p.keyboard.press('Escape'); await wait(300);
 ok('Esc closes and returns focus to Services', !(await vis(p, '#menu-services')) && await p.evaluate(() => document.activeElement.getAttribute('aria-controls') === 'menu-services'));
 
-// A menu link lands on the catalogue line and outlines it
+// A service link in the menu opens that service's page (phase 2)
 await p.click('[aria-controls=menu-services]'); await wait(350);
-await p.click('#menu-services .menu-pane:not([style*="none"]) ul a'); await wait(1200);
-ok('menu service link scrolls to its catalogue line', await p.evaluate(() => { const el = document.querySelector('.cat-line.is-target'); if (!el) return false; const r = el.getBoundingClientRect(); return r.top >= 0 && r.top < innerHeight; }));
+await Promise.all([p.waitForNavigation({ waitUntil: 'networkidle0' }), p.click('#menu-services .menu-pane:not([style*="none"]) ul a')]);
+ok('menu service link opens its page', /\/services\/[a-z-]+/.test(p.url()) && await p.evaluate(() => !!document.querySelector('h1')), p.url()); await p.goto(URL, { waitUntil: 'networkidle0' });
 
 // Industries dropdown dispatches into the tabs
 await p.click('[aria-controls=menu-industries]'); await wait(350);
@@ -55,7 +55,7 @@ await p.evaluate(() => window.scrollTo({ top: 2500, behavior: 'instant' })); awa
 ok('header is paper past the hero', await p.evaluate(() => document.querySelector('header').classList.contains('bg-white/85') && ! document.querySelector('header').classList.contains('bg-brand-dark/80')));
 
 // Every in-page link resolves
-const dead = await p.evaluate(() => [...document.querySelectorAll('a[href*="#"]')].map((a) => a.getAttribute('href').split('#')[1]).filter((id) => id && !document.getElementById(id)));
+const dead = await p.evaluate(() => [...document.querySelectorAll('a[href*="#"]')].map((a) => new URL(a.href)).filter((u) => u.pathname === location.pathname).map((u) => u.hash.slice(1)).filter((id) => id && !document.getElementById(id)));
 ok('no in-page link points at a missing id', dead.length === 0, JSON.stringify([...new Set(dead)]));
 const hrefs = await p.evaluate(() => [...new Set([...document.querySelectorAll('a[href]')].map((a) => a.href).filter((h) => h.startsWith(location.origin)).map((h) => h.split('#')[0]))]);
 const broken = [];
@@ -74,9 +74,9 @@ await p.click('[aria-controls=mobile-sheet]'); await wait(450);
 ok('mobile: sheet opens, scroll locked, focus inside', await p.evaluate(() => getComputedStyle(document.getElementById('mobile-sheet')).display !== 'none' && document.documentElement.classList.contains('overflow-hidden') && document.getElementById('mobile-sheet').contains(document.activeElement)));
 ok('mobile: the sheet actually covers the screen below the header', await p.evaluate(() => { const r = document.getElementById('mobile-sheet').getBoundingClientRect(); const h = document.querySelector('header').getBoundingClientRect(); return r.height > innerHeight * 0.6 && Math.abs(r.top - h.bottom) < 2; }), await p.evaluate(() => JSON.stringify(document.getElementById('mobile-sheet').getBoundingClientRect())));
 await p.evaluate(() => document.querySelector('#mobile-sheet button').click()); await wait(450);
-await p.evaluate(() => [...document.querySelectorAll('#mobile-sheet a')].find((a) => a.href.includes('#line-ai-data-and-automation')).click()); await wait(1300);
-ok('mobile: a service line link closes the sheet and opens that line', await p.evaluate(() => getComputedStyle(document.getElementById('mobile-sheet')).display === 'none' && ! document.documentElement.classList.contains('overflow-hidden') && getComputedStyle(document.getElementById('line-list-ai-data-and-automation')).display !== 'none'));
-ok('mobile: other catalogue lines stay collapsed', await p.evaluate(() => getComputedStyle(document.getElementById('line-list-software-development')).display === 'none'));
+await Promise.all([p.waitForNavigation({ waitUntil: 'networkidle0' }), p.evaluate(() => [...document.querySelectorAll('#mobile-sheet a')].find((a) => a.href.endsWith('/services/ai-data-and-automation')).click())]);
+ok('mobile: a service line link opens that line page with the sheet closed', p.url().endsWith('/services/ai-data-and-automation') && await p.evaluate(() => getComputedStyle(document.getElementById('mobile-sheet')).display === 'none' && ! document.documentElement.classList.contains('overflow-hidden')));
+await p.goto(URL, { waitUntil: 'networkidle0' }); ok('mobile: homepage catalogue lines start collapsed', await p.evaluate(() => getComputedStyle(document.getElementById('line-list-software-development')).display === 'none'));
 await p.close();
 
 // Reduced motion

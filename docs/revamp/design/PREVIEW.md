@@ -8,8 +8,18 @@ configuration and `/opt/docker/7hillsdigital` are unchanged.
 
 ## 1. Open it
 
-Staging listens on **`127.0.0.1:8096`** on the server (192.168.90.226) only. It is
-deliberately not exposed to the LAN. From your own computer, open an SSH tunnel:
+**Since 31/10/2026 staging is on the LAN, beside production:**
+
+| | URL |
+|---|---|
+| Live site (unchanged) | http://192.168.90.226:8091 |
+| Revamp (staging) | **http://192.168.90.226:8096** |
+
+Do **not** point the public Cloudflare hostname at :8096 as it stands. Staging shows
+unconfirmed services, sends mail to a log and saves enquiries to its own database copy,
+so leads would be lost. A production-mode release candidate is a separate step.
+
+From outside the LAN, an SSH tunnel still works:
 
 ```bash
 ssh -N -L 8096:127.0.0.1:8096 buntu@192.168.90.226
