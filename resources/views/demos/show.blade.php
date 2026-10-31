@@ -16,7 +16,7 @@
                 <p class="mt-6 max-w-xl lede text-white/75" data-reveal data-reveal-delay="120">{{ $demo['hero_copy'] }}</p>
 
                 <div class="mt-9 flex flex-wrap gap-3" data-reveal data-reveal-delay="180">
-                    <a href="#listings" class="btn btn-lg text-white hover:brightness-110" style="background: var(--demo-accent)">
+                    <a href="#listings" class="btn btn-lg text-white hover:brightness-110" style="background: var(--demo-accent-strong)">
                         {{ $demo['hero_cta'] }}
                     </a>
                     <a href="#contact" class="btn btn-lg border border-white/30 text-white hover:bg-white/10">Contact us</a>
@@ -41,7 +41,7 @@
                     <p class="mt-1 font-display text-sm font-bold" style="color: var(--demo-primary)">
                         {{ \Illuminate\Support\Str::limit($demo['items'][0]['title'], 26) }}
                     </p>
-                    <p class="text-xs font-semibold" style="color: var(--demo-accent)">{{ $demo['items'][0]['price'] }}</p>
+                    <p class="text-xs font-semibold" style="color: var(--demo-accent-strong)">{{ $demo['items'][0]['price'] }}</p>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
         <div class="container-page">
             <div class="flex flex-wrap items-end justify-between gap-6" data-reveal>
                 <div class="max-w-2xl">
-                    <p class="text-xs font-bold uppercase tracking-[0.18em]" style="color: var(--demo-accent)">
+                    <p class="text-xs font-bold uppercase tracking-[0.18em]" style="color: var(--demo-accent-strong)">
                         {{ $demo['items_eyebrow'] }}
                     </p>
                     <h2 class="mt-3 h-section" style="color: var(--demo-primary)">{{ $demo['items_title'] }}</h2>
@@ -66,6 +66,7 @@
                              data-reveal data-reveal-delay="{{ ($i % 3) * 80 }}">
                         <div class="relative overflow-hidden">
                             <x-demo-art :kind="$demo['art']" :demo="$slug" :seed="$i + 1" :label="$item['title']"
+                                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, calc(100vw - 2.5rem)"
                                         class="aspect-[4/3] transition duration-500 group-hover:scale-105" />
                             <span class="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold uppercase tracking-wider"
                                   style="color: var(--demo-primary)">{{ $item['badge'] }}</span>
@@ -77,7 +78,7 @@
                             </h3>
                             <p class="mt-1.5 text-xs leading-relaxed text-muted">{{ $item['meta'] }}</p>
                             <div class="mt-4 flex items-center justify-between border-t border-hairline pt-4">
-                                <p class="font-display text-lg font-extrabold" style="color: var(--demo-accent)">{{ $item['price'] }}</p>
+                                <p class="font-display text-lg font-extrabold" style="color: var(--demo-accent-strong)">{{ $item['price'] }}</p>
                                 <span class="text-xs font-semibold text-secondary transition group-hover:translate-x-0.5">Details &rarr;</span>
                             </div>
                         </div>
@@ -97,7 +98,7 @@
             @foreach ($demo['features'] as $i => [$heading, $copy])
                 <div class="text-center" data-reveal data-reveal-delay="{{ $i * 80 }}">
                     <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl font-display text-base font-extrabold text-white"
-                          style="background: var(--demo-accent)">{{ $i + 1 }}</span>
+                          style="background: var(--demo-accent-strong)">{{ $i + 1 }}</span>
                     <h3 class="mt-5 font-display text-lg font-bold" style="color: var(--demo-primary)">{{ $heading }}</h3>
                     <p class="mt-2.5 text-sm leading-relaxed text-secondary">{{ $copy }}</p>
                 </div>
@@ -133,7 +134,7 @@
                     On a real site it captures the enquiry, emails the right person and opens a
                     tracked lead in the back office.
                     <a href="{{ route('contact', ['package' => $demo['package']]) }}"
-                       class="font-semibold underline underline-offset-2" style="color: var(--demo-accent)">Enquire about a site like this instead</a>.
+                       class="font-semibold underline underline-offset-2" style="color: var(--demo-accent-strong)">Enquire about a site like this instead</a>.
                 </div>
             </div>
 
@@ -158,7 +159,7 @@
                 </div>
                 <button type="button" disabled
                         class="mt-6 w-full cursor-not-allowed rounded-lg px-5 py-3 text-sm font-semibold text-white opacity-50"
-                        style="background: var(--demo-accent)">
+                        style="background: var(--demo-accent-strong)">
                     Send enquiry (disabled in the demo)
                 </button>
             </form>

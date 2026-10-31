@@ -1,0 +1,10 @@
+import puppeteer from 'puppeteer-core';
+const b = await puppeteer.launch({ executablePath: '/usr/bin/chromium-browser', headless: true, args: ['--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--hide-scrollbars'] });
+const p = await b.newPage(); await p.setViewport({ width: 1440, height: 900 });
+await p.goto('http://7hills-staging-nginx/admin/login', { waitUntil: 'networkidle0' });
+await p.type('input[type="email"]', 'preview@staging.test'); await p.type('input[type="password"]', process.env.PREVIEW_PASSWORD);
+await Promise.all([p.waitForNavigation({ waitUntil: 'networkidle0' }), p.keyboard.press('Enter')]);
+await p.goto('http://7hills-staging-nginx/admin', { waitUntil: 'networkidle0' });
+await p.screenshot({ path: '/out/admin-dashboard-1440.webp', type: 'webp', quality: 80 });
+console.log((await p.evaluate(() => document.body.innerText)).includes('Project enquiries'));
+await b.close();

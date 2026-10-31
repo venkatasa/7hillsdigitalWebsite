@@ -80,7 +80,7 @@ strip on the home page, and are edited at `/admin/add-ons`.
 
 ## Stack
 
-- **Laravel 12** on **PHP 8.4**, **MySQL 8**
+- **Laravel 13** on **PHP 8.4**, **MySQL 8**
 - **Filament v4** admin panel at `/admin`, session-authenticated
 - Public site: **Blade + Tailwind CSS v4 + Alpine.js**, built with Vite
 - **Docker Compose** (`app`, `nginx`, `mysql`); nginx on host port **8091**,
@@ -366,6 +366,49 @@ The rules are in the file's own header, and `LiveWorkTest` guards them:
 leads and real applicant ID documents in its back office; walking a prospect
 through it is a POPIA problem. These fictional tenants exist precisely so nobody
 is tempted.
+
+## The revamp (branch `revamp`, staging on :8096)
+
+The full-service redesign — services, solutions, industries, `/work`, `/quote` —
+is built on the `revamp` branch and reviewed on staging beside the live site. The
+plan, decisions and per-phase reports are in `docs/revamp/`. It reaches production
+as **one release**, by `PRODUCTION_SAFETY_CHECKLIST.md` §5, only on the owner's
+explicit approval.
+
+Three switches in `config/revamp.php`, all **off** by default, so merging the branch
+changes nothing on the live site until each is turned on deliberately:
+
+| Switch | Turns on | Needs first |
+|---|---|---|
+| `REVAMP_HOME_V2` | the new homepage, header, footer and every revamp page; the older pages take the new chrome | approval of the release |
+| `REVAMP_LEADS` | `/quote`, attribution, enquiry history, pipeline outcomes, the monthly figures widget | the D7 migrations run on that database |
+| `REVAMP_PREVIEW_UNCONFIRMED` | unconfirmed services, shown dashed | **never in production** — `production` ignores it |
+
+Rules the revamp adds:
+
+- **Unconfirmed is invisible in production.** A service, solution or quote type
+  whose row in the capability matrix (`full-service/06`) is not confirmed renders
+  nowhere in production — not on a page, in a menu, in the sitemap or in `/quote`
+  validation. A test pins each of those.
+- **`REVAMP_LEADS` off means nothing new is read or written.** The D7 columns
+  (`journey`, `project_type`, `answers`, attribution, `lost_reason`, `won_*`) and
+  `enquiry_events` exist only where the migrations have run, which must be exactly
+  where the switch is on. The panel hides those fields otherwise.
+- **`/quote` follows the `/contact` rules** — saved before mailed, arrives `new`,
+  read-only in the panel, POPIA notice above the tick, honeypot, 10/minute — plus:
+  every answer must come from the chosen type's own lists.
+- **Attribution adds no cookie.** First touch only, in the existing session;
+  referrer reduced to a domain; utm tags filtered. The privacy notice says so.
+- **Enquiry history is append-only.** `EnquiryEvent` throws on update and delete.
+  A win counts in the month the history records it, not the month it arrived.
+- **A lost lead needs a reason; a win records once-off and monthly value
+  separately.** New monthly revenue won is the headline KPI.
+- **Priority is advice, never action.** Worked out on arrival, shown as a badge;
+  nothing is sent or advanced because of it.
+- **The sitemap is built from the page sources**, so it cannot list a 404. Demo
+  tenants and thank-you pages stay out (`noindex`). `LaunchReadinessTest` crawls it.
+- **Only two font faces are preloaded** (Montserrat 800, Jakarta 400); the rest
+  load with `swap`. Preloading all of them kept mobile LCP near 3 s.
 
 ## Open decisions — resolve before this site sees a real prospect
 

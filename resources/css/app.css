@@ -542,3 +542,19 @@
         .faq[open] .faq-body { animation: none; }
     }
 }
+
+/* The WhatsApp float steps aside while the mobile menu is open, and lifts
+   clear of the cookie notice while that is showing. */
+html.menu-open .wa-float {
+    display: none;
+}
+
+.wa-float.wa-lift {
+    bottom: 7rem;
+}
+
+@media (min-width: 40rem) {
+    .wa-float.wa-lift {
+        bottom: 6rem;
+    }
+}

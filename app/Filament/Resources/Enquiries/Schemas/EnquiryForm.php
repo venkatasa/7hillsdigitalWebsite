@@ -9,6 +9,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class EnquiryForm
@@ -76,7 +77,29 @@ class EnquiryForm
                             ->options(Enquiry::STATUSES)
                             ->default('new')
                             ->required()
+                            ->live()
                             ->native(false),
+                        /*
+                         | How it ended. These columns exist only where the D7
+                         | migrations have run, which is exactly where /quote is
+                         | switched on, so they are hidden (and never saved)
+                         | anywhere else.
+                         */
+                        Select::make('lost_reason')
+                            ->label('Why it was lost')
+                            ->options(Enquiry::LOST_REASONS)
+                            ->native(false)
+                            ->visible(fn (Get $get) => Quote::enabled() && $get('status') === 'lost')
+                            ->required(fn (Get $get) => $get('status') === 'lost'),
+                        TextInput::make('won_once_off')
+                            ->label('Won: once-off (R, excl. VAT)')
+                            ->numeric()->minValue(0)->prefix('R')
+                            ->visible(fn (Get $get) => Quote::enabled() && $get('status') === 'won'),
+                        TextInput::make('won_monthly')
+                            ->label('Won: monthly (R, excl. VAT)')
+                            ->numeric()->minValue(0)->prefix('R')
+                            ->helperText('New monthly revenue: the headline figure on the dashboard.')
+                            ->visible(fn (Get $get) => Quote::enabled() && $get('status') === 'won'),
                         DateTimePicker::make('contacted_at')
                             ->label('First contacted')
                             ->seconds(false)

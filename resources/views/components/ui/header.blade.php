@@ -38,7 +38,7 @@
         "
     @endif
     {{-- No blur while the sheet is open: a backdrop-filter would trap the fixed sheet inside the header bar. --}}
-    x-effect="document.documentElement.classList.toggle('overflow-hidden', open)"
+    x-effect="document.documentElement.classList.toggle('overflow-hidden', open); document.documentElement.classList.toggle('menu-open', open)"
     @keydown.escape.window="if (menu) { const m = menu; menu = null; $refs['btn-' + m]?.focus() } else if (open) { open = false; $refs.burger.focus() }"
     :class="{ 'border-hairline bg-white/85': solid && ! open && menu !== 'services', 'border-white/10 bg-brand-dark/80': ! (solid && ! open && menu !== 'services'), 'backdrop-blur-xl': ! open, 'bg-brand-dark': open }"
     class="hdr sticky top-0 z-50 border-b backdrop-blur-xl {{ $overlay ? 'border-white/10 bg-brand-dark/80' : 'border-hairline bg-white/85' }}">

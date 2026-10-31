@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Support\DemoImages;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
@@ -27,7 +28,8 @@ class ImportDemoImages extends Command
     protected $signature = 'demos:import-images
                             {--demo= : Limit to one demo, e.g. realty}
                             {--per-demo=7 : How many photographs per demo}
-                            {--force : Re-download demos that already have images}';
+                            {--force : Re-download demos that already have images}
+                            {--thumbs : Only (re)build the small copies of images already downloaded; no network}';
 
     protected $description = 'Download openly-licensed photographs from Openverse for the demo tenants';
 
@@ -37,6 +39,12 @@ class ImportDemoImages extends Command
     private const ENDPOINT = 'https://api.openverse.org/v1/images/';
 
     private const MAX_WIDTH = 1400;
+
+    /**
+     * A small copy of every photograph, for cards and phones. Served through
+     * srcset, so a 370px card no longer downloads a 1400px original.
+     */
+    public const THUMB_WIDTH = 720;
 
     /**
      * Wikimedia — which serves a large share of Openverse results — rejects
@@ -112,6 +120,12 @@ class ImportDemoImages extends Command
         }
 
         foreach ($only ? [$only] : $demos as $demo) {
+            if ($this->option('thumbs')) {
+                $this->thumbsFor($demo);
+
+                continue;
+            }
+
             $this->importDemo($demo, $perDemo);
         }
 
@@ -310,6 +324,40 @@ class ImportDemoImages extends Command
         }
 
         $ok = imagejpeg($image, $path, 82);
+        imagedestroy($image);
+
+        return $ok && $this->thumb($path);
+    }
+
+    private function thumbsFor(string $demo): void
+    {
+        $made = 0;
+
+        foreach (DemoImages::credits($demo) as $credit) {
+            $path = public_path("images/demos/{$demo}/".($credit['file'] ?? ''));
+
+            if (is_file($path) && $this->thumb($path)) {
+                $made++;
+            }
+        }
+
+        $this->line("  {$demo}: {$made} small copies");
+    }
+
+    /** Writes `1-720.jpg` beside `1.jpg`. */
+    private function thumb(string $path): bool
+    {
+        $image = @imagecreatefromjpeg($path);
+
+        if ($image === false) {
+            return false;
+        }
+
+        $width = imagesx($image);
+        $height = (int) round(imagesy($image) * (self::THUMB_WIDTH / max(1, $width)));
+        $small = $width > self::THUMB_WIDTH ? imagescale($image, self::THUMB_WIDTH, $height) : $image;
+        $ok = $small !== false && imagejpeg($small, DemoImages::thumbPath($path), 78);
+
         imagedestroy($image);
 
         return $ok;

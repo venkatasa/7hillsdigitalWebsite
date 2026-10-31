@@ -41,6 +41,27 @@ class DemoImages
         return count(self::credits($demo));
     }
 
+    /** Where the small copy of an image lives: `1.jpg` → `1-720.jpg`. */
+    public static function thumbPath(string $path): string
+    {
+        return preg_replace('/\.jpg$/', '-'.\App\Console\Commands\ImportDemoImages::THUMB_WIDTH.'.jpg', $path);
+    }
+
+    /** `srcset` for one image: the small copy and the original, when both exist. */
+    public static function srcset(string $demo, int $index): ?string
+    {
+        $credits = self::credits($demo);
+        $file = $credits === [] ? null : ($credits[$index % count($credits)]['file'] ?? null);
+
+        if (! $file || ! is_file(public_path(self::thumbPath("images/demos/{$demo}/{$file}")))) {
+            return null;
+        }
+
+        $w = \App\Console\Commands\ImportDemoImages::THUMB_WIDTH;
+
+        return asset(self::thumbPath("images/demos/{$demo}/{$file}"))." {$w}w, ".asset("images/demos/{$demo}/{$file}").' 1400w';
+    }
+
     /**
      * The public path for one image, chosen by index and wrapping round so a
      * grid longer than the set still fills.

@@ -50,7 +50,7 @@
                                 {{ $demo['vertical'] }}
                             </span>
                             @if ($package)
-                                <span class="rounded-full px-3 py-1 text-xs font-semibold text-white" style="background: var(--demo-accent)">
+                                <span class="rounded-full px-3 py-1 text-xs font-semibold text-white" style="background: color-mix(in srgb, var(--demo-accent) 55%, var(--demo-primary))">
                                     {{ $package->name }} package
                                 </span>
                             @endif

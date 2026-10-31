@@ -3,16 +3,20 @@
     'seed' => 0,
     'label' => null,
     'demo' => null,
+    // How wide the image renders, for srcset. Most demo images fill a column.
+    'sizes' => '(min-width: 1024px) 50vw, calc(100vw - 2.5rem)',
 ])
 
 @php
     // A real photograph if the importer has run; otherwise the composed SVG
     // below, so a fresh checkout still renders properly.
     $photo = $demo ? \App\Support\DemoImages::url($demo, (int) $seed) : null;
+    $srcset = $photo ? \App\Support\DemoImages::srcset($demo, (int) $seed) : null;
 @endphp
 
 @if ($photo)
     <img src="{{ $photo }}"
+         @if ($srcset) srcset="{{ $srcset }}" sizes="{{ $sizes }}" @endif
          alt="{{ $label ?? '' }}"
          loading="lazy"
          decoding="async"

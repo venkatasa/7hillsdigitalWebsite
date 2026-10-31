@@ -24,6 +24,9 @@
         :root {
             --demo-primary: {{ $demo['palette']['primary'] }};
             --demo-accent: {{ $demo['palette']['accent'] }};
+            /* The accent, deepened toward the tenant's primary, for white text
+               and small type: several accents miss 4.5:1 against white. */
+            --demo-accent-strong: color-mix(in srgb, var(--demo-accent) 55%, var(--demo-primary));
             --demo-wash: {{ $demo['palette']['wash'] }};
         @foreach ($brand['colors'] as $token => $value)
             --brand-{{ $token }}: {{ $value }};
@@ -37,7 +40,8 @@
 <body class="flex min-h-screen flex-col bg-white">
 
     {{-- ── Demo ribbon ──────────────────────────────────────────────────── --}}
-    <div class="bg-brand text-white">
+    {{-- Labelled landmarks: the ribbon and the pitch sit outside the tenant's <main>. --}}
+    <aside aria-label="Demonstration notice" class="bg-brand text-white">
         <div class="container-page flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-2.5 text-xs">
             <p class="flex items-center gap-2">
                 <span class="inline-flex h-1.5 w-1.5 shrink-0 rounded-full bg-mint"></span>
@@ -53,7 +57,7 @@
                 </a>
             </p>
         </div>
-    </div>
+    </aside>
 
     {{-- ── Tenant header ────────────────────────────────────────────────── --}}
     <header x-data="{ open: false }"
@@ -67,7 +71,7 @@
                     <span class="block font-display text-[15px] font-extrabold tracking-tight" style="color: var(--demo-primary)">
                         {{ $demo['name'] }}
                     </span>
-                    <span class="mt-0.5 block text-[10px] font-semibold uppercase tracking-[0.16em]" style="color: var(--demo-accent)">
+                    <span class="mt-0.5 block text-[10px] font-semibold uppercase tracking-[0.16em]" style="color: var(--demo-accent-strong)">
                         {{ $demo['strap'] }}
                     </span>
                 </span>
@@ -80,7 +84,7 @@
             </nav>
 
             <a href="#contact" class="hidden rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110 md:inline-flex"
-               style="background: var(--demo-accent)">
+               style="background: var(--demo-accent-strong)">
                 Get in touch
             </a>
 
@@ -102,7 +106,7 @@
                 @endforeach
                 <a href="#contact" x-on:click="open = false"
                    class="mt-3 rounded-lg px-5 py-3 text-center text-sm font-semibold text-white"
-                   style="background: var(--demo-accent)">Get in touch</a>
+                   style="background: var(--demo-accent-strong)">Get in touch</a>
             </nav>
         </div>
     </header>
@@ -112,7 +116,7 @@
     </main>
 
     {{-- ── Back-office pitch: the actual point of the demo ──────────────── --}}
-    <section class="bg-brand text-white">
+    <section aria-label="From {{ $brand['name'] }}" class="bg-brand text-white">
         <div class="container-page section">
             <div class="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
                 <div data-reveal>
@@ -193,7 +197,7 @@
             @php $attributions = \App\Support\DemoImages::attributions($slug); @endphp
 
             @if ($attributions)
-                <details class="mt-6 border-t border-white/10 pt-5 text-xs text-white/40">
+                <details class="mt-6 border-t border-white/10 pt-5 text-xs text-white/60">
                     <summary class="cursor-pointer hover:text-white/70">Photography credits</summary>
                     <p class="mt-2 leading-relaxed">
                         Openly-licensed photographs, used to illustrate a demonstration site:

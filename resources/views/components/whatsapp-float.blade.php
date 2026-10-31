@@ -20,10 +20,14 @@
 @endphp
 
 @if ($url)
-    {{-- Lifts clear of the cookie notice while that is showing. --}}
-    <div x-data
-         class="fixed right-5 z-50 transition-all duration-300 print:hidden sm:right-6"
-         :class="$store.cookieNotice.open ? 'bottom-28 sm:bottom-24' : 'bottom-5 sm:bottom-6'">
+    {{-- Lifts clear of the cookie notice while that is showing, and steps
+         aside while the mobile menu is open (it covered the last row). The
+         aside makes it a landmark, so no content sits outside one. Its resting
+         position is static CSS, not Alpine: bound only through :class, it sat
+         at the top until the script ran and then jumped (CLS on every page). --}}
+    <aside aria-label="WhatsApp" x-data
+         class="wa-float fixed bottom-5 right-5 z-50 transition-all duration-300 print:hidden sm:bottom-6 sm:right-6"
+         :class="$store.cookieNotice.open && 'wa-lift'">
         <a href="{{ $url }}"
            target="_blank"
            rel="noopener"
@@ -37,5 +41,5 @@
                 Chat to us
             </span>
         </a>
-    </div>
+    </aside>
 @endif

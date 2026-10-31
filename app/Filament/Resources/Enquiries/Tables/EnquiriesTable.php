@@ -66,7 +66,7 @@ class EnquiriesTable
                     ->formatStateUsing(fn (string $state) => Enquiry::STATUSES[$state] ?? $state)
                     ->color(fn (string $state) => match ($state) {
                         'new' => 'warning',
-                        'contacted', 'quoted' => 'info',
+                        'contacted', 'discovery', 'quoted' => 'info',
                         'won' => 'success',
                         'lost' => 'danger',
                         default => 'gray',

@@ -9,6 +9,14 @@
     $pageDescription = $description ?? $brand['promise'].' Websites and business software for South African firms, from '.$brand['contact']['city'].'.';
 @endphp
 
+{{-- With the revamp on, the remaining pages (about, demos, how it works,
+     custom & IT, contact, terms, privacy) take the new header and footer, so a
+     visitor never moves between two sites. Their content is unchanged. --}}
+@if (config('revamp.home_v2'))
+<x-ui.layout :title="$title" :description="$description">
+    {{ $slot }}
+</x-ui.layout>
+@else
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -66,3 +74,4 @@
     <x-cookie-notice />
 </body>
 </html>
+@endif

@@ -69,7 +69,7 @@
                 </p>
             </div>
 
-            <aside class="lg:sticky lg:top-28 lg:self-start" data-reveal data-reveal-delay="100">
+            <div class="lg:sticky lg:top-28 lg:self-start" data-reveal data-reveal-delay="100">
                 <div class="card p-6">
                     <h2 class="text-sm font-semibold uppercase tracking-wider text-muted">Get hold of us</h2>
                     <dl class="mt-5 space-y-4 text-sm">
@@ -100,7 +100,7 @@
                     </dl>
                     <a href="{{ route('contact') }}" class="btn-accent mt-6 w-full">Send us a message</a>
                 </div>
-            </aside>
+            </div>
         </div>
     </section>
 

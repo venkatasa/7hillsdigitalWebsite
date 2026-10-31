@@ -1,0 +1,22 @@
+Phase 5 results, staging, 31/10/2026
+
+Laravel: 167 passed (2470 assertions) in each mode: all on; REVAMP_LEADS=false; all switches off.
+
+p5.mjs (final run): 12 passed, 0 failed
+  sitemap lists 43 pages
+  no horizontal overflow on 47 pages x 3 widths
+  no JavaScript errors
+  axe: no WCAG or best-practice violations
+  all 112 same-site links answer
+  off-site links are WhatsApp, the live client, the Regulator or photo credits
+  first Tab on /about is the skip link; skip link moves focus into main
+  WhatsApp float hides while the mobile menu is open and returns after
+  reduced motion: nothing is hidden behind data-reveal
+  dashboard shows the monthly lead figures
+  a won enquiry shows once-off and monthly value fields
+
+Regression: phase 3 p3.mjs 15 passed, 0 failed; homepage interact3.mjs 23 passed, 0 failed.
+
+Production-mode rehearsal (APP_ENV=production, APP_DEBUG=false, preview switch ON):
+  checked 44 URLs, bad 0; /services/microsoft-365 404 and not in sitemap;
+  no staging banner; no stack trace on a missing page.

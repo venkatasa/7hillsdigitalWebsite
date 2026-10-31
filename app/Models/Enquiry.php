@@ -25,9 +25,20 @@ class Enquiry extends Model
     public const STATUSES = [
         'new' => 'New',
         'contacted' => 'Contacted',
+        'discovery' => 'Discovery booked',
         'quoted' => 'Quoted',
         'won' => 'Signed up',
         'lost' => 'Not proceeding',
+    ];
+
+    /** Why a lead was lost: a short fixed list, so the reasons can be counted. */
+    public const LOST_REASONS = [
+        'price' => 'Price',
+        'timing' => 'Not the right time',
+        'competitor' => 'Chose someone else',
+        'no-response' => 'Stopped responding',
+        'not-a-fit' => 'Not something we do',
+        'other' => 'Other (see notes)',
     ];
 
     protected $guarded = [];
@@ -38,6 +49,8 @@ class Enquiry extends Model
             'consent' => 'boolean',
             'contacted_at' => 'datetime',
             'answers' => 'array',
+            'won_once_off' => 'decimal:2',
+            'won_monthly' => 'decimal:2',
         ];
     }
 
