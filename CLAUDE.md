@@ -394,11 +394,12 @@ is tempted.
 6. **CRM and ERP do not exist as software yet.** The site sells both; only the
    offer is built. Do not demo what is not there.
    **Invoicing is now real** — delivered for Excellent Real Estate as a
-   self-hosted **Invoice Ninja** install (`/opt/docker/invoiceninja`, port 8092,
-   `invoice.excellentrealestate.co.za`). Note what that does and does not settle:
+   self-hosted **InvoiceShelf** install (`/opt/docker/invoiceshelf-excellent`,
+   LAN port 8095, `invoice.excellentrealestate.co.za`). It replaced the Invoice
+   Ninja install on 25/08/2026; `config/clients.php` must follow what is running. Note what that does and does not settle:
    the module is deliverable today, but it is third-party software we host and
    support, not something we wrote. It is billed as the R109 Invoicing add-on.
-   Whether every future client gets Invoice Ninja or something of our own is
+   Whether every future client gets InvoiceShelf or something of our own is
    still open — decide it before the second client, not the tenth.
 7. **The demo tenants have no back office.** They are public landing pages only.
    The walkthrough they invite has to be given live, off a real install.

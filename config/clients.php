@@ -25,7 +25,7 @@
 |
 | 4. Say whose software it is. Where a deliverable is a third-party application
 |    we host and support rather than something we wrote, `software` says so.
-|    Letting a prospect assume we built Invoice Ninja would be a lie that
+|    Letting a prospect assume we built InvoiceShelf would be a lie that
 |    survives exactly until they Google it.
 |
 */
@@ -68,7 +68,9 @@ return [
         ],
 
         // See rule 4. We deploy, host and support it; we did not write it.
-        'software' => 'Invoice Ninja, self-hosted and maintained by 7Hills.',
+        // InvoiceShelf replaced Invoice Ninja on 25/08/2026; rule 3 means this line
+        // follows whatever is actually running.
+        'software' => 'InvoiceShelf, self-hosted and maintained by 7Hills.',
     ],
 
 ];

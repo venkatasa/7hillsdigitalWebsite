@@ -285,7 +285,7 @@
 
                         <div class="mt-auto pt-6">
                             {{-- Whose software it is, stated plainly. A prospect who assumes
-                                 we wrote Invoice Ninja finds out the moment they Google it. --}}
+                                 we wrote InvoiceShelf finds out the moment they Google it. --}}
                             <p class="text-xs text-muted">{{ $client['software'] }}</p>
 
                             @if (! empty($client['url']))

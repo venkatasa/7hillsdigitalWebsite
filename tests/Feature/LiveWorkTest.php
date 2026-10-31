@@ -57,11 +57,13 @@ class LiveWorkTest extends TestCase
 
     public function test_third_party_software_is_attributed(): void
     {
-        // Letting a prospect assume we wrote Invoice Ninja is a lie that lasts
-        // exactly until they search for it.
+        // Letting a prospect assume we wrote InvoiceShelf is a lie that lasts
+        // exactly until they search for it. Invoice Ninja was retired on
+        // 25/08/2026, so naming it would claim something no longer running.
         $this->get('/')
             ->assertOk()
-            ->assertSee('Invoice Ninja, self-hosted and maintained by 7Hills.');
+            ->assertSee('InvoiceShelf, self-hosted and maintained by 7Hills.')
+            ->assertDontSee('Invoice Ninja');
     }
 
     public function test_every_listed_client_declares_whose_software_it_is(): void
