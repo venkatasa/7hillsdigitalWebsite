@@ -31,7 +31,7 @@
             @if ($url)
                 <span @class([
                     'mx-auto flex h-5 max-w-[60%] items-center truncate rounded-md px-3 text-[11px]',
-                    'bg-white/[0.06] text-white/45' => $dark,
+                    'bg-white/[0.06] text-white/65' => $dark,
                     'bg-white text-muted ring-1 ring-hairline' => ! $dark,
                 ])>{{ $url }}</span>
             @endif

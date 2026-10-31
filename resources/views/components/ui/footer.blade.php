@@ -1,7 +1,7 @@
 @php
     $brand = config('brand');
     $packages = \App\Models\Package::published()->orderBy('sort')->get(['slug', 'name']);
-    $services = \App\Support\Revamp::services();
+    $lines = \App\Support\Revamp::lines();
 @endphp
 
 <footer class="on-dark relative isolate overflow-hidden bg-brand-dark text-white/65">
@@ -11,8 +11,8 @@
         <div class="lg:col-span-4">
             <x-brand-logo inverse class="h-16" />
             <p class="mt-6 max-w-sm text-sm leading-relaxed">
-                Ready-to-use business platforms, business solutions and custom software —
-                built, hosted and supported by one team, on one invoice.
+                Software development, automation and IT services, plus ready-to-use
+                business platforms. Built, hosted and supported by one team, on one invoice.
             </p>
             <div class="mt-6 space-y-1.5 text-sm">
                 <a href="tel:{{ preg_replace('/\s+/', '', $brand['contact']['phone']) }}" class="block text-white hover:text-mint">{{ $brand['contact']['phone'] }}</a>
@@ -23,6 +23,14 @@
 
         <div class="grid gap-10 sm:grid-cols-3 lg:col-span-8">
             <div>
+                <h2 class="t-label text-mint">Services</h2>
+                <ul class="mt-5 space-y-3 text-sm">
+                    @foreach ($lines as $slug => $line)
+                        <li><a href="{{ request()->routeIs('home') ? '' : route('home') }}#line-{{ $slug }}" class="hover:text-white">{{ $line['name'] }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+            <div>
                 <h2 class="t-label text-mint">Platforms</h2>
                 <ul class="mt-5 space-y-3 text-sm">
                     @foreach ($packages as $package)
@@ -32,18 +40,10 @@
                 </ul>
             </div>
             <div>
-                <h2 class="t-label text-mint">Solutions & enterprise</h2>
-                <ul class="mt-5 space-y-3 text-sm">
-                    @foreach ($services as $slug => $service)
-                        <li><a href="#service-{{ $slug }}" class="hover:text-white">{{ $service['name'] }}</a></li>
-                    @endforeach
-                    <li><a href="{{ route('it-services') }}" class="hover:text-white">Custom &amp; managed IT</a></li>
-                </ul>
-            </div>
-            <div>
                 <h2 class="t-label text-mint">Company</h2>
                 <ul class="mt-5 space-y-3 text-sm">
                     <li><a href="{{ route('about') }}" class="hover:text-white">About</a></li>
+                    <li><a href="{{ route('it-services') }}" class="hover:text-white">Custom &amp; IT services</a></li>
                     <li><a href="{{ route('how-it-works') }}" class="hover:text-white">How it works</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-white">Contact</a></li>
                     <li><a href="{{ route('terms') }}" class="hover:text-white">Terms</a></li>

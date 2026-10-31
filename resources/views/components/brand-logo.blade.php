@@ -12,8 +12,10 @@
 @endphp
 
 @if ($hasArtwork)
+    {{-- Intrinsic size declared so the box is reserved before the file arrives. --}}
     <img src="{{ asset($artwork) }}"
          alt="{{ $brand['name'] }}"
+         width="1645" height="1645" decoding="async"
          {{ $attributes->merge(['class' => $class.' w-auto']) }}>
 @else
     <span {{ $attributes->merge(['class' => 'inline-flex items-center gap-2.5']) }}>

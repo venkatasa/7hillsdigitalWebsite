@@ -1,93 +1,90 @@
 {{--
-    Homepage v2 — PROTOTYPE for visual approval (docs/revamp/design/).
+    Homepage v3 — full-service positioning (docs/revamp/full-service/04_HOMEPAGE_COMPOSITION.md).
     Served only where REVAMP_HOME_V2=true. Every price comes from the database,
-    every screenshot from public/images/product/manifest.json, and every
-    offering's availability from config/revamp.php (moving to the DB in Phase 2).
+    every screenshot from public/images/product/manifest.json, and every service
+    from config/revamp.php through App\Support\Revamp, which applies the
+    publication rule: nothing unconfirmed or blocked ever renders in production.
 --}}
 @php
+    use App\Support\Revamp;
+
     $brand = config('brand');
-    $services = \App\Support\Revamp::services();
-    $industries = \App\Support\Revamp::industries();
+    $headline = Revamp::headline();
+    $lines = Revamp::lines();
+    $featured = Revamp::featured();
+    $industries = Revamp::industries();
+    $quoteTypes = Revamp::quoteTypes();
+    $serviceCount = collect($lines)->sum(fn ($l) => count($l['services']));
+
+    $quote = fn (string $from, ?string $type = null) => route('contact', array_filter(['type' => 'project', 'interest' => $type, 'from' => $from]));
+
+    // The supporting line names Microsoft 365 and managed IT only once they may be published.
+    $lede = Revamp::visible('microsoft-365-consulting') && Revamp::visible('managed-it-support')
+        ? 'From custom applications and intelligent automation to Microsoft 365, cloud infrastructure and managed IT services, we help businesses build, connect, secure and modernise their technology.'
+        : 'From custom applications and automation to systems integration, hosting and support, we help businesses build, connect and modernise their technology.';
+    $ledeShort = 'Custom software, automation and IT services, built, connected and looked after by one team.';
+
     $fromTier = $packages->flatMap->tiers->filter(fn ($t) => $t->price_monthly !== null)->sortBy('price_monthly')->first();
     $from = $fromTier?->formatted_price;
-    $invoicing = $addOns->firstWhere('slug', 'invoicing');
     $packagesBySlug = $packages->keyBy('slug');
     $tierColumns = $packages->first()?->tiers ?? collect();
     // Literal class names, so Tailwind's scanner can see them.
     $linkSpan = ['md:col-span-8', 'md:col-span-6', 'md:col-span-4', 'md:col-span-2'][min($tierColumns->count(), 3)];
+
+    $microsoft = Revamp::visible('microsoft-365-consulting');
+    $motifs = ['custom-development' => 'code', 'microsoft-365' => 'grid', 'ai-automation' => 'flow', 'managed-it' => 'pulse', 'cloud-infrastructure' => 'stack', 'security-assessment' => 'shield'];
 @endphp
 
 <x-ui.layout overlay>
 
-    {{-- ══ 1 · HERO ═════════════════════════════════════════════════════ --}}
+    {{-- ══ 1 · HERO ═════════════════════════════════════════════════════
+         The copy is not revealed on scroll: the headline is the largest paint,
+         and it must not wait for JavaScript. --}}
     <section id="hero" class="band-night on-dark -mt-[77px] pt-[77px]">
-        <div class="contours absolute inset-y-0 right-0 -z-10 w-full opacity-[0.16] lg:w-[78%]" aria-hidden="true"></div>
-        <div class="absolute inset-0 -z-10 bg-[radial-gradient(60rem_36rem_at_78%_42%,color-mix(in_oklab,var(--brand-mint)_9%,transparent),transparent_70%)]" aria-hidden="true"></div>
+        <div class="contours absolute inset-y-0 right-0 -z-10 w-full opacity-[0.15] lg:w-[80%]" aria-hidden="true"></div>
+        <div class="absolute inset-0 -z-10 bg-[radial-gradient(56rem_34rem_at_80%_38%,color-mix(in_oklab,var(--brand-mint)_9%,transparent),transparent_70%)]" aria-hidden="true"></div>
         <div class="absolute inset-y-0 left-0 -z-10 w-2/3 bg-gradient-to-r from-brand-dark via-brand-dark/85 to-transparent" aria-hidden="true"></div>
 
-        <div class="container-wide grid items-center gap-y-16 pb-20 pt-14 sm:pt-20 lg:grid-cols-12 lg:gap-x-10 lg:pb-32 lg:pt-24">
+        <div class="container-wide grid items-center gap-y-12 pb-12 pt-8 sm:pt-14 lg:grid-cols-12 lg:gap-x-10 lg:pb-16 lg:pt-14">
             <div class="lg:col-span-7">
-                <p class="inline-flex items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-white/75" data-reveal>
-                    <span class="h-1.5 w-1.5 rounded-full bg-mint" aria-hidden="true"></span>
-                    Platforms · Business solutions · Enterprise software
+                <p class="inline-flex items-center gap-2.5 text-xs font-semibold tracking-[0.04em] text-mint sm:uppercase sm:tracking-[0.16em]">
+                    <span class="h-px w-6 bg-mint/70" aria-hidden="true"></span>
+                    Built, hosted and supported in South Africa
                 </p>
 
-                <h1 class="t-hero mt-7 text-white" data-reveal data-reveal-delay="60">
-                    Technology That <span class="text-mint">Works</span> for Your Business.
+                <h1 class="t-hero-xl mt-6 text-white">
+                    {{ $headline['lead'] }} <span class="text-mint">{{ $headline['accent'] }}</span> {{ $headline['tail'] }}
                 </h1>
 
-                <p class="t-lede mt-7 max-w-[34rem] text-white/70" data-reveal data-reveal-delay="120">
-                    From ready-to-use business platforms to intelligent custom software, we build,
-                    automate and connect the technology that drives your business forward.
+                <p class="t-lede mt-6 max-w-[38rem] text-white/70">
+                    <span class="sm:hidden">{{ $ledeShort }}</span><span class="hidden sm:inline">{{ $lede }}</span>
                 </p>
 
-                <div class="mt-10 flex flex-col gap-3 sm:flex-row" data-reveal data-reveal-delay="180">
-                    <x-ui.button :href="route('packages.index')" tone="dark" size="lg" arrow data-cta="hero-subscription">
-                        Explore Business Platforms
-                    </x-ui.button>
-                    <x-ui.button :href="route('contact', ['type' => 'project', 'from' => 'home-hero'])" tone="dark" variant="secondary" size="lg" data-cta="hero-project">
-                        Discuss a Custom Solution
-                    </x-ui.button>
+                <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <x-ui.button :href="$quote('home-hero')" tone="dark" size="lg" arrow data-cta="hero-quote">Get a Quote</x-ui.button>
+                    <x-ui.button href="#services" tone="dark" variant="secondary" size="lg" data-cta="hero-services">Explore Services</x-ui.button>
                 </div>
 
-                <dl class="mt-14 grid max-w-xl grid-cols-3 gap-6 border-t border-white/10 pt-7" data-reveal data-reveal-delay="240">
-                    @if ($from)
-                        <div>
-                            <dt class="sr-only">Platforms from</dt>
-                            <dd class="t-figure text-2xl text-white sm:text-3xl">{{ $from }}</dd>
-                            <dd class="mt-2 text-xs leading-snug text-white/50">a month for a platform, excl. VAT</dd>
-                        </div>
-                    @endif
-                    <div>
-                        <dt class="sr-only">Build cost</dt>
-                        <dd class="t-figure text-2xl text-white sm:text-3xl">R0</dd>
-                        <dd class="mt-2 text-xs leading-snug text-white/50">to build a platform. No minimum term.</dd>
-                    </div>
-                    <div>
-                        <dt class="sr-only">In production</dt>
-                        <dd class="t-figure text-2xl text-white sm:text-3xl">Live</dd>
-                        <dd class="mt-2 text-xs leading-snug text-white/50">in production at Excellent Real&nbsp;Estate</dd>
-                    </div>
-                </dl>
+                <p class="mt-6 text-sm text-white/60">
+                    Need a website now?
+                    <a href="{{ route('packages.index') }}" class="font-semibold text-white underline decoration-mint/50 underline-offset-4 hover:decoration-mint" data-cta="hero-platforms">See our ready-to-use platforms</a>
+                </p>
             </div>
 
-            {{-- Product composition: genuine screens, each labelled for what it is. --}}
+            {{-- Genuine screens, each labelled for what it is. --}}
             <div class="relative lg:col-span-5" data-reveal data-reveal-delay="200">
-                <div class="relative pb-10 pl-6 sm:pl-12 lg:pl-4" data-depth-scene>
-                    <div data-depth="1" class="lg:w-[152%]">
+                <div class="relative pb-8 pl-8 sm:pl-14 lg:pl-4" data-depth-scene>
+                    <div data-depth="1" class="lg:w-[150%]">
                         <x-ui.frame-browser image="admin-enquiries" url="yourbusiness.co.za/admin/enquiries" :caption="false" eager />
                     </div>
-
-                    <div data-depth="2.4" class="absolute -bottom-2 left-0 w-[34%] max-w-[13rem] sm:-left-2 lg:-left-14 lg:w-[40%]">
+                    <div data-depth="2.4" class="absolute -bottom-1 left-0 w-[30%] max-w-[12rem] lg:-left-10 lg:w-[34%]">
                         <x-ui.frame-phone image="demo-realty-mobile" />
                     </div>
-
-                    {{-- Annotations, engineering-drawing style. --}}
-                    <p class="absolute -bottom-8 left-[38%] flex items-center gap-2 text-[11px] text-white/55 sm:left-[33%] lg:left-[30%]">
+                    <p class="absolute -bottom-7 left-[33%] flex items-center gap-2 text-[11px] text-white/55 lg:left-[28%]">
                         <span class="h-px w-6 bg-mint/60" aria-hidden="true"></span>
                         Demo tenant · fictional business
                     </p>
-                    <p class="absolute -top-7 right-0 hidden items-center gap-2 text-[11px] text-white/55 sm:flex lg:left-[40%] lg:right-auto">
+                    <p class="absolute -top-6 right-0 flex items-center gap-2 text-[11px] text-white/55 lg:-top-7 lg:left-[36%] lg:right-auto">
                         Back office · staging install, fictional data
                         <span class="h-px w-6 bg-mint/60" aria-hidden="true"></span>
                     </p>
@@ -95,302 +92,381 @@
             </div>
         </div>
 
-        <div class="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-mint/35 to-transparent" aria-hidden="true"></div>
+        {{-- Capability index: the breadth, at a glance, one tap from each line. --}}
+        <nav aria-label="Service lines" class="relative border-t border-white/10" x-data>
+            <ol class="container-wide snap-row flex overflow-x-auto lg:grid lg:overflow-visible" style="grid-template-columns: repeat({{ count($lines) }}, minmax(0, 1fr))">
+                @foreach ($lines as $slug => $l)
+                    <li class="w-[44%] shrink-0 border-r border-white/10 first:border-l sm:w-[30%] lg:w-auto">
+                        <a href="#line-{{ $slug }}" @click="$dispatch('show-line', '{{ $slug }}')"
+                           class="cap-link relative flex h-full flex-col gap-3 px-4 py-5 text-white/70 hover:text-white lg:px-5" style="--motif-accent: var(--brand-mint)">
+                            <span class="flex items-center justify-between">
+                                <span class="t-index text-white/40">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                                <x-ui.motif :name="$l['motif']" class="h-5 w-5 text-white/45" />
+                            </span>
+                            <span class="text-sm font-semibold leading-snug">
+                                {{ $l['short'] }}
+                                @if ($l['preview'])<span class="ml-1 rounded border border-dashed border-white/30 px-1 text-[10px] font-medium text-white/50">preview</span>@endif
+                            </span>
+                        </a>
+                    </li>
+                @endforeach
+            </ol>
+        </nav>
     </section>
 
-    {{-- ══ 2 · BUSINESS PROBLEMS ═══════════════════════════════════════ --}}
-    <section id="problems" class="band-paper section-v2">
+    {{-- ══ 2 · SERVICES — eight featured, then the whole catalogue ═══════ --}}
+    <section id="services" class="band-paper section-v2 scroll-mt-20" x-data>
         <div class="container-wide">
-            <x-ui.heading
-                align="split"
-                eyebrow="Business problems we solve"
-                title="Most businesses don't need more software. They need the right pieces working together."
-                lede="We start from the problem that costs you money, then choose the smallest thing that fixes it — a ready-made platform or something built for you." />
+            <x-ui.heading align="split" eyebrow="What we do"
+                title="{{ ucfirst((new NumberFormatter('en', NumberFormatter::SPELLOUT))->format(count($lines))) }} service lines. One accountable team."
+                lede="We build it, connect it, host it and support it, on one invoice, with the people who wrote it." />
 
-            <div class="mt-14 grid gap-4 lg:grid-cols-12">
-                {{-- A · Leads — the big tile, with our own back office in it --}}
-                <article class="tile flex flex-col p-7 sm:p-9 lg:col-span-7 lg:row-span-2" data-spotlight data-reveal>
-                    <div class="flex flex-wrap items-center gap-3">
-                        <p class="t-label text-accent">CRM &amp; customer management</p>
-                        <x-ui.badge status="built_to_order" />
-                    </div>
-                    <h3 class="t-subtitle mt-5 max-w-md text-brand">Leads lost in WhatsApp groups and inboxes.</h3>
-                    <p class="mt-3 max-w-md leading-relaxed text-secondary">
-                        Every enquiry lands in one pipeline your whole team can see — who asked,
-                        what for, who answered and when. Nothing waits in one person's phone over the weekend.
-                    </p>
+            <div class="snap-row -mx-5 mt-12 flex gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:mt-14 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
+                @foreach ($featured as $slug => $s)
+                    @php $lead = $loop->first; @endphp
+                    <a href="#line-{{ $s['line'] }}" @click="$dispatch('show-line', '{{ $s['line'] }}')"
+                       @class([
+                           'svc-card tile group flex w-[78%] shrink-0 flex-col p-6 sm:w-auto sm:p-7',
+                           'sm:col-span-2 lg:row-span-2' => $lead,
+                           '!border-dashed !border-brand/30' => $s['preview'],
+                       ])
+                       data-spotlight data-reveal data-reveal-delay="{{ $loop->index * 50 }}">
+                        <div class="flex items-start justify-between gap-4">
+                            <x-ui.motif :name="$s['motif']" @class(['svc-motif text-brand', 'h-14 w-14' => $lead, 'h-10 w-10' => ! $lead]) />
+                            @if ($s['preview'])
+                                <span class="rounded-full border border-dashed border-brand/40 px-2.5 py-1 text-[11px] font-semibold text-secondary">Preview only</span>
+                            @else
+                                <span class="t-label !text-[0.65rem] text-muted">{{ $s['line_name'] }}</span>
+                            @endif
+                        </div>
+                        <h3 @class(['mt-6 font-display font-bold tracking-tight text-brand', 'text-lg leading-snug sm:text-[clamp(1.85rem,1.3rem+1.6vw,2.75rem)] sm:leading-[1.1]' => $lead, 'text-lg leading-snug' => ! $lead])>{{ $s['name'] }}</h3>
+                        <p @class(['mt-2 leading-relaxed text-secondary', 'text-sm sm:text-lg max-w-md' => $lead, 'text-sm' => ! $lead])>{{ $s['summary'] }}</p>
 
-                    <div class="relative -mb-9 -mr-9 ml-2 mt-10 flex-1 sm:ml-10">
-                        @php $shot = \App\Support\ProductImages::get('admin-enquiries'); @endphp
-                        <figure class="h-full overflow-hidden rounded-tl-2xl border-l border-t border-hairline bg-brand-light shadow-[0_-12px_40px_-24px_var(--brand-dark)]">
-                            <img src="{{ asset($shot['file']) }}" alt="{{ $shot['alt'] }}" width="{{ $shot['width'] }}" height="{{ $shot['height'] }}"
-                                 loading="lazy" decoding="async" class="h-full min-h-56 w-full object-cover object-left-top">
-                        </figure>
-                        <p class="absolute -top-6 left-0 flex items-center gap-2 text-[11px] text-muted">
-                            <span class="h-px w-5 bg-accent/60" aria-hidden="true"></span>{{ $shot['label'] }}
-                        </p>
-                    </div>
-                </article>
-
-                {{-- B · The verified statistic --}}
-                <article class="tile-dark on-dark flex flex-col justify-between p-7 text-white sm:p-9 lg:col-span-5" data-spotlight data-reveal data-reveal-delay="70">
-                    <p class="t-label text-mint">Cash flow</p>
-                    <div class="mt-8">
-                        <p class="t-figure text-[4.5rem] text-mint sm:text-[5.5rem]">62%</p>
-                        <p class="mt-4 max-w-sm text-lg leading-snug text-white/85">
-                            of South African small businesses had cash-flow problems in the past year.
-                        </p>
-                    </div>
-                    <p class="mt-8 border-t border-white/10 pt-4 text-xs text-white/45">
-                        Source: Xero, <cite class="not-italic">The State of South African Small Business 2026</cite> — 427 businesses surveyed, Jan–Feb 2026.
-                    </p>
-                </article>
-
-                {{-- C · Getting paid — the one solution that is available today --}}
-                <article class="tile flex flex-col bg-brand-light p-7 sm:p-9 lg:col-span-5" data-spotlight data-reveal data-reveal-delay="120">
-                    <div class="flex flex-wrap items-center gap-3">
-                        <p class="t-label text-accent">Invoicing</p>
-                        <x-ui.badge status="available" />
-                    </div>
-                    <h3 class="t-subtitle mt-5 text-brand">Getting paid on time.</h3>
-                    <p class="mt-3 leading-relaxed text-secondary">
-                        Quotes, invoices and recurring billing that go out without someone remembering to send them —
-                        from your own email address, not a stranger's.
-                    </p>
-                    <div class="mt-auto flex flex-wrap items-center justify-between gap-4 pt-7">
-                        @if ($invoicing && ! $invoicing->is_metered)
-                            <p class="text-sm text-secondary"><span class="t-figure text-2xl text-brand">+{{ $invoicing->formatted_price }}</span> / month, charged separately</p>
+                        @if ($lead && ($shot = \App\Support\ProductImages::get('admin-packages')))
+                            <div class="relative -mb-7 -mr-7 ml-10 mt-8 hidden flex-1 sm:block">
+                                <figure class="h-full overflow-hidden rounded-tl-xl border-l border-t border-hairline bg-brand-light">
+                                    <img src="{{ asset($shot['file']) }}" alt="{{ $shot['alt'] }}" width="{{ $shot['width'] }}" height="{{ $shot['height'] }}"
+                                         loading="lazy" decoding="async" class="h-full max-h-80 min-h-48 w-full object-cover object-left-top">
+                                </figure>
+                                <p class="absolute -top-5 left-0 text-[11px] text-muted">Our own software · {{ $shot['label'] }}</p>
+                            </div>
                         @endif
-                        <a href="{{ route('packages.index') }}#add-ons" class="text-sm font-semibold text-accent hover:text-brand">See the module &rarr;</a>
+                        {{-- The lead card shows a screenshot from sm up, and the arrow on phones. --}}
+                        <span @class(['svc-arrow mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-accent', 'sm:hidden' => $lead])>
+                            See the line <span aria-hidden="true">&rarr;</span>
+                        </span>
+                    </a>
+                @endforeach
+
+                <a href="#catalogue" class="tile-dark on-dark group flex w-[78%] shrink-0 flex-col justify-between p-6 text-white sm:w-auto sm:p-7" data-reveal data-reveal-delay="400">
+                    <div class="contours absolute inset-0 -z-10 opacity-[0.12]" aria-hidden="true"></div>
+                    <p class="t-figure text-5xl text-mint">{{ $serviceCount }}</p>
+                    <div>
+                        <p class="mt-6 font-display text-lg font-bold">Every service, in one list</p>
+                        <span class="svc-arrow mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-mint">The full catalogue <span aria-hidden="true">&darr;</span></span>
                     </div>
-                </article>
-
-                {{-- D–G · four smaller problems, each with its own visual language --}}
-                <div class="grid gap-4 sm:grid-cols-2 lg:col-span-12 lg:grid-cols-4">
-                    <article class="tile flex flex-col p-7" data-spotlight data-reveal>
-                        <x-ui.diagram name="steps" tone="light" :label="false" class="h-24 w-40" />
-                        <h3 class="mt-6 font-display text-lg font-bold text-brand">Admin that eats the week</h3>
-                        <p class="mt-2 text-sm leading-relaxed text-secondary">Automate the job someone repeats every Friday — reminders, hand-offs and follow-ups.</p>
-                        <div class="mt-auto pt-6"><x-ui.badge status="built_to_order" /></div>
-                    </article>
-
-                    <article class="tile flex flex-col p-7" data-spotlight data-reveal data-reveal-delay="60">
-                        <p class="t-figure flex h-24 items-end text-5xl text-brand">24<span class="text-accent">/</span>7</p>
-                        <h3 class="mt-6 font-display text-lg font-bold text-brand">Bookings by phone only</h3>
-                        <p class="mt-2 text-sm leading-relaxed text-secondary">Customers book themselves, day or night, into a calendar you control.</p>
-                        <div class="mt-auto pt-6"><x-ui.badge status="built_to_order" /></div>
-                    </article>
-
-                    <article class="tile flex flex-col p-7" data-spotlight data-reveal data-reveal-delay="120">
-                        <x-ui.diagram name="doc" tone="light" :label="false" class="h-24 w-40" />
-                        <h3 class="mt-6 font-display text-lg font-bold text-brand">Paper, signatures, approvals</h3>
-                        <p class="mt-2 text-sm leading-relaxed text-secondary">Forms and sign-off on a screen, with a record of who approved what, and when.</p>
-                        <div class="mt-auto pt-6"><x-ui.badge status="built_to_order" /></div>
-                    </article>
-
-                    <article class="tile flex flex-col p-7" data-spotlight data-reveal data-reveal-delay="180">
-                        <x-ui.diagram name="bars" tone="light" :label="false" class="h-24 w-40" />
-                        <h3 class="mt-6 font-display text-lg font-bold text-brand">Flying blind</h3>
-                        <p class="mt-2 text-sm leading-relaxed text-secondary">The numbers that run the business, on one screen instead of five spreadsheets.</p>
-                        <div class="mt-auto pt-6"><x-ui.badge status="built_to_order" /></div>
-                    </article>
-                </div>
-            </div>
-            <p class="mt-6 text-xs text-muted">Small diagrams are illustrations, not product screens.</p>
-        </div>
-    </section>
-
-    {{-- ══ 3 · PLATFORMS vs CUSTOM — the spectrum ═══════════════════════ --}}
-    <section id="ways" class="band-mist section-v2">
-        <div class="container-wide">
-            <x-ui.heading align="center" eyebrow="Three ways to work with us"
-                title="Ready-made, built for you — and everything in between." />
-
-            <div class="relative mt-16">
-                <div class="mb-6 hidden items-center justify-between text-xs font-medium text-muted lg:flex" aria-hidden="true">
-                    <span>&larr; More ready-made · faster · fixed price</span>
-                    <span>More bespoke · scoped to you &rarr;</span>
-                </div>
-
-                <div class="relative">
-                <div class="absolute left-[22px] top-0 h-full w-px bg-gradient-to-b from-accent/50 via-accent/30 to-accent/10 lg:left-[16.6%] lg:right-[16.6%] lg:top-[22px] lg:h-px lg:w-auto lg:bg-gradient-to-r" aria-hidden="true"></div>
-
-                <ol class="relative grid gap-12 lg:grid-cols-3 lg:gap-8">
-                    @php
-                        $stations = [
-                            ['A', 'Business Platforms', 'A business in one of our industries that wants to start now.', [
-                                ['Time to live', $brand['terms']['build_time']],
-                                ['Pricing', $from ? 'From '.$from.'/month excl. VAT · R0 build' : 'Monthly subscription · R0 build'],
-                                ['You get', 'Website and back office, hosted and supported'],
-                            ], 'Explore platforms', route('packages.index'), false],
-                            ['B', 'Business Solutions', 'One specific problem: leads, bookings, invoicing, approvals.', [
-                                ['Time to live', 'Scoped to the problem'],
-                                ['Pricing', 'Module price, or quoted'],
-                                ['You get', 'The solution, connected to what you already use'],
-                            ], 'Explore solutions', '#problems', true],
-                            ['C', 'Enterprise Software', 'Complex, integrated or larger-scale systems.', [
-                                ['Time to live', 'Phased, starting with discovery'],
-                                ['Pricing', 'Quoted — fixed-scope phases or a retainer'],
-                                ['You get', 'A team, a process and governance'],
-                            ], 'Discuss a project', route('contact', ['type' => 'project', 'from' => 'home-spectrum']), false],
-                        ];
-                    @endphp
-
-                    @foreach ($stations as $i => [$letter, $name, $fit, $rows, $cta, $href, $featured])
-                        <li class="relative pl-16 lg:pl-0" data-reveal data-reveal-delay="{{ $i * 80 }}">
-                            <span @class([
-                                'absolute left-0 top-0 grid h-11 w-11 place-items-center rounded-full font-display text-sm font-extrabold lg:relative lg:mx-auto lg:mb-6',
-                                'bg-accent text-white shadow-[0_0_0_6px_var(--brand-light),0_0_0_7px_color-mix(in_oklab,var(--brand-accent)_40%,transparent)]' => $featured,
-                                'bg-white text-brand ring-1 ring-brand/15 shadow-[0_0_0_6px_var(--brand-light)]' => ! $featured,
-                            ])>{{ $letter }}</span>
-
-                            <div @class(['rounded-2xl lg:p-8', 'relative lg:bg-white lg:edge-glint lg:elevate-3' => $featured])>
-                                <h3 class="t-subtitle text-brand lg:text-center">{{ $name }}</h3>
-                                <p class="mt-2 text-secondary lg:text-center">{{ $fit }}</p>
-                                <dl class="mt-6 divide-y divide-hairline border-y border-hairline text-sm">
-                                    @foreach ($rows as [$k, $v])
-                                        <div class="flex justify-between gap-4 py-3">
-                                            <dt class="shrink-0 text-muted">{{ $k }}</dt>
-                                            <dd class="text-right font-medium text-brand">{{ $v }}</dd>
-                                        </div>
-                                    @endforeach
-                                </dl>
-                                <div class="mt-6 lg:text-center">
-                                    <x-ui.button :href="$href" :variant="$featured ? 'primary' : 'secondary'" arrow>{{ $cta }}</x-ui.button>
-                                </div>
-                            </div>
-                        </li>
-                    @endforeach
-                </ol>
-                </div>
+                </a>
             </div>
 
-            <p class="mt-14 text-center text-secondary">
-                Not sure which? Tell us the problem — we'll say honestly which fits, including when it's the cheapest one.
-            </p>
-        </div>
-    </section>
+            {{-- The full catalogue — every service we will put our name to on this environment. --}}
+            <div id="catalogue" class="mt-24 scroll-mt-28">
+                <div class="flex flex-wrap items-end justify-between gap-4 border-b border-hairline pb-6">
+                    <div>
+                        <p class="t-label text-accent">The full catalogue</p>
+                        <h3 class="t-subtitle mt-3 text-brand">{{ $serviceCount }} services across {{ count($lines) }} lines</h3>
+                    </div>
+                    <p class="flex items-center gap-5 text-xs text-muted">
+                        <span class="inline-flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>Available or built to order</span>
+                        @if (Revamp::previewing())
+                            <span class="inline-flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full border border-brand/50" aria-hidden="true"></span>Preview only, hidden in production</span>
+                        @endif
+                    </p>
+                </div>
 
-    {{-- ══ 4 · SOFTWARE SHOWCASE (tabs) ═════════════════════════════════ --}}
-    @if (count($services))
-        @php $slugs = array_keys($services); @endphp
-        <section id="showcase" class="band-night on-dark section-v2"
-                 x-data="{
-                    active: '{{ $slugs[0] }}',
-                    slugs: @js($slugs),
-                    init() {
-                        const h = location.hash.replace('#service-', '');
-                        if (this.slugs.includes(h)) this.active = h;
-                    },
-                    move(step) {
-                        const i = (this.slugs.indexOf(this.active) + step + this.slugs.length) % this.slugs.length;
-                        this.active = this.slugs[i];
-                        this.$nextTick(() => document.getElementById('tab-' + this.active)?.focus());
-                    },
-                    edge(last) {
-                        this.active = this.slugs[last ? this.slugs.length - 1 : 0];
-                        this.$nextTick(() => document.getElementById('tab-' + this.active)?.focus());
-                    },
-                 }"
-                 @show-service.window="active = $event.detail; $el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })">
-            <div class="contours absolute inset-y-0 left-0 -z-10 w-full -scale-x-100 opacity-[0.07]" aria-hidden="true"></div>
-
-            <div class="container-wide">
-                <x-ui.heading tone="dark" align="split"
-                    eyebrow="Software engineering"
-                    title="When the off-the-shelf answer doesn't fit."
-                    lede="Custom software, automation and integration — scoped in phases, demonstrated every sprint, and supported by the people who wrote it." />
-
-                <div class="mt-14 grid gap-8 lg:grid-cols-12 lg:gap-10">
-                    {{-- Tab rail: vertical on desktop, a scrolling chip row on mobile. --}}
-                    <div role="tablist" aria-label="Services" aria-orientation="vertical"
-                         @keydown.arrow-down.prevent="move(1)" @keydown.arrow-right.prevent="move(1)"
-                         @keydown.arrow-up.prevent="move(-1)" @keydown.arrow-left.prevent="move(-1)"
-                         @keydown.home.prevent="edge(false)" @keydown.end.prevent="edge(true)"
-                         class="js-only snap-row -mx-5 flex gap-2 overflow-x-auto px-5 lg:col-span-4 lg:mx-0 lg:flex-col lg:gap-1 lg:overflow-visible lg:px-0">
-                        @foreach ($services as $slug => $service)
-                            <button type="button" role="tab"
-                                    id="tab-{{ $slug }}"
-                                    aria-controls="service-{{ $slug }}"
-                                    :aria-selected="active === '{{ $slug }}' ? 'true' : 'false'"
-                                    :tabindex="active === '{{ $slug }}' ? 0 : -1"
-                                    @click="active = '{{ $slug }}'"
-                                    :class="active === '{{ $slug }}' ? 'bg-white/[0.07] text-white lg:before:bg-mint' : 'text-white/55 hover:bg-white/[0.03] hover:text-white/85 lg:before:bg-transparent'"
-                                    class="relative flex shrink-0 items-center gap-4 rounded-xl px-4 py-3.5 text-left transition lg:before:absolute lg:before:inset-y-3 lg:before:left-0 lg:before:w-0.5 lg:before:rounded-full {{ $loop->first ? 'bg-white/[0.07] text-white' : 'text-white/55' }}">
-                                <span class="t-index text-white/55">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                                <span class="whitespace-nowrap font-medium lg:whitespace-normal">{{ $service['name'] }}</span>
-                                @if ($service['preview'])
-                                    <span class="ml-auto rounded border border-dashed border-white/30 px-1.5 text-[10px] text-white/50">preview</span>
-                                @endif
+                <div class="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-4">
+                    @foreach ($lines as $slug => $l)
+                        <div id="line-{{ $slug }}" x-data="{ open: false, flash: false }"
+                             x-on:show-line.window="if ($event.detail === '{{ $slug }}') { open = true; flash = true; setTimeout(() => flash = false, 1600); $nextTick(() => $el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })) }"
+                             :class="flash && 'is-target'"
+                             class="cat-line -mx-3 scroll-mt-28 border-b border-hairline px-3 py-5 sm:rounded-2xl sm:border-0 sm:py-6 lg:py-9"
+                             style="--motif-accent: var(--brand-accent)">
+                            {{-- A heading from sm up; on phones the same row is a button that opens the list. --}}
+                            <h4 class="nojs-flex hidden items-center gap-3 sm:flex">
+                                <x-ui.motif :name="$l['motif']" class="h-7 w-7 text-brand" />
+                                <span class="font-display text-lg font-bold text-brand">{{ $l['name'] }}</span>
+                            </h4>
+                            <button type="button" @click="open = ! open" :aria-expanded="open ? 'true' : 'false'" aria-controls="line-list-{{ $slug }}"
+                                    class="js-only flex w-full items-center gap-3 text-left sm:hidden">
+                                <x-ui.motif :name="$l['motif']" class="h-7 w-7 text-brand" />
+                                <span class="flex-1 font-display text-lg font-bold text-brand">{{ $l['name'] }}</span>
+                                <span class="t-index text-muted">{{ count($l['services']) }}</span>
+                                <svg class="h-4 w-4 text-accent transition-transform" :class="open && 'rotate-45'" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke-linecap="round"/></svg>
                             </button>
-                        @endforeach
-                    </div>
-
-                    <div class="lg:col-span-8">
-                        @foreach ($services as $slug => $service)
-                            <div id="service-{{ $slug }}" role="tabpanel" aria-labelledby="tab-{{ $slug }}" tabindex="0"
-                                 x-show="active === '{{ $slug }}'"
-                                 x-transition:enter="transition duration-200 ease-out"
-                                 x-transition:enter-start="opacity-0"
-                                 @if (! $loop->first) style="display: none" @endif
-                                 class="js-panel scroll-mt-28">
-                                <article @class([
-                                    'tile-dark relative grid gap-10 p-7 sm:p-10 lg:grid-cols-2',
-                                    'edge-glint' => ! $service['preview'],
-                                    '!border-dashed !border-white/25' => $service['preview'],
-                                ])>
-                                    <div class="flex flex-col">
-                                        @if ($service['preview'])
-                                            <p class="mb-5 rounded-lg border border-dashed border-white/25 px-3 py-2 text-xs leading-relaxed text-white/60">
-                                                <strong class="text-white/80">Preview only.</strong> Capability not yet confirmed by the owner —
-                                                this panel is hidden in production.
-                                            </p>
-                                        @endif
-                                        <x-ui.badge :status="$service['availability']" tone="dark" class="self-start" />
-                                        <h3 class="t-subtitle mt-5 text-white">{{ $service['headline'] }}</h3>
-                                        <ul class="mt-6 space-y-3.5">
-                                            @foreach ($service['benefits'] as $benefit)
-                                                <li class="flex gap-3 text-white/75">
-                                                    <svg class="mt-1 h-4 w-4 shrink-0 text-mint" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                                    <span class="leading-relaxed">{{ $benefit }}</span>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                        <div class="mt-8 rounded-xl border border-white/10 bg-white/[0.03] p-4">
-                                            <p class="t-label !text-[0.65rem] text-white/45">Typical engagement</p>
-                                            <p class="mt-2 text-sm leading-relaxed text-white/80">{{ $service['engagement'] }}</p>
-                                        </div>
-                                        @unless ($service['preview'])
-                                            <div class="mt-8">
-                                                <x-ui.button :href="route('contact', ['type' => 'project', 'interest' => $slug, 'from' => 'home-showcase'])" tone="dark" arrow>
-                                                    Discuss {{ strtolower($service['name']) }}
-                                                </x-ui.button>
-                                            </div>
-                                        @endunless
-                                    </div>
-
-                                    <div class="flex flex-col justify-center">
-                                        @if (str_starts_with($service['visual'], 'diagram:'))
-                                            <div class="rounded-xl border border-white/10 bg-brand-dark/50 p-5">
-                                                <x-ui.diagram :name="substr($service['visual'], 8)" tone="dark" />
-                                            </div>
-                                        @elseif (str_ends_with($service['visual'], '-mobile'))
-                                            <x-ui.frame-phone :image="$service['visual']" class="mx-auto w-48" />
-                                        @else
-                                            <x-ui.frame-browser :image="$service['visual']" url="yourbusiness.co.za/admin" :caption="false" />
-                                        @endif
-                                        <p class="mt-4 text-xs leading-relaxed text-white/50">{{ $service['visual_caption'] }}</p>
-                                    </div>
-                                </article>
+                            <div id="line-list-{{ $slug }}" :class="{ 'block': open, 'hidden sm:block': ! (open) }" class="js-collapse">
+                                <p class="mt-3 text-sm leading-relaxed text-muted">{{ $l['blurb'] }}</p>
+                                <ul class="mt-4 space-y-2">
+                                    @foreach ($l['services'] as $s)
+                                        <li class="flex items-baseline gap-2.5 text-[0.92rem] leading-snug text-secondary">
+                                            <span @class(['h-1.5 w-1.5 shrink-0 translate-y-[-2px] rounded-full', 'bg-accent' => ! $s['preview'], 'border border-brand/50' => $s['preview']]) aria-hidden="true"></span>
+                                            <span @class(['text-muted' => $s['preview']])>{{ $s['name'] }}@if ($s['preview'])<span class="sr-only"> (preview only)</span>@endif</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        @endforeach
+                        </div>
+                    @endforeach
+
+                    {{-- The promise that we are not limited to a list (or to five packages). --}}
+                    <div class="flex flex-col justify-center rounded-2xl bg-brand-light p-6 sm:my-6 lg:my-9">
+                        <p class="font-display text-lg font-bold text-brand">Not on the list?</p>
+                        <p class="mt-2 text-sm leading-relaxed text-secondary">If your business has a process, we can put it on a screen. Tell us what it is.</p>
+                        <a href="{{ $quote('home-catalogue') }}" class="mt-4 text-sm font-semibold text-accent hover:text-brand">Describe it &rarr;</a>
                     </div>
                 </div>
             </div>
-        </section>
-    @endif
+        </div>
+    </section>
 
-    {{-- ══ 5 · INDUSTRIES ══════════════════════════════════════════════ --}}
+    {{-- ══ 3 · SOLUTIONS — problems first ══════════════════════════════ --}}
+    <section id="solutions" class="band-mist section-v2">
+        <div class="container-wide grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <div class="lg:col-span-5">
+                <x-ui.heading eyebrow="Business problems we solve" title="What is slowing your business down?"
+                    lede="We start from the problem that costs you money, then build the smallest thing that fixes it." />
+
+                <figure class="tile-dark on-dark mt-10 p-7 text-white sm:p-8" data-reveal>
+                    <p class="t-figure text-6xl text-mint">62%</p>
+                    <p class="mt-3 max-w-xs leading-snug text-white/85">of South African small businesses had cash-flow problems in the past year.</p>
+                    <figcaption class="mt-6 border-t border-white/10 pt-4 text-xs text-white/50">
+                        Source: Xero, <cite class="not-italic">The State of South African Small Business 2026</cite>, 427 businesses surveyed, Jan–Feb 2026.
+                    </figcaption>
+                </figure>
+            </div>
+
+            <ol class="divide-y divide-brand/10 border-y border-brand/10 lg:col-span-7 lg:self-center" x-data>
+                @foreach (config('revamp.solutions') as $i => $s)
+                    @continue(isset($s[3]) && ! Revamp::visible($s[3]))
+                    <li data-reveal data-reveal-delay="{{ $i * 40 }}">
+                        <a href="#line-{{ $s[2] }}" @click="$dispatch('show-line', '{{ $s[2] }}')"
+                           class="ledger-row group grid grid-cols-[2.25rem_1fr_auto] items-baseline gap-x-4 py-5 sm:py-6">
+                            <span class="t-index text-accent">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                            <span>
+                                <span class="block font-display text-lg font-bold text-brand sm:text-xl">{{ $s[0] }}</span>
+                                <span class="mt-1 block text-secondary group-hover:text-brand">{{ $s[1] }}</span>
+                            </span>
+                            <span class="ledger-arrow text-accent" aria-hidden="true">&rarr;</span>
+                        </a>
+                    </li>
+                @endforeach
+            </ol>
+        </div>
+    </section>
+
+    {{-- ══ 4 · BUILT BY 7HILLS — proof, not promises ══════════════════════ --}}
+    @php
+        $proof = [
+            'back-office' => [
+                'tab' => 'Our back office',
+                'title' => 'The system this business runs on.',
+                'points' => ['Enquiry pipeline with a full record of who said what', 'Packages, add-ons and prices edited without a developer', 'What a prospect submitted is read-only: evidence, not a draft'],
+                'image' => 'admin-packages',
+                'url' => 'yourbusiness.co.za/admin/packages',
+            ],
+            'platform' => [
+                'tab' => 'The platform engine',
+                'title' => 'One engine, configured for five industries.',
+                'points' => ['Stock, listings, vacancies or rooms, each with its own back office', 'Each tenant carries its own brand, not ours', 'Prices on every page follow the database'],
+                'image' => 'demo-auto-desktop',
+                'url' => '7hillsdigital.co.za/demos/auto',
+            ],
+            'invoicing' => [
+                'tab' => 'Client invoicing',
+                'title' => 'Third-party software, deployed and run properly.',
+                'points' => ['InvoiceShelf on the client\'s own subdomain', 'Branded, backed up and updated by us', 'We say whose software it is. We did not write it'],
+                'image' => null,
+                'url' => null,
+            ],
+        ];
+        $proofKeys = array_keys($proof);
+    @endphp
+    <section id="proof" class="band-night on-dark section-v2"
+             x-data="{
+                active: '{{ $proofKeys[0] }}',
+                keys: @js($proofKeys),
+                move(step) {
+                    const i = (this.keys.indexOf(this.active) + step + this.keys.length) % this.keys.length;
+                    this.active = this.keys[i];
+                    this.$nextTick(() => document.getElementById('ptab-' + this.active)?.focus());
+                },
+             }">
+        <div class="contours absolute inset-y-0 left-0 -z-10 w-full -scale-x-100 opacity-[0.07]" aria-hidden="true"></div>
+        <div class="container-wide">
+            <x-ui.heading tone="dark" eyebrow="Proof, not promises"
+                title="Software we wrote, running today."
+                lede="Before you trust us with your system, look at ours. Every screen here is real, and labelled for what it is." />
+
+            <div role="tablist" aria-label="Our software"
+                 @keydown.arrow-right.prevent="move(1)" @keydown.arrow-left.prevent="move(-1)"
+                 class="js-only snap-row -mx-5 mt-12 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:px-0">
+                @foreach ($proof as $key => $p)
+                    <button type="button" role="tab" id="ptab-{{ $key }}" aria-controls="proof-{{ $key }}"
+                            :aria-selected="active === '{{ $key }}' ? 'true' : 'false'"
+                            :tabindex="active === '{{ $key }}' ? 0 : -1"
+                            @click="active = '{{ $key }}'"
+                            :class="{ 'bg-white/[0.09] text-white ring-white/20': active === '{{ $key }}', 'text-white/60 ring-white/10 hover:text-white': ! (active === '{{ $key }}') }"
+                            class="nav-item shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold ring-1 {{ $loop->first ? 'bg-white/[0.09] text-white ring-white/20' : 'text-white/60 ring-white/10' }}">
+                        {{ $p['tab'] }}
+                    </button>
+                @endforeach
+            </div>
+
+            <div class="mt-8">
+                @foreach ($proof as $key => $p)
+                    <div id="proof-{{ $key }}" role="tabpanel" aria-labelledby="ptab-{{ $key }}" tabindex="0"
+                         x-show="active === '{{ $key }}'"
+                         x-transition:enter="transition duration-300 ease-out" x-transition:enter-start="opacity-0"
+                         @if (! $loop->first) style="display: none" @endif
+                         class="js-panel">
+                        <div class="grid items-center gap-10 lg:grid-cols-12">
+                            <div class="lg:col-span-7">
+                                @if ($p['image'])
+                                    <x-ui.frame-browser :image="$p['image']" :url="$p['url']" />
+                                @else
+                                    <div class="tile-dark p-6 sm:p-10">
+                                        <x-ui.flow tone="dark" :steps="[['Quote', 'Sent from their own domain'], ['Invoice', 'Raised from the accepted quote'], ['Payment', 'Recorded against the invoice'], ['Statement', 'The client sees where they stand']]" />
+                                        <p class="mt-6 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/60">
+                                            No screenshot, deliberately: it is a client&rsquo;s live system, and their customers&rsquo; data is not ours to show.
+                                        </p>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="lg:col-span-5">
+                                <h3 class="t-subtitle text-white">{{ $p['title'] }}</h3>
+                                <ul class="mt-6 space-y-3.5">
+                                    @foreach ($p['points'] as $point)
+                                        <li class="flex gap-3 text-white/75">
+                                            <svg class="mt-1 h-4 w-4 shrink-0 text-mint" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                            <span class="leading-relaxed">{{ $point }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- Only technology evidenced in our own code and infrastructure. --}}
+            <div class="mt-16 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-baseline sm:gap-10">
+                <p class="t-label shrink-0 text-white/60">What we build with</p>
+                <ul class="flex flex-wrap gap-x-6 gap-y-2 font-display text-sm font-semibold text-white/70">
+                    @foreach (['Laravel', 'PHP', 'MySQL', 'Filament', 'Tailwind CSS', 'Alpine.js', 'Docker', 'Proxmox', 'Cloudflare'] as $tech)
+                        <li>{{ $tech }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    {{-- ══ 5 · SPOTLIGHT — Microsoft 365 when confirmed, otherwise automation ══ --}}
+    <section id="spotlight" class="band-paper section-v2">
+        <div class="container-wide">
+            <div @class(['grid gap-12 rounded-3xl p-7 sm:p-12 lg:grid-cols-12 lg:items-center lg:gap-16', 'border border-dashed border-brand/30' => $microsoft && Revamp::catalogue()['microsoft-365-consulting']['preview'], 'border border-hairline' => ! ($microsoft && Revamp::catalogue()['microsoft-365-consulting']['preview'])])>
+                <div class="lg:col-span-5">
+                    @if ($microsoft)
+                        @if (Revamp::catalogue()['microsoft-365-consulting']['preview'])
+                            <p class="mb-5 inline-flex rounded-full border border-dashed border-brand/40 px-3 py-1 text-xs font-semibold text-secondary">Preview only. Hidden in production until capability is confirmed.</p>
+                        @endif
+                        <x-ui.heading eyebrow="Microsoft 365 & SharePoint" title="Get more from the Microsoft 365 you already pay for."
+                            lede="SharePoint, Teams and Power Automate, set up around how your business actually works." />
+                        <ul class="mt-8 space-y-3 text-secondary">
+                            @foreach (['Document libraries people use, with permissions that match the org chart', 'Approvals that do not wait in an inbox', 'Sign-in and sharing secured properly'] as $point)
+                                <li class="flex gap-3"><svg class="mt-1 h-4 w-4 shrink-0 text-accent" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ $point }}</li>
+                            @endforeach
+                        </ul>
+                        <div class="mt-9"><x-ui.button :href="$quote('home-spotlight', 'microsoft-365')" arrow>Talk to us about Microsoft 365</x-ui.button></div>
+                    @else
+                        <x-ui.heading eyebrow="Automation & integration" title="Enter it once. Let the systems do the rest."
+                            lede="We connect your website, back office, accounting and email, so a lead becomes a quote and a quote becomes an invoice without anyone retyping it." />
+                        <div class="mt-9"><x-ui.button :href="$quote('home-spotlight', 'ai-automation')" arrow>Automate a process</x-ui.button></div>
+                    @endif
+                </div>
+                <div class="hidden sm:block lg:col-span-7">
+                    <div class="tile-dark on-dark p-7 sm:p-10">
+                        <div class="contours absolute inset-0 -z-10 opacity-[0.1]" aria-hidden="true"></div>
+                        @if ($microsoft)
+                            <x-ui.flow tone="dark" :steps="[['Request', 'Raised in Teams'], ['Approval', 'Routed by Power Automate'], ['Filed', 'Stored in SharePoint'], ['Done', 'Finance notified']]" />
+                        @else
+                            <x-ui.flow tone="dark" :steps="[['Enquiry', 'Arrives from your website'], ['Pipeline', 'Logged and assigned'], ['Quote', 'Sent from your address'], ['Invoice', 'Raised on acceptance']]" />
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ══ 6 · READY-TO-USE PLATFORMS (unchanged offer) ═════════════════ --}}
+    <section id="platforms" class="band-mist section-v2">
+        <div class="container-wide">
+            <x-ui.heading align="split" eyebrow="Ready-to-use business platforms"
+                title="Need a website now? Pay nothing until your website is live."
+                lede="Five industry platforms on one engine. The build is free and a flat monthly fee starts on go-live. Cancel any time." />
+
+            @if ($packages->isEmpty())
+                <div class="mt-12 rounded-2xl border border-dashed border-brand/25 bg-white p-10 text-center">
+                    <p class="t-subtitle text-brand">Our platforms are being updated.</p>
+                    <p class="mt-2 text-secondary">Tell us what you need and we will come back to you with options.</p>
+                    <div class="mt-6"><x-ui.button :href="route('contact')" arrow>Talk to us</x-ui.button></div>
+                </div>
+            @else
+                <div class="tile mt-12 overflow-hidden" data-reveal>
+                    <div class="hidden grid-cols-12 gap-4 border-b border-hairline bg-brand-light px-7 py-3 text-xs font-semibold uppercase tracking-wider text-muted md:grid">
+                        <span class="col-span-4">Platform</span>
+                        @foreach ($tierColumns as $col)
+                            <span class="col-span-2 text-right">{{ $col->headline_storage }} storage</span>
+                        @endforeach
+                        <span class="{{ str_replace('md:', '', $linkSpan) }} text-right"><span class="sr-only">Links</span></span>
+                    </div>
+                    <ul class="divide-y divide-hairline">
+                        @foreach ($packages as $package)
+                            <li class="grid items-center gap-x-4 gap-y-3 px-6 py-5 transition-colors hover:bg-brand-light/60 sm:px-7 md:grid-cols-12">
+                                <div class="flex items-center gap-4 md:col-span-4">
+                                    <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-light text-brand ring-1 ring-hairline">
+                                        <x-package-icon :name="$package->icon_key" class="h-5 w-5" />
+                                    </span>
+                                    <div>
+                                        <p class="font-display text-lg font-bold text-brand">{{ $package->name }}</p>
+                                        <p class="text-xs text-muted">{{ $package->vertical_label }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6 md:contents">
+                                    @foreach ($package->tiers as $tier)
+                                        <p class="md:col-span-2 md:text-right">
+                                            <span class="t-figure text-2xl text-brand">{{ $tier->formatted_price }}</span>
+                                            <span class="text-xs text-muted">/mo</span>
+                                            <span class="block text-xs text-muted md:hidden">{{ $tier->headline_storage }} storage</span>
+                                        </p>
+                                    @endforeach
+                                </div>
+                                <div class="flex gap-5 text-sm font-semibold {{ $linkSpan }} md:justify-end">
+                                    @if ($demoSlug = $package->demoSlug())
+                                        <a href="{{ route('demos.show', $demoSlug) }}" class="text-secondary hover:text-accent">Demo</a>
+                                    @endif
+                                    <a href="{{ route('packages.show', $package) }}" class="text-accent hover:text-brand">Details &rarr;</a>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="mt-6 flex flex-wrap items-center justify-between gap-4 text-sm text-secondary">
+                    <p>All prices exclude VAT. Add-on modules are charged separately. {{ $brand['bulk']['note'] }}</p>
+                    <a href="{{ route('packages.index') }}" class="font-semibold text-accent hover:text-brand">Compare platforms and add-ons &rarr;</a>
+                </div>
+            @endif
+        </div>
+    </section>
+
+    {{-- ══ 7 · INDUSTRIES ══════════════════════════════════════════════ --}}
     @php $industryKeys = array_keys($industries); @endphp
     <section id="industries" class="band-paper section-v2"
              x-data="{
@@ -403,11 +479,11 @@
                     this.$nextTick(() => document.getElementById('itab-' + this.active)?.focus());
                 },
              }"
-             @show-industry.window="active = $event.detail; $el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })">
+             x-on:show-industry.window="active = $event.detail; $el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })">
         <div class="container-wide">
             <x-ui.heading align="split" eyebrow="Industry solutions"
-                title="Built for how your industry actually works."
-                lede="Five run on ready-to-use platforms you can see working today. The rest start with a conversation about your process." />
+                title="Built for how your industry works."
+                lede="Five run on platforms you can see working today. The rest start with a conversation about your process." />
 
             <div role="tablist" aria-label="Industries"
                  @keydown.arrow-right.prevent="move(1)" @keydown.arrow-left.prevent="move(-1)"
@@ -417,8 +493,8 @@
                             :aria-selected="active === '{{ $key }}' ? 'true' : 'false'"
                             :tabindex="active === '{{ $key }}' ? 0 : -1"
                             @click="active = '{{ $key }}'"
-                            :class="active === '{{ $key }}' ? 'bg-brand text-white ring-brand' : 'bg-white text-secondary ring-hairline hover:text-brand hover:ring-brand/30'"
-                            class="shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold ring-1 transition {{ $loop->first ? 'bg-brand text-white ring-brand' : 'bg-white text-secondary ring-hairline' }}">
+                            :class="{ 'bg-brand text-white ring-brand': active === '{{ $key }}', 'bg-white text-secondary ring-hairline hover:text-brand hover:ring-brand/30': ! (active === '{{ $key }}') }"
+                            class="nav-item shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold ring-1 {{ $loop->first ? 'bg-brand text-white ring-brand' : 'bg-white text-secondary ring-hairline' }}">
                         {{ $industry['short'] }}
                     </button>
                 @endforeach
@@ -432,11 +508,10 @@
                     @endphp
                     <div id="industry-{{ $key }}" role="tabpanel" aria-labelledby="itab-{{ $key }}" tabindex="0"
                          x-show="active === '{{ $key }}'"
-                         x-transition:enter="transition duration-200 ease-out"
-                         x-transition:enter-start="opacity-0"
+                         x-transition:enter="transition duration-300 ease-out" x-transition:enter-start="opacity-0"
                          @if (! $loop->first) style="display: none" @endif
                          class="js-panel scroll-mt-28">
-                        <div class="grid items-center gap-12 lg:grid-cols-12">
+                        <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
                             <div class="lg:col-span-5">
                                 <h3 class="t-subtitle text-brand">{{ $industry['name'] }}</h3>
                                 <ol class="mt-6 space-y-4">
@@ -447,31 +522,16 @@
                                         </li>
                                     @endforeach
                                 </ol>
-
-                                <div class="mt-9 rounded-2xl border border-hairline bg-brand-light p-5">
+                                <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
                                     @if ($package)
-                                        <p class="text-sm text-muted">Ready-to-use platform</p>
-                                        <p class="mt-1 flex flex-wrap items-baseline gap-x-3">
-                                            <span class="font-display text-xl font-bold text-brand">{{ $package->name }}</span>
-                                            @if ($tier)
-                                                <span class="text-sm text-secondary">from <strong class="text-brand">{{ $tier->formatted_price }}</strong>/month excl. VAT</span>
-                                            @endif
-                                        </p>
-                                        @unless ($industry['demo'])
-                                            <p class="mt-2 text-xs text-muted">No demo for this industry yet — the Business platform is configured to your trade.</p>
-                                        @endunless
-                                        <div class="mt-5 flex flex-wrap gap-2">
-                                            @if ($industry['demo'])
-                                                <x-ui.button :href="route('demos.show', $industry['demo'])" arrow>View the demo</x-ui.button>
-                                            @endif
-                                            <x-ui.button :href="route('packages.show', $package)" variant="secondary">Platform details</x-ui.button>
-                                        </div>
+                                        @if ($industry['demo'])
+                                            <x-ui.button :href="route('demos.show', $industry['demo'])" arrow>View the demo</x-ui.button>
+                                        @endif
+                                        <a href="{{ route('packages.show', $package) }}" class="text-sm font-semibold text-brand hover:text-accent">
+                                            {{ $package->name }} platform @if ($tier)· from {{ $tier->formatted_price }}/mo @endif &rarr;
+                                        </a>
                                     @else
-                                        <p class="text-sm text-muted">Delivered as a business solution</p>
-                                        <p class="mt-1 font-display text-xl font-bold text-brand">Scoped to your organisation</p>
-                                        <div class="mt-5">
-                                            <x-ui.button :href="route('contact', ['type' => 'project', 'from' => 'home-industry-'.$key])" arrow>Discuss your process</x-ui.button>
-                                        </div>
+                                        <x-ui.button :href="$quote('home-industry-'.$key)" arrow>Discuss your process</x-ui.button>
                                     @endif
                                 </div>
                             </div>
@@ -485,11 +545,10 @@
                                         </div>
                                     </div>
                                 @else
-                                    <div class="grid items-center gap-6 rounded-3xl border border-hairline bg-brand-light p-6 sm:grid-cols-[1fr_auto] sm:p-10">
-                                        <div class="rounded-xl border border-hairline bg-white p-5">
-                                            <x-ui.diagram :name="$key === 'corporate-operations' ? 'hub' : 'flow'" tone="light" />
-                                        </div>
-                                        <x-ui.frame-phone image="admin-enquiries-mobile" class="mx-auto w-40" caption tone="light" />
+                                    <div class="rounded-3xl border border-hairline bg-brand-light p-6 sm:p-10">
+                                        <x-ui.flow :steps="$key === 'corporate-operations'
+                                            ? [['Request', 'A staff member asks'], ['Approve', 'The right manager signs off'], ['Act', 'The system does the work'], ['Report', 'Everyone sees the status']]
+                                            : [['Intake', 'A client brief, not an email thread'], ['Documents', 'Collected in one place'], ['Sign-off', 'With an audit trail'], ['Billing', 'Out on time']]" />
                                     </div>
                                 @endif
                             </div>
@@ -498,41 +557,33 @@
                 @endforeach
             </div>
 
-            {{-- The promise that we are not limited to five (PublicSiteTest). --}}
-            <div class="mt-20 grid gap-6 rounded-3xl border border-hairline p-7 sm:p-10 lg:grid-cols-12 lg:items-center" data-reveal>
-                <div class="lg:col-span-8">
-                    <h3 class="t-subtitle text-brand">Your industry does not have to be one of the five.</h3>
-                    <p class="mt-3 max-w-2xl leading-relaxed text-secondary">
-                        Those platforms exist because those industries kept asking for the same thing. They are a starting point,
-                        not a limit — if your business has a process, we can put it on a screen.
-                        <span class="font-medium text-brand">You focus on running the business. We will take care of the IT.</span>
-                    </p>
-                </div>
-                <div class="lg:col-span-4 lg:text-right">
-                    <x-ui.button :href="route('contact', ['type' => 'project', 'from' => 'home-industries'])" variant="secondary" arrow>Ask about your industry</x-ui.button>
-                </div>
-            </div>
+            <p class="mt-14 border-t border-hairline pt-8 text-secondary" data-reveal>
+                <span class="font-display font-bold text-brand">Your industry does not have to be one of the five.</span>
+                Those platforms are a starting point, not a limit.
+                <a href="{{ $quote('home-industries') }}" class="font-semibold text-accent hover:text-brand">Ask about yours &rarr;</a>
+            </p>
         </div>
     </section>
 
-    {{-- ══ 6 · LIVE WORK & DEMOS ═══════════════════════════════════════
-         Real installs from config/clients.php. Public sites only — the
+    {{-- ══ 8 · OUR WORK — live installs and labelled demos ═══════════════
+         Real installs from config/clients.php, public sites only; the
          LiveWorkTest rules apply exactly as on the current homepage. --}}
     @php $clients = config('clients', []); @endphp
-    <section id="work" class="band-mist section-v2">
+    <section id="work" class="band-mist section-v2 scroll-mt-20">
         <div class="container-wide">
-            <x-ui.heading align="split" eyebrow="Live work"
+            <x-ui.heading align="split" eyebrow="Our work"
                 title="Real clients. And demos that say they're demos."
-                lede="The demos are openly invented. These are not — a business running on our platform every day, with its own stock, enquiries and invoices." />
+                lede="The demos are openly invented. The client work is not: a business running on our software every day." />
 
             @if (filled($clients))
-                <div class="mt-14 grid gap-4 lg:grid-cols-12">
+                <p class="t-label mt-14 text-muted">Live work</p>
+                <div class="mt-5 grid gap-4 lg:grid-cols-12">
                     @foreach ($clients as $client)
                         <article @class(['tile flex flex-col p-7 sm:p-10', 'lg:col-span-7' => $loop->first, 'lg:col-span-5' => ! $loop->first]) data-spotlight data-reveal data-reveal-delay="{{ $loop->index * 80 }}">
                             <p class="t-label text-accent">{{ $client['vertical'] }}</p>
                             <h3 class="mt-3 font-display text-2xl font-bold text-brand">{{ $client['name'] }}</h3>
                             <p class="mt-4 leading-relaxed text-secondary">{{ $client['summary'] }}</p>
-                            <ul @class(['mt-6 grid flex-1 content-start gap-x-8 gap-y-2.5 text-sm text-secondary', 'sm:grid-cols-2' => $loop->first])>
+                            <ul @class(['mt-6 hidden flex-1 content-start gap-x-8 gap-y-2.5 text-sm text-secondary sm:grid', 'sm:grid-cols-2' => $loop->first])>
                                 @foreach ($client['delivered'] as $item)
                                     <li class="flex gap-2.5">
                                         <svg class="mt-0.5 h-4 w-4 shrink-0 text-accent" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -564,7 +615,7 @@
             <div class="mt-16 flex flex-wrap items-end justify-between gap-4">
                 <div>
                     <h3 class="font-display text-lg font-bold text-brand">Demonstrations</h3>
-                    <p class="mt-1 text-sm text-muted">Every business, listing and price on these is invented — and each one says so.</p>
+                    <p class="mt-1 text-sm text-muted">Every business, listing and price on these is invented, and each one says so.</p>
                 </div>
                 <a href="{{ route('demos') }}" class="text-sm font-semibold text-accent hover:text-brand">All demos &rarr;</a>
             </div>
@@ -590,210 +641,82 @@
         </div>
     </section>
 
-    {{-- ══ 7 · PROCESS ═════════════════════════════════════════════════ --}}
-    <section id="process" class="band-paper section-v2" x-data="{ track: 'platform' }">
+    {{-- ══ 9 · GET A QUOTE — pick the closest fit ════════════════════════ --}}
+    <section id="quote" class="band-paper section-v2 scroll-mt-20">
         <div class="container-wide">
-            <div class="flex flex-wrap items-end justify-between gap-8">
-                <x-ui.heading eyebrow="How we deliver" title="A process you can see, from the first call to support." />
+            <x-ui.heading align="split" eyebrow="Get a quote"
+                title="Tell us what you need."
+                lede="Pick the closest fit. We call you back to understand it properly, then send a written proposal." />
 
-                <div role="group" aria-label="Choose a delivery track" class="js-only inline-flex rounded-full bg-brand-light p-1 ring-1 ring-hairline" data-reveal>
-                    @foreach (['platform' => 'Platform subscription', 'project' => 'Custom project'] as $k => $label)
-                        <button type="button" @click="track = '{{ $k }}'" :aria-pressed="track === '{{ $k }}' ? 'true' : 'false'"
-                                :class="track === '{{ $k }}' ? 'bg-white text-brand shadow-sm ring-1 ring-hairline' : 'text-muted hover:text-brand'"
-                                class="rounded-full px-4 py-2 text-sm font-semibold transition {{ $k === 'platform' ? 'bg-white text-brand shadow-sm ring-1 ring-hairline' : 'text-muted' }}">
-                            {{ $label }}
-                        </button>
-                    @endforeach
-                </div>
-            </div>
-
-            @php
-                $tracks = [
-                    'platform' => [
-                        ['Choose your platform', 'Pick the industry platform and tier. We confirm what you need — nothing to pay yet.', 'Day 1'],
-                        ['Send your content', 'Photos, prices and copy. We tell you exactly what is needed, so nothing stalls.', 'Week 1'],
-                        ['We build and configure', 'Your website and back office, set up for how your trade works.', $brand['terms']['build_time']],
-                        ['Live and supported', $brand['terms']['billing'].'. Support and updates included.', 'Monthly'],
-                    ],
-                    'project' => [
-                        ['Discover', 'Workshops to map the process and agree what success looks like, in writing.', '1–2 weeks'],
-                        ['Design', 'A clickable prototype you can test before production code is written.', '1–3 weeks'],
-                        ['Build', 'Two-week sprints, each ending with working software you can try.', 'Sprints'],
-                        ['Run', 'Hosting, support and improvements from the team that built it.', 'Ongoing'],
-                    ],
-                ];
-            @endphp
-
-            @foreach ($tracks as $k => $steps)
-                <div x-show="track === '{{ $k }}'" @if ($k !== 'platform') style="display: none" @endif
-                     x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0"
-                     class="js-panel mt-14">
-                    <p class="nojs-show mb-6 hidden t-label text-muted">{{ $k === 'platform' ? 'Platform subscription' : 'Custom project' }}</p>
-                    <div class="relative">
-                    <div class="absolute left-0 right-0 top-[1.375rem] hidden h-px bg-hairline lg:block" aria-hidden="true"></div>
-                    <ol class="relative grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
-                        @foreach ($steps as $i => [$title, $text, $when])
-                            <li class="relative">
-                                <span class="relative grid h-11 w-11 place-items-center rounded-full bg-white font-display text-sm font-extrabold text-brand ring-1 ring-brand/15">{{ $i + 1 }}</span>
-                                <p class="mt-6 inline-flex rounded-full bg-brand-light px-2.5 py-0.5 text-xs font-semibold text-accent ring-1 ring-hairline">{{ $when }}</p>
-                                <h3 class="mt-3 font-display text-lg font-bold text-brand">{{ $title }}</h3>
-                                <p class="mt-2 text-sm leading-relaxed text-secondary">{{ $text }}</p>
-                            </li>
-                        @endforeach
-                    </ol>
-                    </div>
-
-                    @if ($k === 'project')
-                        <ul class="mt-12 grid gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
-                            @foreach (['Fixed-scope phases, priced before they start', 'Working software to try at the end of every sprint', 'Your data and IP terms agreed in writing', 'We act as your POPIA operator, on your instructions'] as $g)
-                                <li class="bg-brand-light p-5 text-sm font-medium leading-snug text-brand">{{ $g }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-            @endforeach
-        </div>
-    </section>
-
-    {{-- ══ 8 · PLATFORMS & PRICING (unchanged offer, new presentation) ═══ --}}
-    <section id="platforms" class="band-mist section-v2">
-        <div class="container-wide">
-            <x-ui.heading align="split" eyebrow="Ready-to-use business platforms"
-                :title="$brand['promise']"
-                lede="Five platforms, one engine underneath — each set up for how its industry works. The build is free; a flat monthly fee starts the day you go live." />
-
-            @if ($packages->isEmpty())
-                <div class="mt-12 rounded-2xl border border-dashed border-brand/25 bg-white p-10 text-center">
-                    <p class="t-subtitle text-brand">Our platforms are being updated.</p>
-                    <p class="mt-2 text-secondary">Tell us what you need and we will come back to you with options.</p>
-                    <div class="mt-6"><x-ui.button :href="route('contact')" arrow>Talk to us</x-ui.button></div>
-                </div>
-            @else
-                <div class="tile mt-12 overflow-hidden" data-reveal>
-                    <div class="hidden grid-cols-12 gap-4 border-b border-hairline bg-brand-light px-7 py-3 text-xs font-semibold uppercase tracking-wider text-muted md:grid">
-                        <span class="col-span-4">Platform</span>
-                        @foreach ($tierColumns as $col)
-                            <span class="col-span-2 text-right">{{ $col->headline_storage }} storage</span>
-                        @endforeach
-                        <span class="{{ str_replace('md:', '', $linkSpan) }} text-right"><span class="sr-only">Links</span></span>
-                    </div>
-                    <ul class="divide-y divide-hairline">
-                        @foreach ($packages as $package)
-                            <li class="grid items-center gap-x-4 gap-y-3 px-7 py-5 transition hover:bg-brand-light/60 md:grid-cols-12">
-                                <div class="flex items-center gap-4 md:col-span-4">
-                                    <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-light text-brand ring-1 ring-hairline">
-                                        <x-package-icon :name="$package->icon_key" class="h-5 w-5" />
-                                    </span>
-                                    <div>
-                                        <p class="font-display text-lg font-bold text-brand">{{ $package->name }}</p>
-                                        <p class="text-xs text-muted">{{ $package->vertical_label }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex gap-6 md:contents">
-                                    @foreach ($package->tiers as $tier)
-                                        <p class="md:col-span-2 md:text-right">
-                                            <span class="t-figure text-2xl text-brand">{{ $tier->formatted_price }}</span>
-                                            <span class="text-xs text-muted">/mo</span>
-                                            <span class="block text-xs text-muted md:hidden">{{ $tier->headline_storage }} storage</span>
-                                        </p>
-                                    @endforeach
-                                </div>
-                                <div class="flex gap-5 text-sm font-semibold {{ $linkSpan }} md:justify-end">
-                                    @if ($demoSlug = $package->demoSlug())
-                                        <a href="{{ route('demos.show', $demoSlug) }}" class="text-secondary hover:text-accent">Demo</a>
-                                    @endif
-                                    <a href="{{ route('packages.show', $package) }}" class="text-accent hover:text-brand">Details &rarr;</a>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-                <div class="mt-6 grid gap-3 text-sm text-secondary lg:grid-cols-12">
-                    <p class="lg:col-span-8">
-                        <span class="font-semibold text-brand">Add-on modules, charged separately:</span>
-                        @foreach ($addOns as $addOn)
-                            {{ $addOn->name }} {{ $addOn->is_metered ? '(on request)' : '(+'.$addOn->formatted_price.'/mo)' }}@if (! $loop->last) · @endif
-                        @endforeach
-                        — <a href="{{ route('packages.index') }}#add-ons" class="font-semibold text-accent hover:text-brand">see what they do</a>.
-                    </p>
-                    <p class="lg:col-span-4 lg:text-right">All prices exclude VAT.</p>
-                    <p class="text-muted lg:col-span-12">{{ $brand['storage']['email_note'] }} {{ $brand['bulk']['note'] }}</p>
-                </div>
-            @endif
-        </div>
-    </section>
-
-    {{-- ══ 9 · TRUST ═══════════════════════════════════════════════════
-         Each line is something true today. Claims that depend on unfinished
-         operational work (off-site backups, staff MFA) stay hidden until the
-         work is done — see config('revamp.trust'). --}}
-    <section id="trust" class="band-night on-dark section-v2">
-        <div class="container-wide">
-            <x-ui.heading tone="dark" align="split" eyebrow="Trust, security & support"
-                title="The questions a careful buyer asks — answered up front." />
-
-            @php
-                $ledger = [
-                    ['We are the operator. Your customers\' data stays yours.', 'Under POPIA we process your customers\' information only on your instructions, as your operator — clause 2 of our privacy notice says so plainly.', route('privacy')],
-                    ['You own your data, email and domain.', str_replace(':company', $brand['trading_as'], $brand['ownership']['yours']).' '.$brand['ownership']['exit'], null],
-                    ['No minimum term. '.$brand['terms']['notice_period'].'\'s notice.', 'No exit fee, no penalty, no argument. '.$brand['terms']['billing'].'.', route('terms')],
-                    ['A person who built it answers.', 'Support is included in every platform — not a ticket queue in another timezone.', null],
-                    ['Nothing loaded from anyone else\'s servers.', 'No third-party fonts, scripts or analytics on this site. Your visit is not shared with an ad network.', route('privacy')],
-                ];
-                if (config('revamp.trust.offsite_backups_verified')) {
-                    $ledger[] = ['Backed up nightly, off-site, restore-tested.', 'Your data is copied off the server every night, and restores are tested, not assumed.', null];
-                }
-                if (config('revamp.trust.staff_mfa')) {
-                    $ledger[] = ['Staff sign-in uses multi-factor authentication.', 'A stolen password alone does not open a back office.', null];
-                }
-            @endphp
-
-            <dl class="mt-14 divide-y divide-white/10 border-y border-white/10">
-                @foreach ($ledger as [$claim, $detail, $link])
-                    <div class="grid gap-3 py-7 lg:grid-cols-12 lg:gap-10" data-reveal data-reveal-delay="{{ $loop->index * 50 }}">
-                        <dt class="t-subtitle text-white lg:col-span-5">{{ $claim }}</dt>
-                        <dd class="leading-relaxed text-white/60 lg:col-span-7">
-                            {{ $detail }}
-                            @if ($link)
-                                <a href="{{ $link }}" class="ml-1 whitespace-nowrap font-semibold text-mint hover:brightness-110">Read it &rarr;</a>
-                            @endif
-                        </dd>
-                    </div>
+            <ul class="mt-10 grid grid-cols-2 gap-2.5 sm:mt-12 sm:gap-3 lg:grid-cols-4">
+                @foreach ($quoteTypes as $type => [$title, $line, $proves])
+                    @php $preview = Revamp::catalogue()[$proves]['preview']; @endphp
+                    <li data-reveal data-reveal-delay="{{ $loop->index * 40 }}">
+                        <a href="{{ $quote('home-quote', $type) }}" data-cta="quote-{{ $type }}"
+                           @class(['svc-card tile group flex h-full items-start gap-4 p-4 sm:p-5', '!border-dashed !border-brand/30' => $preview]) data-spotlight>
+                            <x-ui.motif :name="$motifs[$type] ?? 'code'" class="svc-motif hidden h-9 w-9 shrink-0 text-brand sm:block" />
+                            <span class="flex-1">
+                                <span class="block font-display font-bold text-brand">{{ $title }}</span>
+                                <span class="mt-0.5 block text-xs leading-snug text-muted sm:text-sm">{{ $line }}</span>
+                                @if ($preview)<span class="mt-2 inline-block rounded border border-dashed border-brand/40 px-1.5 text-[10px] font-semibold text-secondary">Preview only</span>@endif
+                            </span>
+                        </a>
+                    </li>
                 @endforeach
-            </dl>
+                <li>
+                    <a href="{{ route('contact', ['from' => 'home-quote']) }}" data-cta="quote-platform" class="svc-card tile group flex h-full items-start gap-4 p-4 sm:p-5" data-spotlight>
+                        <x-ui.motif name="browser" class="svc-motif hidden h-9 w-9 shrink-0 text-brand sm:block" />
+                        <span class="flex-1">
+                            <span class="block font-display font-bold text-brand">A website platform</span>
+                            <span class="mt-0.5 block text-xs leading-snug text-muted sm:text-sm">@if ($from) From {{ $from }}/mo, @endif nothing until it is live</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ $quote('home-quote', 'other') }}" data-cta="quote-other" class="svc-card tile group flex h-full items-start gap-4 p-4 sm:p-5" data-spotlight>
+                        <x-ui.motif name="nodes" class="svc-motif hidden h-9 w-9 shrink-0 text-brand sm:block" />
+                        <span class="flex-1">
+                            <span class="block font-display font-bold text-brand">Something else</span>
+                            <span class="mt-0.5 block text-xs leading-snug text-muted sm:text-sm">Describe it, and we will tell you honestly what fits</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="mt-14 grid gap-10 border-t border-hairline pt-10 lg:grid-cols-12">
+                <ol class="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:col-span-8">
+                    @foreach ([['Tell us', 'What you need, in your words'], ['We call you', 'To understand it properly'], ['Proposal', 'Scope and price, in writing'], ['Build & support', 'By the people who wrote it']] as $i => [$title, $text])
+                        <li>
+                            <p class="t-index text-accent">{{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</p>
+                            <p class="mt-2 font-display font-bold text-brand">{{ $title }}</p>
+                            <p class="mt-1 text-sm text-muted">{{ $text }}</p>
+                        </li>
+                    @endforeach
+                </ol>
+                <ul class="space-y-2.5 text-sm text-secondary lg:col-span-4 lg:border-l lg:border-hairline lg:pl-10">
+                    @foreach (['One partner, one invoice', 'Your data, email and domain stay yours', 'POPIA: we act on your instructions, as your operator'] as $fact)
+                        <li class="flex gap-2.5"><svg class="mt-0.5 h-4 w-4 shrink-0 text-accent" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ $fact }}</li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
     </section>
 
-    {{-- ══ 10 · TWO JOURNEYS, ONE CLOSE ════════════════════════════════ --}}
-    <section class="band-paper section-v2">
-        <div class="container-wide grid gap-4 lg:grid-cols-2">
-            <article class="tile flex flex-col bg-brand-light p-8 sm:p-12" data-reveal>
-                <p class="t-label text-accent">Subscription</p>
-                <h2 class="t-title mt-4 text-brand">Start with a platform.</h2>
-                <p class="t-lede mt-4 text-secondary">
-                    Pay nothing until your website is live. @if ($from) From {{ $from }} a month, excl. VAT. @endif
-                    Nothing to build, and {{ strtolower($brand['terms']['notice_period']) }}'s notice to leave.
+    {{-- ══ 10 · CONSULTATION CTA ════════════════════════════════════════ --}}
+    <section class="band-night on-dark">
+        <div class="contours absolute inset-0 -z-10 opacity-[0.12]" aria-hidden="true"></div>
+        <div class="container-wide grid gap-10 py-20 sm:py-24 lg:grid-cols-12 lg:items-end">
+            <div class="lg:col-span-8">
+                <h2 class="t-display text-white">Have a project in mind? <span class="text-mint">Let&rsquo;s talk it through.</span></h2>
+                <p class="t-lede mt-6 max-w-2xl text-white/70">You focus on running the business. We will take care of the IT.</p>
+            </div>
+            <div class="flex flex-col gap-4 lg:col-span-4 lg:items-end">
+                <x-ui.button :href="$quote('home-close')" tone="dark" size="lg" arrow data-cta="close-quote">Get a Quote</x-ui.button>
+                <p class="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                    <a href="tel:{{ preg_replace('/\s+/', '', $brand['contact']['phone']) }}" class="font-semibold text-white hover:text-mint">{{ $brand['contact']['phone'] }}</a>
+                    <x-whatsapp-link label="WhatsApp us" message="Hi 7Hills Digital, I'm on your home page and would like to discuss a project." class="font-semibold text-mint hover:brightness-110" />
                 </p>
-                <div class="mt-auto flex flex-wrap items-center gap-5 pt-10">
-                    <x-ui.button :href="route('packages.index')" size="lg" arrow data-cta="close-subscription">Explore Business Platforms</x-ui.button>
-                    <a href="{{ route('contact', ['from' => 'home-close']) }}" class="text-sm font-semibold text-brand hover:text-accent">Ask about a package</a>
-                </div>
-            </article>
-
-            <article class="tile-dark on-dark edge-glint flex flex-col p-8 text-white sm:p-12" data-reveal data-reveal-delay="80">
-                <div class="contours absolute inset-0 -z-10 opacity-[0.08]" aria-hidden="true"></div>
-                <p class="t-label text-mint">Custom &amp; enterprise</p>
-                <h2 class="t-title mt-4">Discuss a custom solution.</h2>
-                <p class="t-lede mt-4 text-white/70">
-                    Tell us the problem or the process. We will come back to you to book a consultation —
-                    and tell you honestly what it would take.
-                </p>
-                <div class="mt-auto flex flex-wrap items-center gap-5 pt-10">
-                    <x-ui.button :href="route('contact', ['type' => 'project', 'from' => 'home-close'])" tone="dark" size="lg" arrow data-cta="close-project">Book a consultation</x-ui.button>
-                    <x-whatsapp-link label="Or WhatsApp us" message="Hi 7Hills Digital, I'm on your home page and would like to discuss a custom solution." class="text-sm font-semibold text-mint hover:brightness-110" />
-                </div>
-            </article>
+            </div>
         </div>
     </section>
 

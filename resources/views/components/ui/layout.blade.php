@@ -46,7 +46,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Without JavaScript, tabbed content renders in sequence rather than hiding. --}}
-    <noscript><style>[data-reveal] { opacity: 1 !important; transform: none !important; } .js-panel { display: block !important; } .js-panel + .js-panel { margin-top: 3rem; } .js-only { display: none !important; } .nojs-show { display: block !important; }</style></noscript>
+    <noscript><style>[data-reveal] { opacity: 1 !important; transform: none !important; } .js-panel { display: block !important; } .js-panel + .js-panel { margin-top: 3rem; } .js-only { display: none !important; } .nojs-show { display: block !important; } .js-collapse { display: block !important; } .nojs-flex { display: flex !important; }</style></noscript>
 
     {{ $head ?? '' }}
 </head>
@@ -54,6 +54,13 @@
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-brand focus:px-4 focus:py-2 focus:text-white">
         Skip to content
     </a>
+
+    {{-- Staging only: says plainly that dashed items will not reach production. --}}
+    @if (\App\Support\Revamp::previewing())
+        <aside aria-label="Staging notice" class="relative z-[51] border-b border-dashed border-white/25 bg-brand-dark px-5 py-1.5 text-center text-[11px] text-white/75">
+            <strong class="font-semibold text-white">Staging preview.</strong> Dashed items are unconfirmed and hidden in production.
+        </aside>
+    @endif
 
     <x-ui.header :overlay="$overlay" />
 
@@ -66,5 +73,6 @@
     <x-whatsapp-float />
 
     <x-cookie-notice />
+
 </body>
 </html>

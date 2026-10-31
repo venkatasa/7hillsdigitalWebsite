@@ -153,12 +153,11 @@ background, as in v2.
 - Six tabs; each shows three pains, linked platform, demo and solution links.
 - Copy tightened to one line per pain.
 
-### 8 · Our work (night): **kept from v2, with one correction**
+### 8 · Our work (night): **kept from v2, with one correction (done)**
 - Live work from `config/clients.php`.
-- **Correction needed:** Excellent Real Estate's invoicing is now **InvoiceShelf**, not
-  Invoice Ninja, which was retired on 25/08/2026 (runbook §8b). The current
-  **production** homepage makes the same out-of-date claim. That fix is a production
-  change and is raised separately in `08_IMPLEMENTATION_PLAN.md` §8.2.
+- **Corrected:** Excellent Real Estate's invoicing is **InvoiceShelf**, not Invoice
+  Ninja, which was retired on 25/08/2026 (runbook §8b). Production and staging were
+  both corrected on 31/10/2026.
 - Demo rail: the five tenants, labelled "Demo tenant · fictional business".
 - "We do not walk prospects through a client back office." (test-pinned)
 

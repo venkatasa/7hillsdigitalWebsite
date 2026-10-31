@@ -37,8 +37,8 @@ past employment, certifications, or work done elsewhere. Those rows say
 - **F (debug):** production runs `APP_DEBUG=true`, `APP_ENV=local`. → blocks security services.
 - **F (MySQL):** database port open on the LAN with default credentials. → blocks security and hosting.
 - **F (backups):** off-site PBS backups failing since 16/10. → blocks hosting, backup and DR.
-- **Stale claim:** the live homepage says Invoice Ninja runs for Excellent RE; it was
-  retired on 25/08/2026. → violates the Live-work rule "claim only what is running".
+- ~~**Stale claim:** the live homepage said Invoice Ninja runs for Excellent RE; it was
+  retired on 25/08/2026.~~ **Fixed in production 31/10/2026** (now names InvoiceShelf; a test forbids the old name). → violates the Live-work rule "claim only what is running".
 
 ## 6.3 The matrix
 

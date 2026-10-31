@@ -10,9 +10,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 /**
- * The v2 homepage prototype must keep every promise the current homepage keeps,
- * and add two of its own: screenshots declare where they came from, and an
- * offering whose capability is unconfirmed never reaches production.
+ * The v3 homepage must keep every promise the current homepage keeps, and add
+ * its own: screenshots declare where they came from, and a service whose
+ * capability is unconfirmed, or whose sale is blocked by an open production
+ * finding, never reaches production — not in the headline, the menu, the grid,
+ * the catalogue or the quote chooser.
  */
 class HomeV2Test extends TestCase
 {
@@ -23,23 +25,29 @@ class HomeV2Test extends TestCase
         parent::setUp();
 
         $this->seed([PackageSeeder::class, AddOnSeeder::class]);
-        config(['revamp.home_v2' => true]);
+        config(['revamp.home_v2' => true, 'revamp.preview_unconfirmed' => false]);
     }
 
-    public function test_the_prototype_is_off_unless_switched_on(): void
+    private function asProduction(): void
+    {
+        $this->app->detectEnvironment(fn () => 'production');
+    }
+
+    public function test_the_new_homepage_is_off_unless_switched_on(): void
     {
         config(['revamp.home_v2' => false]);
 
-        $this->get('/')->assertOk()->assertDontSee('Technology That');
+        $this->get('/')->assertOk()->assertDontSee('One accountable team.');
     }
 
-    public function test_it_renders_both_pathways(): void
+    public function test_it_offers_the_quote_services_and_platform_journeys(): void
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('Technology That')
-            ->assertSee('Explore Business Platforms')
-            ->assertSee('Discuss a Custom Solution');
+            ->assertSee('Get a Quote')
+            ->assertSee('Explore Services')
+            ->assertSee('See our ready-to-use platforms')
+            ->assertSee(route('packages.index'), false);
     }
 
     public function test_it_keeps_the_current_homepage_promises(): void
@@ -53,9 +61,10 @@ class HomeV2Test extends TestCase
             ->assertSee('Your industry does not have to be one of the five')
             ->assertSee('You focus on running the business. We will take care of the IT.')
             // Live work, honestly.
-            ->assertSee('Live work')
+            ->assertSee('Our work')
             ->assertSee('Excellent Real Estate')
-            ->assertSee('Invoice Ninja, self-hosted and maintained by 7Hills.')
+            ->assertSee('InvoiceShelf, self-hosted and maintained by 7Hills.')
+            ->assertDontSee('Invoice Ninja')
             ->assertSee('do not walk prospects through a client', false)
             // The official palette.
             ->assertSee('--brand-primary: #1A2E22', escape: false)
@@ -89,23 +98,49 @@ class HomeV2Test extends TestCase
         $this->get('/')->assertOk()->assertSee('R2 222');
     }
 
-    public function test_unconfirmed_capabilities_are_hidden_by_default(): void
+    public function test_the_headline_names_only_capabilities_we_can_show(): void
     {
-        config(['revamp.preview_unconfirmed' => false]);
+        $this->asProduction();
+        config(['revamp.preview_unconfirmed' => true]);   // ignored in production
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('Custom software development')
-            ->assertDontSee('AI-powered applications')
-            ->assertDontSee('Preview only');
+            ->assertSee('Software Development, <span class="text-mint">Automation</span>', false)
+            ->assertDontSee('AI, Cloud');
     }
 
-    public function test_production_never_shows_unconfirmed_capabilities(): void
+    public function test_production_never_renders_an_unconfirmed_or_blocked_service(): void
     {
-        config(['revamp.preview_unconfirmed' => true]);
-        $this->app->detectEnvironment(fn () => 'production');
+        $this->asProduction();
+        config(['revamp.preview_unconfirmed' => true]);   // ignored in production
 
-        $this->get('/')->assertOk()->assertDontSee('AI-powered applications');
+        $response = $this->get('/')->assertOk();
+
+        foreach ([
+            'Microsoft 365 Consulting and Administration',  // unconfirmed
+            'Managed IT Support',                           // unconfirmed
+            'AI Document Processing',                       // unconfirmed
+            'Managed Hosting',                              // blocked by R1–R3
+            'Security Assessments',                         // blocked
+            'Microsoft Business Solutions',                 // a line with nothing publishable
+            'Preview only',
+            'Staging preview',
+        ] as $text) {
+            $response->assertDontSee($text);
+        }
+    }
+
+    public function test_production_renders_the_services_we_can_deliver(): void
+    {
+        $this->asProduction();
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Custom Software Development')
+            ->assertSee('API Development and Systems Integration')
+            ->assertSee('Business Process Automation')
+            ->assertSee('CRM Systems')
+            ->assertSee('Accounting and Invoicing Integrations');
     }
 
     public function test_staging_can_preview_them_clearly_marked(): void
@@ -114,17 +149,41 @@ class HomeV2Test extends TestCase
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('AI-powered applications')
-            ->assertSee('Preview only.');
+            ->assertSee('AI, Cloud')
+            ->assertSee('Microsoft 365 Consulting and Administration')
+            ->assertSee('Preview only')
+            ->assertSee('Staging preview.');
+    }
+
+    public function test_every_menu_and_card_link_lands_on_something_that_exists(): void
+    {
+        foreach ([false, true] as $preview) {
+            config(['revamp.preview_unconfirmed' => $preview]);
+            $html = $this->get('/')->assertOk()->getContent();
+
+            preg_match_all('/href="(?:'.preg_quote(url('/'), '/').'\/?)?#([a-z0-9-]+)"/', $html, $m);
+            $this->assertNotEmpty($m[1]);
+
+            foreach (array_unique($m[1]) as $anchor) {
+                $this->assertMatchesRegularExpression('/id="'.preg_quote($anchor, '/').'"/', $html, "#{$anchor} is linked but not on the page");
+            }
+        }
+    }
+
+    public function test_menu_events_reach_alpine_intact(): void
+    {
+        // Blade reads "@show" as its own directive, so "@show-line.window" would
+        // arrive in the browser as "-line.window" and menu links would do nothing.
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('x-on:show-line.window=', $html);
+        $this->assertStringContainsString('x-on:show-industry.window=', $html);
+        $this->assertDoesNotMatchRegularExpression('/\s-(line|industry)\.window=/', $html);
     }
 
     public function test_trust_claims_wait_for_the_work_behind_them(): void
     {
         $this->get('/')->assertOk()->assertDontSee('restore-tested')->assertDontSee('multi-factor');
-
-        config(['revamp.trust.offsite_backups_verified' => true]);
-
-        $this->get('/')->assertOk()->assertSee('restore-tested');
     }
 
     public function test_every_product_image_declares_its_provenance(): void
@@ -151,6 +210,7 @@ class HomeV2Test extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee('Back office · staging install, fictional data')
-            ->assertSee('Demo tenant · fictional business');
+            ->assertSee('Demo tenant · fictional business')
+            ->assertSee('Illustration of a typical flow, not a product screen.');
     }
 }

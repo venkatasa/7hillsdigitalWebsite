@@ -30,7 +30,7 @@ needs its own approvals.
 | **R1** off-site backups fixed and restore-tested | Hosting, backup and DR services cannot be sold before this |
 | **R2** MySQL port closed, credentials rotated | Security and hosting services |
 | **R3** `APP_ENV=production`, `APP_DEBUG=false`, HTTPS URL, secure cookies | Security services; basic credibility |
-| **Live-work correction**: Invoice Ninja → InvoiceShelf in `config/clients.php` (one string, one test) | The live homepage currently makes a claim that is no longer true |
+| **Live-work correction**: Invoice Ninja → InvoiceShelf in `config/clients.php` (one string, one test) | ✅ **Done 31/10/2026** with owner approval; `LiveWorkTest` now forbids the old name |
 | `data-reveal` `<noscript>` fix in `layouts/site` and `layouts/demo` | The live site shows 36 blank blocks without JS |
 
 The last two are content and CSS-only. They can ship as one small release, independent

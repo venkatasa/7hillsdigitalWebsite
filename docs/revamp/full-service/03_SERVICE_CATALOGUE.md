@@ -2,7 +2,7 @@
 
 **Prepared:** 30/10/2026 · **Status:** For approval.
 
-The brief's catalogue has **54 services in 7 lines**. Every one appears on the site,
+The brief's catalogue has **52 services in 7 lines**. Every one appears on the site,
 but not every one gets its own page. Thin, near-identical pages are what the brief
 forbids and what Google demotes.
 
@@ -148,9 +148,9 @@ true status and never show the add-on as available.
 
 | | Count |
 |---|---|
-| Services in the catalogue | 54 (+ the existing products) |
+| Services in the catalogue | 52 (+ the existing products) |
 | Rendered in production **today** | 23 (Software 7 · Automation 2 · Infrastructure 2 · Support 1 · Business apps 7 · Websites 4) |
-| Hidden until the owner confirms or a blocker clears | 31 (managed hosting returns as soon as R1–R3 are done) |
+| Hidden until the owner confirms or a blocker clears | 29 (managed hosting returns as soon as R1–R3 are done) |
 | Dedicated pages, wave 1 | **8**: custom software, web applications, API and integration, process automation, CRM systems, accounting and invoicing, managed hosting (after R1–R3), plus managed IT support **if confirmed** |
 | Dedicated pages, wave 2 (on confirmation) | Microsoft 365, SharePoint, M365 security, AI document processing, booking systems, managed IT support (if not in wave 1) |
 
