@@ -64,7 +64,9 @@ return [
         'delivered' => [
             'Invoices, quotes and recurring billing',
             'Sends from the client’s own domain',
-            'Hosted, backed up and updated by us',
+            // "backed up" was dropped on the revamp branch (31/10/2026): off-site
+            // backups have failed since 16/10 (finding R1). Restore it once they run.
+            'Hosted and updated by us',
         ],
 
         // See rule 4. We deploy, host and support it; we did not write it.

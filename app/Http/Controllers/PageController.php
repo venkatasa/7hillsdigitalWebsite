@@ -34,6 +34,16 @@ class PageController extends Controller
         ]);
     }
 
+    /** Live client work and the labelled demos (revamp phase 3). */
+    public function work()
+    {
+        abort_unless(config('revamp.home_v2'), 404);
+
+        return view('pages.work', [
+            'packages' => Package::published()->with('tiers')->orderBy('sort')->get()->keyBy('slug'),
+        ]);
+    }
+
     public function about()
     {
         return view('pages.about');

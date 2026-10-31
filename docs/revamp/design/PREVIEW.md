@@ -28,7 +28,10 @@ ssh -N -L 8096:127.0.0.1:8096 buntu@192.168.90.226
 Leave that running, then browse to **http://localhost:8096/**.
 
 - **Homepage prototype:** `http://localhost:8096/`
-- **Existing pages** (unchanged, for comparison): `/packages`, `/demos`, `/about`, …
+- **Services** (phase 2): `/services`, the seven line pages and ten service pages
+- **Solutions, industries and work** (phase 3): `/solutions`, `/industries`, `/work`
+- **Platforms** (phase 3, restyled; same prices and terms): `/packages`, `/packages/{slug}`
+- **Existing pages** (unchanged, for comparison): `/demos`, `/about`, `/how-it-works`, …
 - **Back office on staging:** `http://localhost:8096/admin` (staging data only:
   the real catalogue, plus five *fictional* enquiries; no real prospects)
 

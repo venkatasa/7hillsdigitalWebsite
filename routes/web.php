@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\EnquiryController;
+use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SolutionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -15,6 +17,13 @@ Route::get('/packages/{package}', [PackageController::class, 'show'])->name('pac
 // Revamp: the services hub, line pages and service pages (staging only until launch).
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/services/{slug}', [ServiceController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('services.show');
+
+// Revamp phase 3: problems, industries and the work we can show.
+Route::get('/solutions', [SolutionController::class, 'index'])->name('solutions.index');
+Route::get('/solutions/{slug}', [SolutionController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('solutions.show');
+Route::get('/industries', [IndustryController::class, 'index'])->name('industries.index');
+Route::get('/industries/{slug}', [IndustryController::class, 'show'])->where('slug', '[a-z0-9-]+')->name('industries.show');
+Route::get('/work', [PageController::class, 'work'])->name('work');
 
 Route::get('/how-it-works', [PageController::class, 'howItWorks'])->name('how-it-works');
 Route::get('/custom-and-it', [PageController::class, 'itServices'])->name('it-services');

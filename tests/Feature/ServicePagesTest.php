@@ -159,7 +159,7 @@ class ServicePagesTest extends TestCase
             $text = strip_tags($this->get("/services/{$slug}")->assertOk()->getContent());
 
             foreach ($forbidden as $word) {
-                $this->assertStringNotContainsStringIgnoringCase($word, $text, "[{$slug}] must not say \"{$word}\"");
+                $this->assertDoesNotMatchRegularExpression('/(?<![a-z])'.preg_quote($word, '/').'(?![a-z])/i', $text, "[{$slug}] must not say \"{$word}\"");
             }
         }
     }

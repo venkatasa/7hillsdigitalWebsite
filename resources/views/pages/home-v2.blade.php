@@ -244,15 +244,14 @@
             </div>
 
             <ol class="divide-y divide-brand/10 border-y border-brand/10 lg:col-span-7 lg:self-center" x-data>
-                @foreach (config('revamp.solutions') as $i => $s)
-                    @continue(isset($s[3]) && ! Revamp::visible($s[3]))
-                    <li data-reveal data-reveal-delay="{{ $i * 40 }}">
-                        <a href="{{ route('services.show', $s[2]) }}"
+                @foreach (Revamp::solutions() as $slug => $s)
+                    <li data-reveal data-reveal-delay="{{ $loop->index * 40 }}">
+                        <a href="{{ route('solutions.show', $slug) }}"
                            class="ledger-row group grid grid-cols-[2.25rem_1fr_auto] items-baseline gap-x-4 py-5 sm:py-6">
                             <span class="t-index text-accent">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                             <span>
-                                <span class="block font-display text-lg font-bold text-brand sm:text-xl">{{ $s[0] }}</span>
-                                <span class="mt-1 block text-secondary group-hover:text-brand">{{ $s[1] }}</span>
+                                <span class="block font-display text-lg font-bold text-brand sm:text-xl">{{ $s['problem'] }}</span>
+                                <span class="mt-1 block text-secondary group-hover:text-brand">{{ $s['outcome'] }}</span>
                             </span>
                             <span class="ledger-arrow text-accent" aria-hidden="true">&rarr;</span>
                         </a>
@@ -523,6 +522,7 @@
                                     @endforeach
                                 </ol>
                                 <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+                                    <a href="{{ route('industries.show', $key) }}" class="text-sm font-semibold text-accent hover:text-brand">{{ $industry['short'] }} in detail &rarr;</a>
                                     @if ($package)
                                         @if ($industry['demo'])
                                             <x-ui.button :href="route('demos.show', $industry['demo'])" arrow>View the demo</x-ui.button>
@@ -546,7 +546,7 @@
                                     </div>
                                 @else
                                     <div class="rounded-3xl border border-hairline bg-brand-light p-6 sm:p-10">
-                                        <x-ui.flow :steps="$key === 'corporate-operations'
+                                        <x-ui.flow :steps="$key === 'corporate'
                                             ? [['Request', 'A staff member asks'], ['Approve', 'The right manager signs off'], ['Act', 'The system does the work'], ['Report', 'Everyone sees the status']]
                                             : [['Intake', 'A client brief, not an email thread'], ['Documents', 'Collected in one place'], ['Sign-off', 'With an audit trail'], ['Billing', 'Out on time']]" />
                                     </div>
@@ -617,7 +617,7 @@
                     <h3 class="font-display text-lg font-bold text-brand">Demonstrations</h3>
                     <p class="mt-1 text-sm text-muted">Every business, listing and price on these is invented, and each one says so.</p>
                 </div>
-                <a href="{{ route('demos') }}" class="text-sm font-semibold text-accent hover:text-brand">All demos &rarr;</a>
+                <a href="{{ route('work') }}" class="text-sm font-semibold text-accent hover:text-brand">All our work &rarr;</a>
             </div>
 
             <ul class="snap-row -mx-5 mt-6 flex gap-4 overflow-x-auto px-5 pb-2 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0">

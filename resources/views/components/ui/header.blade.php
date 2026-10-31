@@ -12,13 +12,11 @@
     $home = request()->routeIs('home') ? '' : route('home');
 
     /*
-     | Services link to their own pages (Phase 2). Solution and industry pages
-     | arrive in Phase 3: until then solutions open their service line and
-     | industries open their tab on the homepage. Phase 4 replaces /contact
-     | with /quote.
+     | Services, solutions and industries each link to their own pages.
+     | Phase 4 replaces /contact with /quote.
      */
     $quote = route('contact', ['type' => 'project', 'from' => 'header']);
-    $solutions = config('revamp.solutions', []);
+    $solutions = \App\Support\Revamp::solutions();
     $menus = ['services' => 'Services', 'solutions' => 'Solutions', 'industries' => 'Industries'];
 @endphp
 
@@ -149,23 +147,23 @@
                              class="absolute left-1/2 top-full z-50 mt-3 w-[min(40rem,90vw)] -translate-x-1/2 overflow-hidden rounded-2xl border border-hairline bg-white text-ink elevate-3">
                             <div class="grid grid-cols-2 gap-1 p-3">
                                 @if ($key === 'solutions')
-                                    @foreach ($solutions as $s)
-                                        @continue(isset($s[3]) && ! \App\Support\Revamp::visible($s[3]))
-                                        <a href="{{ route('services.show', $s[2]) }}" class="rounded-xl p-3 hover:bg-brand-light">
-                                            <span class="block text-sm font-semibold text-brand">{{ $s[0] }}</span>
-                                            <span class="block text-xs text-muted">{{ $s[1] }}</span>
+                                    @foreach ($solutions as $slug => $s)
+                                        <a href="{{ route('solutions.show', $slug) }}" class="rounded-xl p-3 hover:bg-brand-light">
+                                            <span class="block text-sm font-semibold text-brand">{{ $s['problem'] }}@if ($s['preview']) <span class="ml-1 rounded border border-dashed border-brand/30 px-1 text-[10px] font-medium text-muted">preview</span>@endif</span>
+                                            <span class="block text-xs text-muted">{{ $s['outcome'] }}</span>
                                         </a>
                                     @endforeach
                                 @else
                                     @foreach ($industries as $slug => $industry)
-                                        <a href="{{ $home }}#industry-{{ $slug }}" @click="go($event, 'show-industry', '{{ $slug }}')" class="rounded-xl p-3 hover:bg-brand-light">
+                                        <a href="{{ route('industries.show', $slug) }}" class="rounded-xl p-3 hover:bg-brand-light">
                                             <span class="block text-sm font-semibold text-brand">{{ $industry['name'] }}</span>
                                             <span class="block text-xs text-muted">{{ $industry['pains'][0] }}</span>
                                         </a>
                                     @endforeach
                                 @endif
                             </div>
-                            <div class="border-t border-hairline bg-brand-light px-6 py-3.5 text-sm">
+                            <div class="flex flex-wrap items-center justify-between gap-3 border-t border-hairline bg-brand-light px-6 py-3.5 text-sm">
+                                <a href="{{ route($key.'.index') }}" class="font-semibold text-brand hover:text-accent">All {{ strtolower($label) }} &rarr;</a>
                                 <a href="{{ $quote }}" class="font-semibold text-accent hover:text-brand">Not sure where you fit? Describe the problem &rarr;</a>
                             </div>
                         </div>
@@ -173,7 +171,7 @@
                 </div>
             @endforeach
 
-            @foreach ([['Platforms', route('packages.index')], ['Our Work', $home.'#work'], ['About', route('about')]] as [$label, $href])
+            @foreach ([['Platforms', route('packages.index')], ['Our Work', route('work')], ['About', route('about')]] as [$label, $href])
                 <a href="{{ $href }}" @click="close()"
                    :class="{ 'text-secondary hover:text-brand': solid && menu !== 'services', 'text-white/75 hover:text-white': ! (solid && menu !== 'services') }"
                    class="nav-item inline-flex h-10 items-center rounded-lg px-3 text-sm font-medium {{ $overlay ? 'text-white/75' : 'text-secondary' }}">{{ $label }}</a>
@@ -232,20 +230,21 @@
                                 @endforeach
                                 <li><a href="{{ route('services.index') }}" class="block rounded-lg px-2 py-2.5 font-semibold text-mint">All services &rarr;</a></li>
                             @elseif ($key === 'solutions')
-                                @foreach ($solutions as $s)
-                                    @continue(isset($s[3]) && ! \App\Support\Revamp::visible($s[3]))
-                                    <li><a href="{{ route('services.show', $s[2]) }}" class="block rounded-lg px-2 py-2.5 text-white/80 hover:bg-white/5 hover:text-white">{{ $s[0] }}</a></li>
+                                @foreach ($solutions as $slug => $s)
+                                    <li><a href="{{ route('solutions.show', $slug) }}" class="block rounded-lg px-2 py-2.5 text-white/80 hover:bg-white/5 hover:text-white">{{ $s['problem'] }}@if ($s['preview']) <span class="text-xs text-white/50">preview</span>@endif</a></li>
                                 @endforeach
+                                <li><a href="{{ route('solutions.index') }}" class="block rounded-lg px-2 py-2.5 font-semibold text-mint">All solutions &rarr;</a></li>
                             @else
                                 @foreach ($industries as $slug => $industry)
-                                    <li><a href="{{ $home }}#industry-{{ $slug }}" @click="go($event, 'show-industry', '{{ $slug }}')" class="block rounded-lg px-2 py-2.5 text-white/80 hover:bg-white/5 hover:text-white">{{ $industry['name'] }}</a></li>
+                                    <li><a href="{{ route('industries.show', $slug) }}" class="block rounded-lg px-2 py-2.5 text-white/80 hover:bg-white/5 hover:text-white">{{ $industry['name'] }}</a></li>
                                 @endforeach
+                                <li><a href="{{ route('industries.index') }}" class="block rounded-lg px-2 py-2.5 font-semibold text-mint">All industries &rarr;</a></li>
                             @endif
                         </ul>
                     </div>
                 </div>
             @endforeach
-            @foreach ([['Platforms', route('packages.index')], ['Our Work', $home.'#work'], ['About', route('about')]] as [$label, $href])
+            @foreach ([['Platforms', route('packages.index')], ['Our Work', route('work')], ['About', route('about')]] as [$label, $href])
                 <a href="{{ $href }}" @click="close()" class="border-b border-white/10 py-4 font-display text-xl font-bold text-white">{{ $label }}</a>
             @endforeach
 

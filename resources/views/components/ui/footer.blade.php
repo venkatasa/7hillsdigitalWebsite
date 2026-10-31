@@ -44,6 +44,9 @@
                 <h2 class="t-label text-mint">Company</h2>
                 <ul class="mt-5 space-y-3 text-sm">
                     <li><a href="{{ route('about') }}" class="hover:text-white">About</a></li>
+                    <li><a href="{{ route('work') }}" class="hover:text-white">Our work</a></li>
+                    <li><a href="{{ route('solutions.index') }}" class="hover:text-white">Solutions</a></li>
+                    <li><a href="{{ route('industries.index') }}" class="hover:text-white">Industries</a></li>
                     <li><a href="{{ route('it-services') }}" class="hover:text-white">Custom &amp; IT services</a></li>
                     <li><a href="{{ route('how-it-works') }}" class="hover:text-white">How it works</a></li>
                     <li><a href="{{ route('contact') }}" class="hover:text-white">Contact</a></li>

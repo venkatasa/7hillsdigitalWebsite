@@ -200,4 +200,98 @@ class Revamp
     {
         return config('revamp.industries', []);
     }
+
+    /*
+     | Solution and industry pages (Phase 3). Each list lives in config/revamp.php
+     | and each page is a content file in resources/content/{solutions|industries}.
+     | A solution whose `gate` service may not render is absent, like a gated
+     | service page: on production its URL is a 404.
+     */
+    public static function solutions(): array
+    {
+        $out = [];
+
+        foreach (config('revamp.solutions', []) as $slug => $s) {
+            $gate = $s[3] ?? null;
+
+            if ($gate !== null && ! self::visible($gate)) {
+                continue;
+            }
+
+            $out[$slug] = [
+                'slug' => $slug,
+                'problem' => $s[0],
+                'outcome' => $s[1],
+                'line' => $s[2],
+                'gate' => $gate,
+                'preview' => $gate !== null && self::catalogue()[$gate]['preview'],
+            ];
+        }
+
+        return $out;
+    }
+
+    public static function solution(string $slug): ?array
+    {
+        $entry = self::solutions()[$slug] ?? null;
+
+        return $entry ? self::content('solutions', $slug, $entry) : null;
+    }
+
+    public static function industry(string $slug): ?array
+    {
+        $entry = self::industries()[$slug] ?? null;
+
+        return $entry ? self::content('industries', $slug, ['slug' => $slug, 'preview' => false] + $entry) : null;
+    }
+
+    private static function content(string $type, string $slug, array $entry): ?array
+    {
+        $file = resource_path("content/{$type}/{$slug}.php");
+
+        if (! preg_match('/^[a-z0-9-]+$/', $slug) || ! is_file($file)) {
+            return null;
+        }
+
+        return (require $file) + $entry;
+    }
+
+    /**
+     * The catalogue services a page names, as [slug => service + href], keeping
+     * only those that may render. A role or reason travels with each.
+     */
+    public static function services(array $refs): array
+    {
+        $catalogue = self::catalogue();
+        $out = [];
+
+        foreach ($refs as [$slug, $why]) {
+            if (self::visible($slug)) {
+                $out[$slug] = $catalogue[$slug] + ['why' => $why, 'href' => self::href($slug)];
+            }
+        }
+
+        return $out;
+    }
+
+    /** Solutions and industries whose pages name a service page, for its "see also". */
+    public static function linksTo(string $page): array
+    {
+        $covers = self::pages()[$page] ?? null;
+        $slugs = $covers ? array_merge([$covers['gate']], $covers['covers'] ?? []) : [];
+        $out = ['solutions' => [], 'industries' => []];
+
+        foreach (['solutions' => self::solutions(), 'industries' => self::industries()] as $type => $list) {
+            foreach (array_keys($list) as $slug) {
+                $content = $type === 'solutions' ? self::solution($slug) : self::industry($slug);
+                $named = array_column($content['services'] ?? [], 0);
+
+                if (array_intersect($named, $slugs)) {
+                    $out[$type][$slug] = $content;
+                }
+            }
+        }
+
+        return $out;
+    }
 }

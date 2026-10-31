@@ -189,16 +189,18 @@ return [
     ],
 
     /*
-    | Business problems, each pointing at the line that solves it. Solution pages
-    | arrive in Phase 3; until then the link opens that line in the catalogue.
+    | Business problems, keyed by the slug of their page under /solutions:
+    | [problem, outcome, line, gate]. A solution with a `gate` exists only where
+    | that catalogue service may render, so "IT that just works" is a 404 in
+    | production until managed IT support is confirmed.
     */
     'solutions' => [
-        ['Work lives in spreadsheets', 'Replace them with one system everyone uses', 'software-development'],
-        ['Leads go cold in someone\'s inbox', 'Put every enquiry in a pipeline the team can see', 'business-applications'],
-        ['Invoices go out late', 'Bill on time, every time, from your own address', 'business-applications'],
-        ['Approvals wait on paper', 'Route them to the right person, with a record', 'ai-data-and-automation'],
-        ['Your systems don\'t talk', 'Connect them, so data is entered once', 'software-development'],
-        ['IT is nobody\'s job', 'Hand it to a team that answers', 'it-support-and-security', 'managed-it-support'],
+        'replace-spreadsheets' => ['Work lives in spreadsheets', 'Replace them with one system everyone uses', 'software-development'],
+        'never-lose-a-lead' => ['Leads go cold in someone\'s inbox', 'Put every enquiry in a pipeline the team can see', 'business-applications'],
+        'get-paid-on-time' => ['Invoices go out late', 'Bill on time, and see at a glance who has paid', 'business-applications'],
+        'automate-approvals' => ['Approvals wait on paper', 'Route them to the right person, with a record', 'ai-data-and-automation'],
+        'connect-your-systems' => ['Your systems don\'t talk', 'Connect them, so data is entered once', 'software-development'],
+        'it-that-just-works' => ['IT is nobody\'s job', 'Hand it to a team that answers', 'it-support-and-security', 'managed-it-support'],
     ],
 
     /*
@@ -215,8 +217,9 @@ return [
     ],
 
     /*
-    | Industry switcher. `package` and `demo` link the existing platforms and
-    | demo tenants; industries without either are served by Business Solutions.
+    | Industries, keyed by the slug of their page under /industries. `package` and
+    | `demo` link the existing platforms and demo tenants; an industry without a
+    | platform is served by custom work.
     */
     'industries' => [
         'automotive' => [
@@ -254,7 +257,7 @@ return [
             'demo' => null,
             'pains' => ['Client intake that is not an email thread', 'Documents and approvals with an audit trail', 'Billing that goes out on time'],
         ],
-        'corporate-operations' => [
+        'corporate' => [
             'name' => 'Corporate operations',
             'short' => 'Corporate',
             'package' => null,
