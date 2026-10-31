@@ -15,6 +15,18 @@
 - **Current website:** {{ $enquiry->current_website }}
 @endif
 - **Received:** {{ $enquiry->created_at->format('d/m/Y H:i') }}
+@if ($enquiry->journey === 'project')
+- **Priority:** {{ \App\Support\Quote::priorityLabel($enquiry->priority) }}
+@if ($enquiry->role)
+- **Role:** {{ $enquiry->role }}
+@endif
+
+**About the work**
+
+@foreach ($answers as $question => $answer)
+- **{{ $question }}:** {{ $answer }}
+@endforeach
+@endif
 
 @if ($enquiry->message)
 **What they said**

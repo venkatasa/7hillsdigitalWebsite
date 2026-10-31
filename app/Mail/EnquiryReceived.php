@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Enquiry;
+use App\Support\Quote;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
@@ -18,8 +19,13 @@ class EnquiryReceived extends Mailable
 
     public function envelope(): Envelope
     {
+        // A project names its priority, so the right person opens it first.
+        $subject = $this->enquiry->journey === 'project'
+            ? "New project enquiry {$this->enquiry->reference} — {$this->enquiry->interest} · ".Quote::priorityLabel($this->enquiry->priority)
+            : "New enquiry {$this->enquiry->reference} — {$this->enquiry->interest}";
+
         return new Envelope(
-            subject: "New enquiry {$this->enquiry->reference} — {$this->enquiry->interest}",
+            subject: $subject,
             // Reply goes to the prospect, not to our own sales address.
             replyTo: [new Address($this->enquiry->email, $this->enquiry->name)],
         );
@@ -29,7 +35,10 @@ class EnquiryReceived extends Mailable
     {
         return new Content(
             markdown: 'mail.enquiry-received',
-            with: ['url' => url('/admin/enquiries/'.$this->enquiry->getKey().'/edit')],
+            with: [
+                'url' => url('/admin/enquiries/'.$this->enquiry->getKey().'/edit'),
+                'answers' => $this->enquiry->journey === 'project' ? Quote::describe($this->enquiry) : [],
+            ],
         );
     }
 }

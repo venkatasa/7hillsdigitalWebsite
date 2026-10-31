@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Enquiries;
 
 use App\Filament\Resources\Enquiries\Pages\EditEnquiry;
 use App\Filament\Resources\Enquiries\Pages\ListEnquiries;
+use App\Filament\Resources\Enquiries\RelationManagers\EventsRelationManager;
 use App\Filament\Resources\Enquiries\Schemas\EnquiryForm;
 use App\Filament\Resources\Enquiries\Tables\EnquiriesTable;
 use App\Models\Enquiry;
@@ -48,7 +49,14 @@ class EnquiryResource extends Resource
         return EnquiriesTable::configure($table);
     }
 
-    /** Enquiries are created by the public form only, never by hand. */
+    public static function getRelations(): array
+    {
+        return [
+            EventsRelationManager::class,
+        ];
+    }
+
+    /** Enquiries are created by the public forms only, never by hand. */
     public static function canCreate(): bool
     {
         return false;

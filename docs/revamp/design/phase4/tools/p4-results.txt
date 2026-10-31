@@ -1,0 +1,32 @@
+PASS no horizontal overflow on 11 pages at 1440/768/390 []
+PASS no JavaScript errors []
+PASS solution page CTAs open /quote with the type and the button http://7hills-staging-nginx/quote?type=custom-development&from=menu
+PASS opens on step 1 without a preset 
+PASS step 1 will not advance without a choice 
+PASS step 2 shows only the chosen type's questions 
+PASS focus moves to the step heading 
+PASS the description label follows the type 
+PASS step 2 will not advance with questions unanswered 
+PASS submits and shows a reference on the thank-you page ENQ-2026-00016
+PASS thank-you names the chosen channel and promises no time 
+PASS no JavaScript errors through the flow []
+PASS a preset type opens on step 2 
+PASS switching to a monthly type clears the band and offers monthly bands {"checked":0,"monthly":true,"project":true}
+PASS a preview type is marked as such on staging 
+PASS keyboard: arrows choose a type, Tab and Enter advance microsoft-365
+PASS keyboard: Tab reaches the first option and it shows a focus ring {"tag":"INPUT","shadow":"rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0p
+PASS reduced motion: the progress bar does not animate none
+PASS server errors reopen the form on the first step with a problem, answers kept {"alert":true,"step":[3],"kept":"Invented."}
+PASS no JS: all four steps and every type's questions are on screen, no dead buttons {"steps":4,"nexts":0,"groups":6}
+PASS no JS: the form submits and returns a reference ENQ-2026-00017
+PASS header "Get a Quote" opens /quote http://7hills-staging-nginx/quote?from=header
+PASS service page CTAs carry the type and the page http://7hills-staging-nginx/quote?type=custom-development&from=menu
+PASS platform CTAs still go to /contact?package= (unchanged) {"hero":"http://7hills-staging-nginx/contact?package=showroom","quote":0}
+PASS an industry with a platform keeps the platform enquiry, with the page recorded http://7hills-staging-nginx/contact?package=showroom&from=industry-automotive
+PASS panel list shows type and priority 
+PASS panel shows answers, arrival and history, all read-only {"answers":true,"found":true,"history":true,"allDisabled":true}
+PASS all 82 same-site links answer []
+PASS axe: no WCAG violations on any page or any step 
+   
+
+29 passed, 0 failed

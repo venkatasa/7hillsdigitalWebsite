@@ -75,6 +75,9 @@
             <p>Automatically, when you use this website:</p>
             <ul>
                 <li>your IP address, browser user agent, referring page, and the date and time of your request, recorded in server logs and against any form you submit;</li>
+                @if (\App\Support\Quote::enabled())
+                    <li>how you arrived: the first page of your visit, the website that referred you (its domain only, never the full address), any campaign tag in the link you followed, and which button you pressed to reach a form. This is held in your session and recorded against an enquiry only if you make one; otherwise it is discarded with the session;</li>
+                @endif
                 <li>the session cookie described in clause 10.</li>
             </ul>
 
@@ -86,7 +89,7 @@
             <ul>
                 <li><strong>Performance of a contract</strong> (s11(1)(b)) — to quote for, build, host, support and bill the services you have asked us for.</li>
                 <li><strong>Compliance with an obligation of law</strong> (s11(1)(c)) — to keep the accounting, tax and company records the Tax Administration Act, the Value-Added Tax Act and the Companies Act require of us.</li>
-                <li><strong>Our legitimate interests, and those of our clients</strong> (s11(1)(f)) — to administer and secure our systems, prevent and investigate fraud and abuse, keep a record of what was said and agreed, recover amounts owing to us, establish, exercise or defend legal claims, and improve and develop our services.</li>
+                <li><strong>Our legitimate interests, and those of our clients</strong> (s11(1)(f)) — to administer and secure our systems, prevent and investigate fraud and abuse,{{ \App\Support\Quote::enabled() ? ' understand which pages and campaigns bring us enquiries,' : '' }} keep a record of what was said and agreed, recover amounts owing to us, establish, exercise or defend legal claims, and improve and develop our services.</li>
                 <li><strong>Consent</strong> (s11(1)(a)) — where the law requires it and no other justification is available, most obviously for electronic direct marketing to a person who is not already our customer.</li>
             </ul>
             <p>
@@ -164,7 +167,7 @@
                 advertising or tracking identifier:
             </p>
             <ul>
-                <li><strong>a session cookie</strong>, which remembers your form entries between pages; and</li>
+                <li><strong>a session cookie</strong>, which remembers your form entries between pages{{ \App\Support\Quote::enabled() ? ' and, for the length of your visit, how you arrived (clause 3)' : '' }}; and</li>
                 <li><strong>an XSRF-TOKEN cookie</strong>, which proves a form was submitted from this site and not forged by another.</li>
             </ul>
             <p>

@@ -16,7 +16,7 @@
     $quoteTypes = Revamp::quoteTypes();
     $serviceCount = collect($lines)->sum(fn ($l) => count($l['services']));
 
-    $quote = fn (string $from, ?string $type = null) => route('contact', array_filter(['type' => 'project', 'interest' => $type, 'from' => $from]));
+    $quote = fn (string $from, ?string $type = null) => \App\Support\Quote::url($from, $type);
 
     // The supporting line names Microsoft 365 and managed IT only once they may be published.
     $lede = Revamp::visible('microsoft-365-consulting') && Revamp::visible('managed-it-support')

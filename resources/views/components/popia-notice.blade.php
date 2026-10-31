@@ -4,12 +4,15 @@
     enough on their own, so this notice renders ABOVE the consent checkbox on
     every public form that takes personal information.
 --}}
+@props([
+    // Why we collect, completing "for one purpose: …". /quote passes its own.
+    'purpose' => 'to answer this enquiry and, if you go ahead, to set up your website and email',
+])
 <div {{ $attributes->merge(['class' => 'rounded-lg bg-brand-light p-4 text-xs leading-relaxed text-secondary']) }}>
     <p class="font-semibold text-brand">How we use these details</p>
     <p class="mt-1.5">
         We collect your name, contact details and whatever you tell us about your
-        business for one purpose: to answer this enquiry and, if you go ahead, to
-        set up your website and email. We do not sell your details and we do not
+        business for one purpose: {{ $purpose }}. We do not sell your details and we do not
         add you to a mailing list without asking. We keep the enquiry while it is
         live and for three years afterwards, then delete it.
     </p>

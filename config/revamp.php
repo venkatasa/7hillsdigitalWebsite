@@ -35,6 +35,14 @@ return [
     'preview_unconfirmed' => (bool) env('REVAMP_PREVIEW_UNCONFIRMED', false),
 
     /*
+    | /quote, project enquiries and lead attribution. These write to columns the
+    | 2026_10_31 migrations add (decision D7, approved for staging only), so the
+    | switch stays off anywhere those migrations have not run. Off, every "Get a
+    | quote" link falls back to /contact and nothing new is written.
+    */
+    'leads' => (bool) env('REVAMP_LEADS', false),
+
+    /*
     | Trust claims that depend on operational work. A claim whose precondition
     | is not yet true is hidden, not softened. See PRODUCTION_SAFETY_CHECKLIST.md.
     */
@@ -204,8 +212,9 @@ return [
     ],
 
     /*
-    | Quote chooser. `requires` names the service that must be publishable for
-    | the chip to render. Phase 4 replaces /contact with /quote.
+    | /quote project types: [label, blurb, gate]. The gate names the service that
+    | must be publishable for the type to be offered. What each type asks is in
+    | config/quote.php.
     */
     'quote_types' => [
         'custom-development' => ['Custom software', 'A system, portal or app built for you', 'custom-software-development'],

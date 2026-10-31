@@ -22,7 +22,7 @@
             <h1 class="t-display mt-5 max-w-4xl text-white">{{ ucfirst($words->format(count($lines))) }} service lines. One team that builds, hosts and supports all of it.</h1>
             <p class="t-lede mt-6 max-w-2xl text-white/70">{{ $serviceCount }} services, from a single integration to a whole system. Pick a line, or tell us the problem and we will tell you which fits.</p>
             <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-                <x-ui.button :href="route('contact', ['type' => 'project', 'from' => 'services-hub'])" tone="dark" size="lg" arrow>Get a Quote</x-ui.button>
+                <x-ui.button :href="\App\Support\Quote::url('services-hub')" tone="dark" size="lg" arrow>Get a Quote</x-ui.button>
                 <x-ui.button :href="route('packages.index')" tone="dark" variant="secondary" size="lg">Ready-to-use platforms</x-ui.button>
             </div>
         </div>
@@ -91,7 +91,7 @@
                     <p class="mt-2 max-w-2xl text-secondary">If your business has a process, we can put it on a screen. You focus on running the business. We will take care of the IT.</p>
                 </div>
                 <div class="lg:col-span-4 lg:text-right">
-                    <x-ui.button :href="route('contact', ['type' => 'project', 'interest' => 'other', 'from' => 'services-hub'])" arrow>Describe it</x-ui.button>
+                    <x-ui.button :href="\App\Support\Quote::url('services-hub', 'other')" arrow>Describe it</x-ui.button>
                 </div>
             </div>
         </div>

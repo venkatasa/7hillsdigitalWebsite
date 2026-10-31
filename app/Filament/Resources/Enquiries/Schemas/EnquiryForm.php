@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Enquiries\Schemas;
 
 use App\Models\Enquiry;
+use App\Support\Quote;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -14,6 +15,9 @@ class EnquiryForm
 {
     public static function configure(Schema $schema): Schema
     {
+        // Subscription-only fields are hidden on a project enquiry, and vice versa.
+        $project = fn (?Enquiry $record) => $record?->journey === 'project';
+
         return $schema
             ->components([
                 /*
@@ -28,16 +32,37 @@ class EnquiryForm
                     ->columns(2)
                     ->schema([
                         TextInput::make('reference')->label('Reference'),
-                        TextInput::make('created_at')->label('Received'),
+                        TextInput::make('created_at')->label('Received')
+                            ->formatStateUsing(fn ($state) => $state ? \Illuminate\Support\Carbon::parse($state)->format('d/m/Y H:i') : null),
                         TextInput::make('name')->label('Name'),
                         TextInput::make('company')->label('Business'),
                         TextInput::make('email')->label('Email'),
                         TextInput::make('phone')->label('Telephone'),
-                        TextInput::make('package.name')->label('Package'),
-                        TextInput::make('tier.name')->label('Tier'),
-                        TextInput::make('industry')->label('Their industry'),
-                        TextInput::make('current_website')->label('Current website'),
+                        TextInput::make('package.name')->label('Package')->hidden($project),
+                        TextInput::make('tier.name')->label('Tier')->hidden($project),
+                        TextInput::make('industry')->label('Their industry')->hidden($project),
+                        TextInput::make('current_website')->label('Current website')->hidden($project),
+                        TextInput::make('role')->label('Role')->visible($project),
                         Textarea::make('message')->label('Message')->rows(4)->columnSpanFull(),
+                    ])
+                    ->disabled()
+                    ->dehydrated(false),
+
+                Section::make('The project')
+                    ->description('Their answers on /quote. Priority is worked out from them when the enquiry arrives. Not editable.')
+                    ->columns(2)
+                    ->visible($project)
+                    ->schema([
+                        TextInput::make('project_type')->label('What they need')
+                            ->formatStateUsing(fn (?string $state) => Quote::typeLabel($state)),
+                        TextInput::make('priority')->label('Priority')
+                            ->formatStateUsing(fn (?string $state) => Quote::priorityLabel($state)),
+                        Textarea::make('answers')->label('Answers')
+                            ->formatStateUsing(fn ($state, ?Enquiry $record) => $record
+                                ? collect(Quote::describe($record))->map(fn ($a, $q) => "{$q} — {$a}")->implode("\n")
+                                : null)
+                            ->rows(7)
+                            ->columnSpanFull(),
                     ])
                     ->disabled()
                     ->dehydrated(false),
@@ -62,6 +87,22 @@ class EnquiryForm
                             ->columnSpanFull()
                             ->helperText('Visible to staff only. Never shown to the prospect.'),
                     ]),
+
+                Section::make('How they found us')
+                    ->description('The first page of their visit, the site that sent them (domain only), any campaign tag, and the button they pressed.')
+                    ->columns(3)
+                    ->collapsed()
+                    ->visible(fn () => Quote::enabled())
+                    ->schema([
+                        TextInput::make('landing_page')->label('First page'),
+                        TextInput::make('referrer_host')->label('Referred by')->placeholder('Direct, or unknown'),
+                        TextInput::make('cta_source')->label('Button'),
+                        TextInput::make('utm_source')->label('Campaign source'),
+                        TextInput::make('utm_medium')->label('Campaign medium'),
+                        TextInput::make('utm_campaign')->label('Campaign'),
+                    ])
+                    ->disabled()
+                    ->dehydrated(false),
 
                 Section::make('POPIA record')
                     ->description('Captured at the point of collection. Kept as proof of consent.')

@@ -7,7 +7,7 @@
 @php
     use App\Support\Revamp;
 
-    $quote = route('contact', ['type' => 'project', 'interest' => $page['quote_type'], 'from' => 'service-'.$page['slug']]);
+    $quote = \App\Support\Quote::url('service-'.$page['slug'], $page['quote_type']);
     $brand = config('brand');
 
     $jsonLd = [

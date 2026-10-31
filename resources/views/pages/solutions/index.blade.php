@@ -6,7 +6,7 @@
 @php
     use App\Support\Revamp;
 
-    $quote = route('contact', ['type' => 'project', 'from' => 'solutions-hub']);
+    $quote = \App\Support\Quote::url('solutions-hub');
 @endphp
 
 <x-ui.layout overlay title="Business Problems We Solve"

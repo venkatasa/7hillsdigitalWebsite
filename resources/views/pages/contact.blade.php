@@ -49,6 +49,8 @@
                           get options() { return this.tiers[this.packageId] ?? [] },
                       }">
                     @csrf
+                    {{-- Which button brought them here; stored only while /quote is switched on. --}}
+                    <input type="hidden" name="from" value="{{ old('from', request()->query('from')) }}">
 
                     {{-- Honeypot. Hidden from people, irresistible to bots. --}}
                     <div class="absolute left-[-9999px]" aria-hidden="true">
@@ -115,7 +117,7 @@
                 </form>
             </div>
 
-            <aside class="lg:sticky lg:top-24 lg:self-start">
+            <div class="lg:sticky lg:top-24 lg:self-start">
                 <div class="rounded-2xl bg-brand-light p-6">
                     <h2 class="text-base font-bold text-brand">What happens next</h2>
                     <ol class="mt-5 space-y-4 text-sm text-secondary">
@@ -148,7 +150,7 @@
                         </p>
                     </div>
                 </div>
-            </aside>
+            </div>
 
         </div>
     </section>

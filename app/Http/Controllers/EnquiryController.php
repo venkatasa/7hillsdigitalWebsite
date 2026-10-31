@@ -6,6 +6,7 @@ use App\Http\Requests\StoreEnquiryRequest;
 use App\Mail\EnquiryReceived;
 use App\Models\Enquiry;
 use App\Models\Package;
+use App\Support\Attribution;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -26,6 +27,8 @@ class EnquiryController extends Controller
     {
         $enquiry = Enquiry::create([
             ...$request->safe()->except('website'),
+            // Empty unless /quote is switched on: the columns exist only after D7.
+            ...Attribution::forEnquiry($request),
             'consent' => true,
             'ip_address' => $request->ip(),
             'user_agent' => substr((string) $request->userAgent(), 0, 512),

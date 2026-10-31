@@ -5,6 +5,7 @@ use App\Http\Controllers\EnquiryController;
 use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SolutionController;
 use Illuminate\Support\Facades\Route;
@@ -38,3 +39,10 @@ Route::post('/contact', [EnquiryController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('contact.store');
 Route::get('/contact/thank-you', [EnquiryController::class, 'thanks'])->name('contact.thanks');
+
+// Project enquiries. 404 unless REVAMP_LEADS is on (needs the D7 migration).
+Route::get('/quote', [QuoteController::class, 'create'])->name('quote');
+Route::post('/quote', [QuoteController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('quote.store');
+Route::get('/quote/thank-you', [QuoteController::class, 'thanks'])->name('quote.thanks');

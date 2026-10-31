@@ -7,7 +7,7 @@
 @php
     use App\Support\Revamp;
 
-    $quote = route('contact', ['type' => 'project', 'interest' => $page['quote_type'], 'from' => 'solution-'.$page['slug']]);
+    $quote = \App\Support\Quote::url('solution-'.$page['slug'], $page['quote_type']);
     $services = Revamp::services($page['services']);
     $industries = array_filter(array_map(fn ($s) => Revamp::industry($s), $page['industries'] ?? []));
     $others = array_filter(Revamp::solutions(), fn ($s) => $s['slug'] !== $page['slug']);

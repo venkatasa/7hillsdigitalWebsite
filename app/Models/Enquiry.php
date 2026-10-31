@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Support\Quote;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 /**
- * A prospect asking about a package.
+ * A prospect asking about a package (journey `subscription`, from /contact) or
+ * about a project (journey `project`, from /quote).
  *
  * Enquiries arrive as 'new' and are worked by hand — nothing here auto-
  * advances. POPIA provenance (consent, IP, user agent) is captured at the
@@ -34,6 +37,7 @@ class Enquiry extends Model
         return [
             'consent' => 'boolean',
             'contacted_at' => 'datetime',
+            'answers' => 'array',
         ];
     }
 
@@ -41,6 +45,35 @@ class Enquiry extends Model
     {
         static::creating(function (self $enquiry) {
             $enquiry->reference ??= static::nextReference();
+        });
+
+        /*
+         | The history table exists only where the D7 migration has run, which is
+         | exactly where /quote is switched on.
+         */
+        static::created(function (self $enquiry) {
+            if (Quote::enabled()) {
+                $enquiry->events()->create(['type' => 'received', 'to' => $enquiry->status]);
+            }
+        });
+
+        static::updated(function (self $enquiry) {
+            if (! Quote::enabled()) {
+                return;
+            }
+
+            if ($enquiry->wasChanged('status')) {
+                $enquiry->events()->create([
+                    'type' => 'status_changed',
+                    'user_id' => auth()->id(),
+                    'from' => $enquiry->getOriginal('status'),
+                    'to' => $enquiry->status,
+                ]);
+            }
+
+            if ($enquiry->wasChanged('contacted_at') && $enquiry->getOriginal('contacted_at') === null) {
+                $enquiry->events()->create(['type' => 'contacted', 'user_id' => auth()->id()]);
+            }
         });
     }
 
@@ -83,6 +116,11 @@ class Enquiry extends Model
         return $this->belongsTo(User::class, 'contacted_by');
     }
 
+    public function events(): HasMany
+    {
+        return $this->hasMany(EnquiryEvent::class)->latest('id');
+    }
+
     public function scopeUnanswered($query)
     {
         return $query->where('status', 'new');
@@ -93,10 +131,11 @@ class Enquiry extends Model
         return self::STATUSES[$this->status] ?? ucfirst((string) $this->status);
     }
 
-    /** What they asked about, for a list column: package name or free-text industry. */
+    /** What they asked about, for a list column: project type, package name or free-text industry. */
     public function getInterestAttribute(): string
     {
-        return $this->tier?->name
+        return Quote::typeLabel($this->project_type)
+            ?? $this->tier?->name
             ?? $this->package?->name
             ?? $this->industry
             ?? 'General enquiry';

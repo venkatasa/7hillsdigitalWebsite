@@ -31,9 +31,12 @@ Leave that running, then browse to **http://localhost:8096/**.
 - **Services** (phase 2): `/services`, the seven line pages and ten service pages
 - **Solutions, industries and work** (phase 3): `/solutions`, `/industries`, `/work`
 - **Platforms** (phase 3, restyled; same prices and terms): `/packages`, `/packages/{slug}`
+- **Get a quote** (phase 4): `/quote`, `/quote?type=custom-development`; submissions land in
+  `/admin/enquiries` with their answers, priority, how they arrived and a history
 - **Existing pages** (unchanged, for comparison): `/demos`, `/about`, `/how-it-works`, …
 - **Back office on staging:** `http://localhost:8096/admin` (staging data only:
-  the real catalogue, plus five *fictional* enquiries; no real prospects)
+  the real catalogue, plus *fictional* enquiries, including the test submissions
+  marked "(staging)"; no real prospects)
 
 No SSH? The **static captures** in `docs/revamp/design/preview/` show desktop,
 tablet and mobile, including full-page views.
@@ -69,6 +72,7 @@ tablet and mobile, including full-page views.
 |---|---|---|
 | `REVAMP_HOME_V2` | `true`: serves the prototype at `/` | unset → **current homepage** |
 | `REVAMP_PREVIEW_UNCONFIRMED` | `true`: shows AI, Microsoft 365, Mobile and BI with a dashed **Preview only** marker | **ignored**; those four are never rendered until you confirm capability (decision D2) |
+| `REVAMP_LEADS` | `true`: `/quote`, attribution and enquiry history (needs the D7 migrations, run on staging only) | unset → `/quote` is a 404, "Get a quote" links go to `/contact` as today, nothing new is written |
 | `revamp.trust.*` (config) | `false` | off-site backups and MFA claims stay hidden until R1 and R6 are done |
 
 ## 5. Verified

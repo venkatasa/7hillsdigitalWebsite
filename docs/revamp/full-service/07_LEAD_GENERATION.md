@@ -136,8 +136,8 @@ to create it.
 
 | # | Decision |
 |---|---|
-| D7 | Approve the additive `enquiries` columns (§7.3) |
+| D7 | Approve the additive `enquiries` columns (§7.3). **Approved 31/10/2026 for staging only**; production needs a separate deployment approval |
 | Q4 | Response promise for project enquiries |
 | Q5 | Is the consultation free, and how long is it? |
-| Q6 | Budget bands and minimum engagement size |
-| Q7 | Who receives each type (one inbox, or per consultant)? |
+| Q6 | Budget bands and minimum engagement size. **Phase 4 uses the proposed bands for now**, in `config/quote.php` |
+| Q7 | Who receives each type (one inbox, or per consultant)? **One inbox for now** (`brand.notify_email`) |

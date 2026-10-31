@@ -11,11 +11,8 @@
     // On the homepage, menu links are plain anchors; elsewhere they lead back to it.
     $home = request()->routeIs('home') ? '' : route('home');
 
-    /*
-     | Services, solutions and industries each link to their own pages.
-     | Phase 4 replaces /contact with /quote.
-     */
-    $quote = route('contact', ['type' => 'project', 'from' => 'header']);
+    // Services, solutions and industries each link to their own pages.
+    $quote = \App\Support\Quote::url('header');
     $solutions = \App\Support\Revamp::solutions();
     $menus = ['services' => 'Services', 'solutions' => 'Solutions', 'industries' => 'Industries'];
 @endphp
@@ -107,7 +104,7 @@
                                                     <p class="font-display text-2xl font-bold tracking-tight text-white">{{ $l['name'] }}</p>
                                                     <p class="mt-2 max-w-lg text-sm leading-relaxed text-white/60">{{ $l['blurb'] }}</p>
                                                 </div>
-                                                <a href="{{ route('contact', ['type' => 'project', 'interest' => $slug, 'from' => 'menu']) }}"
+                                                <a href="{{ \App\Support\Quote::url('menu', $slug) }}"
                                                    class="btn-v2 min-h-10 shrink-0 border border-white/20 px-4 text-sm text-white hover:border-mint/60">
                                                     Get a quote
                                                 </a>

@@ -9,7 +9,7 @@
 
     $clients = config('clients', []);
     $demos = config('demos', []);
-    $quote = route('contact', ['type' => 'project', 'from' => 'work']);
+    $quote = \App\Support\Quote::url('work');
     $ours = [
         ['admin-dashboard', 'The dashboard', 'What needs attention today, on one screen.'],
         ['admin-enquiries', 'The enquiry pipeline', 'Every lead with an owner and a stage. What the prospect wrote is read-only.'],

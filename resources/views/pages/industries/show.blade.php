@@ -8,7 +8,9 @@
     use App\Support\Revamp;
 
     $brand = config('brand');
-    $quote = route('contact', array_filter(['type' => $package ? null : 'project', 'package' => $package?->slug, 'interest' => $package ? null : $page['quote_type'], 'from' => 'industry-'.$page['slug']]));
+    $quote = $package
+        ? route('contact', ['package' => $package->slug, 'from' => 'industry-'.$page['slug']])
+        : \App\Support\Quote::url('industry-'.$page['slug'], $page['quote_type']);
     $services = Revamp::services($page['services']);
     $solutions = array_filter(array_map(fn ($s) => Revamp::solutions()[$s] ?? null, $page['solutions'] ?? []));
     $client = ! empty($page['client']) ? config('clients.'.$page['client']) : null;

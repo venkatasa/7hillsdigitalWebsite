@@ -11,7 +11,7 @@
                 {{ $brand['tagline'] }} We build and host the website and the back office,
                 and we bill it monthly — nothing upfront, cancel any time.
             </p>
-            <p class="mt-5 text-xs uppercase tracking-[0.18em] text-white/40">
+            <p class="mt-5 text-xs uppercase tracking-[0.18em] text-white/60">
                 {{ $brand['contact']['city'] }}, {{ $brand['contact']['province'] }}
             </p>
         </div>

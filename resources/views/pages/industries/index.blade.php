@@ -4,7 +4,7 @@
     we bring on the right.
 --}}
 @php
-    $quote = route('contact', ['type' => 'project', 'from' => 'industries-hub']);
+    $quote = \App\Support\Quote::url('industries-hub');
 @endphp
 
 <x-ui.layout overlay title="Software and Websites by Industry"

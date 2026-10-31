@@ -8,7 +8,7 @@
     use App\Support\Revamp;
 
     $pages = collect(Revamp::pages())->filter(fn ($p) => Revamp::catalogue()[$p['gate']]['line'] === $line['slug'] || collect($p['covers'] ?? [])->contains(fn ($c) => isset($line['services'][$c])));
-    $quote = route('contact', ['type' => 'project', 'interest' => $line['slug'], 'from' => 'line-'.$line['slug']]);
+    $quote = \App\Support\Quote::url('line-'.$line['slug'], $line['slug']);
     $index = array_search($line['slug'], array_keys($lines), true) + 1;
 @endphp
 
