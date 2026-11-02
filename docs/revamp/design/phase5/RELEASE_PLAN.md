@@ -135,8 +135,25 @@ From the panel and logs, weekly:
     `git -C /opt/docker/7hillsdigital push origin v2026.11.0`;
   - the pre-release local edits are in `git stash` on the live checkout (all already in
     the release; drop once satisfied);
-  - `og:url` and the **sitemap's `<loc>` URLs** render `http://` because R5 (trust
-    Cloudflare) is not done; canonical links are correct (`https://`). Hold the Search
-    Console submission (step 13) until R5 lands. Plain `http://7hillsdigital.co.za` also
+  - ~~`og:url` and the sitemap rendered `http://`~~: fixed by R5, below. Plain `http://7hillsdigital.co.za` also
     answers 200 instead of redirecting: turn on Cloudflare "Always Use HTTPS";
   - the script ended with exit 1 from its last line in a real run (no effect; fixed).
+
+## 6. Release record, 02/11/2026 13:25 UTC: R5 (`v2026.11.1`)
+
+- **Cause:** Cloudflare reaches the origin through cloudflared on the prod laptop
+  (192.168.90.207), not from Cloudflare's IP ranges as the checklist assumed. Laravel
+  did not trust it, so it saw every request as `http://` and every visitor as .207.
+- **Change:** trust .207 only (`TRUSTED_PROXIES` overrides), `X-Forwarded-For` and
+  `-Proto`; baseline security headers from Laravel (`SecurityHeaders`); `.env.bak-*`
+  ignored. Tests 171 in all three switch modes.
+- **Release:** `release.sh` with `RELEASE_TAG=v2026.11.1`, all gates passed, `main`
+  `bf64ddf → 56e9ceb`, no migrations, smoke as before.
+- **Checked through Cloudflare:** all 42 sitemap `<loc>`s and `og:url` are `https://`;
+  `nosniff`, `SAMEORIGIN`, the referrer and permissions policies are present on pages
+  and `/admin/login`; no errors logged.
+- **Side effects, both wanted:** the enquiry form's 10-a-minute limit is now per visitor
+  rather than one bucket for everybody, and new enquiries record the visitor's real IP.
+  Enquiries before 02/11 13:25 UTC carry `192.168.90.207`.
+- **Left over:** push tags `v2026.11.0` (if not already) and `v2026.11.1`; turn on
+  Cloudflare "Always Use HTTPS"; then submit `/sitemap.xml` in Search Console.
