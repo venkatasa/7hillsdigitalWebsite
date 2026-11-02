@@ -64,6 +64,21 @@ R5 (Cloudflare proxy trust and security headers), R6 (back-office protection).
 
 ## 3. Order on the day
 
+`release.sh` (beside this file) runs steps 2–12 as one script. It refuses to start
+unless R3 is in `.env`, `revamp` is pushed to Gitea, and today's 15:50 PBS run shipped the
+live site and `7hills-mysql`. Once the site is down, any failure switches the revamp off
+and brings the site back on today's pages. Rehearsed on staging 02/11 (`--rehearse`):
+167 tests, backup, maintenance mode, build, migrations, 41 sitemap pages + `/admin/login`
+200, gated page 404, `/quote` 200 and linked, exit 0. The recovery path also fired once on
+a false check during rehearsal and restored the site as designed.
+
+```bash
+bash /opt/docker/7hillsdigital-revamp/docs/revamp/design/phase5/release.sh
+```
+
+`composer install` and `npm ci` are not needed: production and staging run the same
+image and `revamp` changes no dependency (checked 02/11).
+
 The safety checklist §5, with the revamp's switches in a deliberate order: the
 schema first, then the pages, then the new enquiry flow. Each switch can be
 turned off on its own.
