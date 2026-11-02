@@ -10,7 +10,7 @@
 # Nothing here prints a secret.
 set -euo pipefail
 
-TAG=v2026.11.0
+TAG=${RELEASE_TAG:-v2026.11.0}   # each release needs a new one: RELEASE_TAG=v2026.11.1 bash …
 if [[ "${1:-}" == "--rehearse" ]]; then
     REHEARSE=1; DIR=/opt/docker/7hillsdigital-revamp; APP=7hills-staging-app; DB=7hills-staging-mysql
     BASE=http://192.168.90.226:8096
@@ -83,7 +83,7 @@ echo "backup $B, env copy .env.bak-$STAMP"
 
 if (( ! REHEARSE )); then
     say "Tag"
-    git -C "$DIR" tag -a "$TAG" revamp -m "Revamp release" 2>/dev/null || echo "tag exists"
+    git -C "$DIR" tag -a "$TAG" revamp -m "Revamp release" 2>/dev/null || fail "tag $TAG already exists: set RELEASE_TAG"
     git -C "$DIR" push origin "$TAG" || echo "WARN: tag not pushed (needs the Gitea token). Later: git -C $DIR push origin $TAG"
 fi
 
