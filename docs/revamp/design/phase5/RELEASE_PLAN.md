@@ -22,7 +22,7 @@ The owner approved clearing all five blockers on 02/11/2026. Where each stands:
 
 | # | Status | What is left |
 |---|---|---|
-| R1 | **Still blocked.** PBS `192.168.90.160` does not answer ping or port 8007. A fresh local backup was taken 02/11 06:14 (`~/backups/7hillsdigital/LATEST`, `SHA256SUMS` written), but it is on the same host. | Bring PBS back (Proxmox console), run `sudo /opt/pbs-backup/trigger.sh`, and confirm the 7hillsdigital archive lands. Interim: copy the `LATEST` folder to a second machine or encrypted disk. **Launch requires R1.** |
+| R1 | **Cleared.** PBS is designed to power on at 15:00 SAST, take the backup and shut down, so it is unreachable the rest of the day by design. The client job was moved to 13:50 UTC (15:50 SAST) on 01/11, and that run reached PBS: `proj00-7hillsdigital.pxar`, the `7hills-mysql` dump and the Docker volumes. A local backup was also taken 02/11 06:14. | Not blocking: the **staging** DB dump (`7hills-staging-mysql`) fails every run, which marks each run `!! FAILED` and will drown out a real failure alert. Fix in `/opt/pbs-backup/app-backup.sh` (root). |
 | R3 | **Approved, not applied.** Claude's permission settings refused the production `.env` edit, so the owner runs it (below). Rehearsed on staging 31/10. | Commands below. |
 | M2 | **Owner accepted the default.** With the matrix empty, production shows the six confirmed lines, the "Automation" headline and five solutions; unconfirmed services stay 404. | Nothing, unless more services are confirmed later. |
 | Attorney | **Owner accepted the risk** of going live before attorney review of privacy clauses 3, 4 and 10. CLAUDE.md open decision 2 still stands. | Attorney review, as soon as practical. |
@@ -70,7 +70,9 @@ turned off on its own.
 
 1. Staging green in production mode (done 31/10: see `PHASE5_REPORT.md` §3).
 2. Merge `revamp` → `main`, tag, push to Gitea.
-3. Fresh backup per checklist §5 step 3; confirm `SHA256SUMS`, and confirm R1 shipped it off-site.
+3. Fresh backup per checklist §5 step 3; confirm `SHA256SUMS`. **Release after the 15:50 SAST PBS run**
+   and check `/var/log/pbs-app-backup.log` shows `proj00-7hillsdigital` and `7hills-mysql` uploaded that day.
+   PBS is off outside its 15:00 window, so a morning release has only a same-host backup.
 4. `cp -p .env .env.bak-<stamp>`
 5. `php artisan down --render="errors::503" --retry=60`
 6. `git stash push -m "pre-release local edits"` first. The live checkout carries
