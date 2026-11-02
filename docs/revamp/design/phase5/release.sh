@@ -145,4 +145,4 @@ echo "/quote 200 and linked from the home page"
 
 trap - ERR
 say "Released. Now watch: docker exec $APP tail -f storage/logs/laravel.log (15 minutes)"
-(( REHEARSE )) && echo "(rehearsal: staging switches left on, as before)"
+if (( REHEARSE )); then echo "(rehearsal: staging switches left on, as before)"; fi

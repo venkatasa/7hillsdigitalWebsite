@@ -116,3 +116,27 @@ From the panel and logs, weekly:
 - enquiries by type and priority (dashboard "This month"), and time to first contact;
 - `404`s in `laravel.log` (old links pointing at moved pages);
 - Search Console coverage: the sitemap's URLs indexed, none excluded as "not found".
+
+## 5. Release record, 02/11/2026
+
+- **Gates:** R3 and R7 run by the owner and verified 08:36 UTC. The owner powered PBS on
+  early and ran `trigger.sh`; the 08:38 UTC run shipped `proj00-7hillsdigital` and the
+  `7hills-mysql` dump (only the known staging dump failed).
+- **Released 08:38–08:40 UTC** with `release.sh`. All gates passed; 167 staging tests;
+  local backup `~/backups/7hillsdigital/20261102-083844`; `main` fast-forwarded
+  `94235bb → bf64ddf`; the three 2026_10_31 migrations ran; 41 sitemap pages and
+  `/admin/login` 200, `/services/microsoft-365` 404; `/quote` 200 and linked.
+- **Live switches:** `REVAMP_HOME_V2=true`, `REVAMP_LEADS=true`, `REVAMP_PREVIEW_UNCONFIRMED=false`.
+- **15-minute watch:** no new lines in `laravel.log`.
+- **Checked through Cloudflare afterwards:** ten key URLs as expected; live prices on
+  `/packages`; no errors logged.
+- **Left over:**
+  - tag `v2026.11.0` exists locally but is **not pushed** (needs the token):
+    `git -C /opt/docker/7hillsdigital push origin v2026.11.0`;
+  - the pre-release local edits are in `git stash` on the live checkout (all already in
+    the release; drop once satisfied);
+  - `og:url` and the **sitemap's `<loc>` URLs** render `http://` because R5 (trust
+    Cloudflare) is not done; canonical links are correct (`https://`). Hold the Search
+    Console submission (step 13) until R5 lands. Plain `http://7hillsdigital.co.za` also
+    answers 200 instead of redirecting: turn on Cloudflare "Always Use HTTPS";
+  - the script ended with exit 1 from its last line in a real run (no effect; fixed).
