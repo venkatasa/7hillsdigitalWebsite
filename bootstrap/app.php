@@ -12,6 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Cloudflare reaches us through cloudflared on the prod laptop (.207), which
+        // forwards plain HTTP with X-Forwarded-Proto: https. Trust that host only:
+        // the origin is also reachable on the LAN, so '*' would let anyone claim https.
+        $middleware->trustProxies(
+            at: array_filter(explode(',', (string) env('TRUSTED_PROXIES', '192.168.90.207'))),
+            headers: Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_PROTO,
+        );
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+
         // After StartSession, so the existing session holds it and no cookie is added.
         $middleware->web(append: [\App\Http\Middleware\CaptureAttribution::class]);
     })
