@@ -61,9 +61,43 @@ return [
     ],
 
     /*
+    | The technologies we name on the site, grouped. Owner-confirmed on 02/11/2026
+    | (Python, Java, Android and iOS, WhatsApp automation and AI, plus the wider
+    | market range). Every name here is a promise a prospect can test on a sales
+    | call: remove anything we would not put a developer on next month. The first
+    | group leads on the homepage.
+    */
+    'technologies' => [
+        'AI & machine learning' => ['OpenAI GPT', 'Anthropic Claude', 'Google Gemini', 'Llama and Mistral (self-hosted)', 'LangChain', 'Vector search and RAG', 'Speech-to-text', 'OCR and document AI'],
+        'WhatsApp & messaging' => ['WhatsApp Business Platform', 'WhatsApp Cloud API', 'Chat flows and bots', 'SMS and email automation', 'n8n'],
+        'Languages & frameworks' => ['Python', 'Java', 'C# and .NET', 'PHP', 'JavaScript', 'TypeScript', 'Node.js', 'Go', 'Django', 'FastAPI', 'Spring Boot', 'Laravel', 'React', 'Next.js', 'Vue.js'],
+        'Mobile' => ['Android (Kotlin)', 'iOS (Swift)', 'Flutter', 'React Native'],
+        'Data' => ['PostgreSQL', 'MySQL', 'SQL Server', 'MongoDB', 'Redis'],
+        'Cloud & DevOps' => ['AWS', 'Microsoft Azure', 'Google Cloud', 'Docker', 'Kubernetes', 'Linux', 'Cloudflare', 'CI/CD pipelines'],
+        'Integrations' => ['REST and GraphQL APIs', 'Webhooks', 'Payment gateways', 'Accounting systems'],
+    ],
+
+    /*
     | Seven service lines. `motif` names a drawing in <x-ui.motif>.
     */
     'lines' => [
+        'ai-data-and-automation' => [
+            'name' => 'AI, Automation & WhatsApp',
+            'short' => 'AI & WhatsApp',
+            'motif' => 'flow',
+            'blurb' => 'AI assistants, WhatsApp automation and workflows that take the repeated work out of the week.',
+            'services' => [
+                'business-process-automation' => ['Business Process Automation', 'built_to_order', 'Repeated work taken off people\'s desks: reminders, hand-offs and paperwork.'],
+                'workflow-and-approval-automation' => ['Workflow and Approval Automation', 'built_to_order', 'Requests routed to the right person, with a record of every decision.'],
+                'whatsapp-automation' => ['WhatsApp Automation and AI Assistants', 'built_to_order', 'Automatic replies, reminders and an AI assistant on your WhatsApp Business number, handing over to staff when it matters.'],
+                'ai-business-assistants' => ['AI Business Assistants and Chatbots', 'built_to_order', 'Assistants that answer from your own documents, with a person in the loop.'],
+                'ai-document-processing' => ['AI Document Processing', 'built_to_order', 'Invoices, forms and contracts read, checked and filed.'],
+                'ai-integration' => ['AI Integration With Existing Systems', 'built_to_order', 'AI steps added to the systems you already use, with clear limits on data.'],
+                'intelligent-customer-service' => ['Intelligent Customer Service Solutions', 'built_to_order', 'First-line answers for customers, handed to staff when it matters.'],
+                'reporting-and-business-intelligence' => ['Reporting and Business Intelligence', 'capability_unconfirmed', 'The numbers that run the business, on one screen.'],
+                'data-analytics-and-dashboards' => ['Data Analytics and Dashboards', 'capability_unconfirmed', 'Trends and exceptions surfaced from your operational data.'],
+            ],
+        ],
         'software-development' => [
             'name' => 'Software Development',
             'short' => 'Software',
@@ -77,7 +111,7 @@ return [
                 'database-development' => ['Database Development and Optimisation', 'built_to_order', 'Schemas, queries and reports that stay fast as the data grows.'],
                 'legacy-system-modernisation' => ['Legacy System Modernisation', 'built_to_order', 'An ageing system rebuilt in stages, without a big-bang switchover.'],
                 'enterprise-application-development' => ['Enterprise Application Development', 'built_to_order', 'Larger multi-team systems, delivered in phases with clear ownership.'],
-                'mobile-application-development' => ['Mobile Application Development', 'capability_unconfirmed', 'Apps for field teams and customers, on iOS and Android.'],
+                'mobile-application-development' => ['Mobile Application Development', 'built_to_order', 'Native and cross-platform apps for Android and iOS, for field teams and customers.'],
             ],
         ],
         'microsoft-business-solutions' => [
@@ -94,22 +128,6 @@ return [
                 'power-bi-dashboards' => ['Power BI Dashboards', 'capability_unconfirmed', 'Reports built from the systems you already run.'],
                 'document-management-systems' => ['Document Management Systems', 'capability_unconfirmed', 'Version control, permissions and retention for business documents.'],
                 'microsoft-365-migration-and-governance' => ['Microsoft 365 Migration and Governance', 'capability_unconfirmed', 'Moving mail and files into Microsoft 365, with rules for who can see what.'],
-            ],
-        ],
-        'ai-data-and-automation' => [
-            'name' => 'AI, Data & Automation',
-            'short' => 'AI & Automation',
-            'motif' => 'flow',
-            'blurb' => 'Take the repeated work out of the week, and put the numbers that matter on one screen.',
-            'services' => [
-                'business-process-automation' => ['Business Process Automation', 'built_to_order', 'Repeated work taken off people\'s desks: reminders, hand-offs and paperwork.'],
-                'workflow-and-approval-automation' => ['Workflow and Approval Automation', 'built_to_order', 'Requests routed to the right person, with a record of every decision.'],
-                'ai-business-assistants' => ['AI Business Assistants and Chatbots', 'capability_unconfirmed', 'Assistants that answer from your own documents, with a person in the loop.'],
-                'ai-document-processing' => ['AI Document Processing', 'capability_unconfirmed', 'Invoices, forms and contracts read, checked and filed.'],
-                'ai-integration' => ['AI Integration With Existing Systems', 'capability_unconfirmed', 'AI steps added to the systems you already use, with clear limits on data.'],
-                'intelligent-customer-service' => ['Intelligent Customer Service Solutions', 'capability_unconfirmed', 'First-line answers for customers, handed to staff when it matters.'],
-                'reporting-and-business-intelligence' => ['Reporting and Business Intelligence', 'capability_unconfirmed', 'The numbers that run the business, on one screen.'],
-                'data-analytics-and-dashboards' => ['Data Analytics and Dashboards', 'capability_unconfirmed', 'Trends and exceptions surfaced from your operational data.'],
             ],
         ],
         'cloud-and-infrastructure' => [
@@ -180,13 +198,16 @@ return [
     | shows a gap and never shows an unpublishable service in production.
     */
     'featured' => [
+        'ai-business-assistants' => ['summary' => 'AI assistants that answer from your own documents and data, with a person in the loop.', 'motif' => 'scan'],
+        'whatsapp-automation' => ['summary' => 'Automatic WhatsApp replies, reminders and an AI assistant on your business number.', 'motif' => 'nodes'],
         'custom-software-development' => ['summary' => 'Line-of-business systems, back offices and portals, built around your process.', 'motif' => 'code'],
-        'api-development-and-integration' => ['summary' => 'Your website, back office and accounting passing data instead of people retyping it.', 'motif' => 'nodes'],
+        'mobile-application-development' => ['summary' => 'Android and iOS apps for your customers and your field team.', 'motif' => 'browser'],
         'business-process-automation' => ['summary' => 'Reminders, hand-offs and approvals that run themselves, with a record of each.', 'motif' => 'flow'],
+        'api-development-and-integration' => ['summary' => 'Your website, back office and accounting passing data instead of people retyping it.', 'motif' => 'nodes'],
+        'ai-document-processing' => ['summary' => 'Invoices, forms and contracts read by AI and filed, with a person checking.', 'motif' => 'scan'],
         'crm-systems' => ['summary' => 'Every lead and customer in one pipeline the whole team can see.', 'motif' => 'pipeline'],
         'microsoft-365-consulting' => ['summary' => 'SharePoint, Teams and Power Automate, organised around how you work.', 'motif' => 'grid'],
         'managed-it-support' => ['summary' => 'One number to call, and someone who already knows your setup.', 'motif' => 'pulse'],
-        'ai-document-processing' => ['summary' => 'Invoices, forms and contracts read and filed, with a person checking.', 'motif' => 'scan'],
         'managed-hosting' => ['summary' => 'Hosted, updated and watched by the team that built it.', 'motif' => 'stack'],
     ],
     'fallbacks' => [
@@ -219,7 +240,8 @@ return [
     'quote_types' => [
         'custom-development' => ['Custom software', 'A system, portal or app built for you', 'custom-software-development'],
         'microsoft-365' => ['Microsoft 365 & SharePoint', 'Set up, migrate, automate or secure', 'microsoft-365-consulting'],
-        'ai-automation' => ['AI & automation', 'Take a repeated process off someone\'s desk', 'business-process-automation'],
+        'ai-automation' => ['AI, WhatsApp & automation', 'An AI assistant, WhatsApp automation or a repeated process taken off someone\'s desk', 'business-process-automation'],
+        'mobile-app' => ['Mobile app', 'An Android or iOS app for your customers or field team', 'mobile-application-development'],
         'managed-it' => ['Managed IT support', 'A monthly contract for your staff and devices', 'managed-it-support'],
         'cloud-infrastructure' => ['Cloud & infrastructure', 'Servers, hosting and monitoring', 'server-and-infrastructure-management'],
         'security-assessment' => ['Security assessment', 'Find the gaps before someone else does', 'security-assessments'],

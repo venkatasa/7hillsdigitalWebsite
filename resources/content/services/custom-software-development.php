@@ -54,14 +54,15 @@ return [
         ['Growing distributor', 'An ageing in-house system still works, but only one person can change it.', 'A staged rebuild on a current stack, running alongside the old system until each part is proven.'],
     ],
 
-    'technologies_title' => 'A current, mainstream stack.',
+    'technologies_title' => 'World-class technology, chosen for the job.',
     'technologies' => [
-        ['Application', ['Laravel', 'PHP 8', 'Filament']],
-        ['Interface', ['Tailwind CSS', 'Alpine.js', 'Responsive web']],
-        ['Data', ['MySQL']],
-        ['Running it', ['Docker', 'Linux', 'Cloudflare']],
+        ['Languages', ['Python', 'Java', 'C# and .NET', 'PHP', 'TypeScript', 'Go']],
+        ['Frameworks', ['Django', 'FastAPI', 'Spring Boot', 'Laravel', 'React', 'Next.js']],
+        ['AI and mobile', ['OpenAI, Claude and Gemini', 'Android and iOS', 'Flutter']],
+        ['Data', ['PostgreSQL', 'MySQL', 'SQL Server', 'MongoDB']],
+        ['Running it', ['AWS', 'Azure', 'Docker', 'Kubernetes', 'Cloudflare']],
     ],
-    'technologies_note' => 'This is the stack our own software runs on. We choose mainstream, well-documented tools so any competent developer could pick the code up after us.',
+    'technologies_note' => 'We pick the stack for the project, not the other way round, and favour mainstream, well-documented tools so any competent developer could pick the code up after us.',
 
     'approach' => [
         ['Understand the work', 'Conversations with the people who do the job, not only the people who buy the software. We write down the process as it really is.'],

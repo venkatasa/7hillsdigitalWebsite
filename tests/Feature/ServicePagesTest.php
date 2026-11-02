@@ -28,9 +28,12 @@ class ServicePagesTest extends TestCase
         'business-process-automation',
         'crm-systems',
         'accounting-and-invoicing-integrations',
+        'ai-solutions',               // owner-confirmed 02/11/2026
+        'whatsapp-automation',
+        'mobile-application-development',
     ];
 
-    private const PREVIEW = ['microsoft-365', 'ai-solutions', 'managed-it-support', 'managed-hosting'];
+    private const PREVIEW = ['microsoft-365', 'managed-it-support', 'managed-hosting'];
 
     protected function setUp(): void
     {
@@ -152,8 +155,9 @@ class ServicePagesTest extends TestCase
     public function test_published_pages_claim_nothing_we_cannot_show(): void
     {
         // Unconfirmed capabilities (06_CAPABILITY_VERIFICATION.md), unmeasured
-        // figures, and the backup promise R1 has not earned yet.
-        $forbidden = ['Azure', 'AWS', 'SharePoint', 'Power Automate', 'Power BI', 'Microsoft partner', 'certified', '24/7', 'SLA', 'uptime', '99.', 'backed up', 'backups', 'guarantee', 'award', 'leading', 'Invoice Ninja'];
+        // figures, and the backup promise R1 has not earned yet. Azure and AWS may
+        // be named as technologies (owner, 02/11/2026); cloud services stay gated.
+        $forbidden = ['SharePoint', 'Power Automate', 'Power BI', 'Microsoft partner', 'certified', '24/7', 'SLA', 'uptime', '99.', 'backed up', 'backups', 'guarantee', 'award', 'leading', 'Invoice Ninja'];
 
         foreach (self::VERIFIED as $slug) {
             $text = strip_tags($this->get("/services/{$slug}")->assertOk()->getContent());

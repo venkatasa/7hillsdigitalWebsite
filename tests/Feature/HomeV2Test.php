@@ -105,8 +105,27 @@ class HomeV2Test extends TestCase
 
         $this->get('/')
             ->assertOk()
-            ->assertSee('Software Development, <span class="text-mint">Automation</span>', false)
+            // AI confirmed by the owner 02/11/2026; cloud consulting is not.
+            ->assertSee('Software Development, <span class="text-mint">AI</span>', false)
             ->assertDontSee('AI, Cloud');
+    }
+
+    public function test_production_leads_with_ai_whatsapp_and_the_wider_technology_range(): void
+    {
+        // Owner's direction, 02/11/2026: AI everywhere, WhatsApp automation, mobile,
+        // and more than one stack. A later edit must not quietly shrink it back.
+        $this->asProduction();
+
+        $this->get('/')->assertOk()
+            ->assertSee('AI Business Assistants and Chatbots')
+            ->assertSee('WhatsApp Automation and AI Assistants')
+            ->assertSee('Mobile Application Development')
+            ->assertSee('World-class technology')
+            ->assertSee(['Python', 'Java', 'Android (Kotlin)', 'iOS (Swift)', 'WhatsApp Business Platform', 'OpenAI GPT']);
+
+        $this->get('/services/whatsapp-automation')->assertOk();
+        $this->get('/services/mobile-application-development')->assertOk();
+        $this->get('/services/ai-solutions')->assertOk();
     }
 
     public function test_production_never_renders_an_unconfirmed_or_blocked_service(): void
@@ -119,7 +138,7 @@ class HomeV2Test extends TestCase
         foreach ([
             'Microsoft 365 Consulting and Administration',  // unconfirmed
             'Managed IT Support',                           // unconfirmed
-            'AI Document Processing',                       // unconfirmed
+            'Power BI Dashboards',                          // unconfirmed
             'Managed Hosting',                              // blocked by R1–R3
             'Security Assessments',                         // blocked
             'Microsoft Business Solutions',                 // a line with nothing publishable

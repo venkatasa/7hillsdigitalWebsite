@@ -53,12 +53,13 @@ return [
     ],
 
     'technologies' => [
-        ['Application', ['Laravel', 'PHP 8', 'Filament']],
-        ['Interface', ['Tailwind CSS', 'Alpine.js', 'Responsive web']],
-        ['Data', ['MySQL']],
-        ['Running it', ['Docker', 'Cloudflare']],
+        ['Front end', ['React', 'Next.js', 'Vue.js', 'TypeScript', 'Tailwind CSS']],
+        ['Back end', ['Python', 'Java', 'Node.js', 'C# and .NET', 'PHP and Laravel']],
+        ['AI', ['AI assistants', 'Smart search', 'Document AI']],
+        ['Data', ['PostgreSQL', 'MySQL', 'SQL Server', 'Redis']],
+        ['Running it', ['AWS', 'Azure', 'Docker', 'Cloudflare']],
     ],
-    'technologies_note' => 'These are responsive web applications that run in a browser. They are not native apps from an app store.',
+    'technologies_note' => 'These are responsive web applications that run in a browser. If you need an app from the Play Store or App Store, see mobile app development.',
 
     'approach' => [
         ['Understand the work', 'Who uses it, on what device, and what they need to do in the first ten seconds.'],

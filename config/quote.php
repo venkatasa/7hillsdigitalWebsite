@@ -47,11 +47,20 @@ return [
             ],
         ],
         'ai-automation' => [
-            'message' => ['Which process should we take off someone\'s desk?', true],
+            'message' => ['What should AI or automation handle for you?', true],
             'budget' => 'project',
             'questions' => [
+                'whatsapp' => ['Should it work on WhatsApp?', ['yes' => 'Yes', 'no' => 'No', 'not-sure' => 'Not sure yet']],
                 'frequency' => ['How often does it happen?', ['daily' => 'Every day', 'weekly' => 'Every week', 'monthly' => 'Every month']],
                 'documents' => ['Are documents involved?', ['yes' => 'Yes', 'no' => 'No']],
+            ],
+        ],
+        'mobile-app' => [
+            'message' => ['What should the app do?', true],
+            'budget' => 'project',
+            'questions' => [
+                'platforms' => ['Which phones?', ['both' => 'Android and iOS', 'android' => 'Android only', 'ios' => 'iOS only', 'not-sure' => 'Not sure yet']],
+                'audience' => ['Who will use it?', ['customers' => 'Our customers', 'staff' => 'Our staff or field team', 'both' => 'Both']],
             ],
         ],
         'managed-it' => [

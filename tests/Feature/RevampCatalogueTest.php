@@ -20,7 +20,7 @@ class RevampCatalogueTest extends TestCase
     {
         $catalogue = Revamp::catalogue();
 
-        $this->assertCount(52, $catalogue, 'The catalogue holds the 52 services in the brief');
+        $this->assertCount(53, $catalogue, 'The 52 services in the brief, plus WhatsApp automation (02/11/2026)');
         foreach ($catalogue as $slug => $service) {
             $this->assertArrayHasKey($service['availability'], Revamp::AVAILABILITY, "[{$slug}] has an unknown status");
         }
@@ -46,7 +46,8 @@ class RevampCatalogueTest extends TestCase
 
         $this->assertCount(8, $featured);
         $this->assertSame([], array_filter($featured, fn ($s) => $s['preview']));
-        $this->assertArrayHasKey('web-application-development', $featured, 'A fallback takes an empty slot');
+        $this->assertArrayNotHasKey('microsoft-365-consulting', $featured, 'An unconfirmed service never takes a slot');
+        $this->assertSame('ai-business-assistants', array_key_first($featured), 'AI leads the grid');
 
         config(['revamp.preview_unconfirmed' => true]);
         $this->app->detectEnvironment(fn () => 'staging');

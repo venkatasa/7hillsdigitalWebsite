@@ -1,10 +1,9 @@
 <?php
 
 /*
- | AI solutions — PREVIEW ONLY.
- | capability_unconfirmed: we run an AI stack internally but have delivered no AI
- | work to a client (06_CAPABILITY_VERIFICATION.md §C). Also requires a written
- | data policy (POPIA s72 cross-border transfer) before publication.
+ | AI solutions. Owner-confirmed 02/11/2026 (built to order). Each project still
+ | agrees a written data policy (POPIA s72 cross-border transfer) before any
+ | personal information reaches a model, as the page promises.
  */
 
 return [
@@ -55,8 +54,9 @@ return [
 
     'technologies_title' => 'How we approach the technology.',
     'technologies' => [
-        ['Models', ['Hosted language models', 'Self-hosted open models']],
-        ['Connecting it', ['REST APIs', 'Laravel', 'n8n']],
+        ['Models', ['OpenAI GPT', 'Anthropic Claude', 'Google Gemini', 'Llama and Mistral (self-hosted)']],
+        ['Building it', ['Python', 'LangChain', 'Vector search and RAG', 'OCR and document AI', 'Speech-to-text']],
+        ['Connecting it', ['REST APIs', 'WhatsApp Business Platform', 'n8n', 'Your existing systems']],
         ['Safeguards', ['Human review', 'Audit log', 'Data minimisation']],
     ],
     'technologies_note' => 'Whether a hosted or a self-hosted model is right depends on the data. Personal information sent outside South Africa needs a lawful basis under POPIA, and the choice is agreed with you in writing.',
@@ -73,10 +73,11 @@ return [
         ['How accurate is it?', 'It varies by document and task, which is why every project starts with a measured pilot and a person checking results.'],
         ['Is this POPIA-compliant?', 'It can be, if it is designed to be: minimal data, a lawful basis for any cross-border transfer, and a record of processing. We treat that as part of the design, not an afterthought.'],
         ['Do we need custom software for this?', 'Not always. Some tasks fit inside the tools you already use. Others need a small application around the AI step.'],
+        ['Can the assistant work on WhatsApp?', 'Yes. The same assistant can answer on your WhatsApp Business number, your website or inside your own systems, using the official WhatsApp Business Platform and handing the conversation to a person whenever it should.'],
         ['What does a pilot involve?', 'One task, a sample of real documents or questions, a person checking every result, and a written comparison with the manual way at the end. The pilot decides whether the idea goes further, and stopping is a perfectly good outcome.'],
     ],
 
     'close' => 'Which task would you hand to an assistant first?',
 
-    'related' => ['business-process-automation', 'api-development-and-integration', 'custom-software-development'],
+    'related' => ['whatsapp-automation', 'business-process-automation', 'api-development-and-integration'],
 ];

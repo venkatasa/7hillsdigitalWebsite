@@ -54,9 +54,10 @@ return [
     ],
 
     'technologies' => [
-        ['Building it', ['Laravel', 'Queues and scheduler', 'PHP 8']],
+        ['AI steps', ['OpenAI, Claude and Gemini', 'Document AI', 'AI assistants']],
+        ['Messaging', ['WhatsApp Business Platform', 'Email', 'SMS']],
+        ['Building it', ['Python', 'Node.js', 'Java', 'PHP and Laravel', 'Schedulers and queues']],
         ['Visual workflows', ['n8n']],
-        ['Data', ['MySQL']],
     ],
     'technologies_note' => 'Where a process lives inside software we build, we automate it in that software. A visual workflow tool suits simpler hand-offs between existing products.',
 

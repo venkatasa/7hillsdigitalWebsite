@@ -20,9 +20,9 @@
 
     // The supporting line names Microsoft 365 and managed IT only once they may be published.
     $lede = Revamp::visible('microsoft-365-consulting') && Revamp::visible('managed-it-support')
-        ? 'From custom applications and intelligent automation to Microsoft 365, cloud infrastructure and managed IT services, we help businesses build, connect, secure and modernise their technology.'
-        : 'From custom applications and automation to systems integration, hosting and support, we help businesses build, connect and modernise their technology.';
-    $ledeShort = 'Custom software, automation and IT services, built, connected and looked after by one team.';
+        ? 'From AI assistants, WhatsApp automation, custom software and mobile apps to Microsoft 365, cloud infrastructure and managed IT services, we help businesses build, connect, secure and modernise their technology.'
+        : 'From AI assistants and WhatsApp automation to custom software, Android and iOS apps, systems integration, hosting and support, we help businesses build, connect and modernise their technology.';
+    $ledeShort = 'AI, WhatsApp automation, custom software and mobile apps, built and looked after by one team.';
 
     $fromTier = $packages->flatMap->tiers->filter(fn ($t) => $t->price_monthly !== null)->sortBy('price_monthly')->first();
     $from = $fromTier?->formatted_price;
@@ -32,7 +32,7 @@
     $linkSpan = ['md:col-span-8', 'md:col-span-6', 'md:col-span-4', 'md:col-span-2'][min($tierColumns->count(), 3)];
 
     $microsoft = Revamp::visible('microsoft-365-consulting');
-    $motifs = ['custom-development' => 'code', 'microsoft-365' => 'grid', 'ai-automation' => 'flow', 'managed-it' => 'pulse', 'cloud-infrastructure' => 'stack', 'security-assessment' => 'shield'];
+    $motifs = ['custom-development' => 'code', 'microsoft-365' => 'grid', 'ai-automation' => 'flow', 'mobile-app' => 'browser', 'managed-it' => 'pulse', 'cloud-infrastructure' => 'stack', 'security-assessment' => 'shield'];
 @endphp
 
 <x-ui.layout overlay>
@@ -142,7 +142,23 @@
                         <h3 @class(['mt-6 font-display font-bold tracking-tight text-brand', 'text-lg leading-snug sm:text-[clamp(1.85rem,1.3rem+1.6vw,2.75rem)] sm:leading-[1.1]' => $lead, 'text-lg leading-snug' => ! $lead])>{{ $s['name'] }}</h3>
                         <p @class(['mt-2 leading-relaxed text-secondary', 'text-sm sm:text-lg max-w-md' => $lead, 'text-sm' => ! $lead])>{{ $s['summary'] }}</p>
 
-                        @if ($lead && ($shot = \App\Support\ProductImages::get('admin-packages')))
+                        @if ($lead && $slug === 'ai-business-assistants')
+                            {{-- An illustration, labelled as one: no client, no real conversation. --}}
+                            <div class="relative -mb-7 -mr-7 ml-10 mt-8 hidden flex-1 sm:block" aria-hidden="true">
+                                <div class="h-full rounded-tl-xl border-l border-t border-hairline bg-brand-light p-5 text-sm">
+                                    <p class="flex items-center gap-2 border-b border-hairline pb-3 text-xs font-semibold text-brand">
+                                        <span class="h-2 w-2 rounded-full bg-accent"></span> AI assistant · WhatsApp
+                                    </p>
+                                    <div class="mt-4 space-y-3">
+                                        <p class="ml-auto w-fit max-w-[80%] rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-ink shadow-sm">Do you have a room for two this Friday?</p>
+                                        <p class="w-fit max-w-[85%] rounded-2xl rounded-bl-sm bg-brand px-3.5 py-2 text-white">Yes, the garden suite is free on Friday. Shall I book it and send the details?</p>
+                                        <p class="ml-auto w-fit max-w-[80%] rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-ink shadow-sm">Please do.</p>
+                                        <p class="w-fit max-w-[85%] rounded-2xl rounded-bl-sm bg-brand px-3.5 py-2 text-white">Booked. A reminder will follow on Thursday. Anything else, and I will pass you to the team.</p>
+                                    </div>
+                                </div>
+                                <p class="absolute -top-5 left-0 text-[11px] text-muted">Illustration · an assistant answering from your own information</p>
+                            </div>
+                        @elseif ($lead && ($shot = \App\Support\ProductImages::get('admin-packages')))
                             <div class="relative -mb-7 -mr-7 ml-10 mt-8 hidden flex-1 sm:block">
                                 <figure class="h-full overflow-hidden rounded-tl-xl border-l border-t border-hairline bg-brand-light">
                                     <img src="{{ asset($shot['file']) }}" alt="{{ $shot['alt'] }}" width="{{ $shot['width'] }}" height="{{ $shot['height'] }}"
@@ -355,14 +371,26 @@
                 @endforeach
             </div>
 
-            {{-- Only technology evidenced in our own code and infrastructure. --}}
-            <div class="mt-16 flex flex-col gap-4 border-t border-white/10 pt-8 sm:flex-row sm:items-baseline sm:gap-10">
-                <p class="t-label shrink-0 text-white/60">What we build with</p>
-                <ul class="flex flex-wrap gap-x-6 gap-y-2 font-display text-sm font-semibold text-white/70">
-                    @foreach (['Laravel', 'PHP', 'MySQL', 'Filament', 'Tailwind CSS', 'Alpine.js', 'Docker', 'Proxmox', 'Cloudflare'] as $tech)
-                        <li>{{ $tech }}</li>
+            {{-- config('revamp.technologies'): owner-confirmed, AI first. --}}
+            <div id="technologies" class="mt-16 border-t border-white/10 pt-8">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+                    <p class="t-label text-white/60">World-class technology, chosen for the job</p>
+                    <p class="text-sm text-white/60">The right tool for each project, not one stack for everything.</p>
+                </div>
+                <dl class="mt-6 grid gap-x-10 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach (config('revamp.technologies', []) as $group => $items)
+                        <div @class(['sm:col-span-2 lg:col-span-3' => $loop->first])>
+                            <dt @class(['t-label', 'text-mint' => $loop->first, 'text-white/50' => ! $loop->first])>{{ $group }}</dt>
+                            <dd class="mt-2">
+                                <ul @class(['flex flex-wrap gap-x-5 gap-y-1.5 font-display font-semibold', 'text-base text-white' => $loop->first, 'text-sm text-white/70' => ! $loop->first])>
+                                    @foreach ($items as $tech)
+                                        <li>{{ $tech }}</li>
+                                    @endforeach
+                                </ul>
+                            </dd>
+                        </div>
                     @endforeach
-                </ul>
+                </dl>
             </div>
         </div>
     </section>

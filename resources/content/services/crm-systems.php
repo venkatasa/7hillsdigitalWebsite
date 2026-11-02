@@ -52,9 +52,10 @@ return [
     ],
 
     'technologies' => [
-        ['Application', ['Laravel', 'Filament', 'PHP 8']],
-        ['Data', ['MySQL']],
-        ['Capture', ['Website forms', 'Email notifications']],
+        ['Application', ['Python', 'Java', 'PHP and Laravel', 'React']],
+        ['Data', ['PostgreSQL', 'MySQL']],
+        ['Capture', ['Website forms', 'WhatsApp', 'Email']],
+        ['AI', ['Lead scoring', 'Suggested replies', 'Call and chat summaries']],
     ],
     'technologies_note' => 'A ready-made 7Hills CRM module is in development and is not yet available. Today we build a CRM to your requirements, or extend the back office you already have with us.',
 

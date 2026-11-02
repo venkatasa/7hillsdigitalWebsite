@@ -129,6 +129,28 @@ and add it to the privacy notice. Clients will ask under POPIA s72 (cross-border
 | Website Hosting and Maintenance | ⛔ | In-house | Running; backups failing | Included in the platform fee | Already implied by platforms: **R1 is urgent** |
 | E-commerce Development | ❌ | Owner | Unspecified (open decision 8) | Not defined | Owner |
 
+## 6.3a Owner confirmations, 02/11/2026
+
+The owner confirmed in writing (session of 02/11/2026) that the business delivers
+the following, and directed the site to say so. Each is published as
+`built_to_order`: a service we build to a client's order, not a product already
+running for a named client. No case study or client name is implied.
+
+| Service | Was | Now |
+|---|---|---|
+| Mobile Application Development (Android, iOS) | capability_unconfirmed | built_to_order |
+| AI Business Assistants and Chatbots | capability_unconfirmed | built_to_order |
+| AI Document Processing | capability_unconfirmed | built_to_order |
+| AI Integration With Existing Systems | capability_unconfirmed | built_to_order |
+| Intelligent Customer Service Solutions | capability_unconfirmed | built_to_order |
+| **WhatsApp Automation and AI Assistants** (new) | — | built_to_order |
+
+The owner also directed that the site name a wide technology range (Python, Java,
+.NET, mobile, the major AI models, cloud platforms) in `config/revamp.technologies`.
+Every name there is a claim a prospect can test on a sales call; prune any that
+nobody could staff. Microsoft 365, cloud consulting, reporting and BI stay
+unconfirmed and hidden.
+
 ## 6.4 Organisational readiness (needed before "enterprise" wording)
 
 | Item | Status | Needed for |

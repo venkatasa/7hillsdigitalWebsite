@@ -54,9 +54,9 @@ return [
     ],
 
     'technologies' => [
-        ['Interfaces', ['REST and JSON', 'Webhooks', 'Scheduled imports and exports']],
-        ['Building it', ['Laravel', 'PHP 8', 'Queues and scheduler']],
-        ['Data', ['MySQL']],
+        ['Interfaces', ['REST and JSON', 'GraphQL', 'Webhooks', 'WhatsApp Cloud API', 'Scheduled imports and exports']],
+        ['Building it', ['Python', 'Java and Spring Boot', 'Node.js', 'C# and .NET', 'PHP and Laravel', 'Message queues']],
+        ['Data', ['PostgreSQL', 'MySQL', 'SQL Server', 'MongoDB']],
     ],
     'technologies_note' => 'Whether two products can be connected depends on what each one exposes. We confirm that during the audit, before quoting, and say plainly if a connection is not possible.',
 
