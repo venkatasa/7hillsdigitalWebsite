@@ -157,3 +157,22 @@ From the panel and logs, weekly:
   Enquiries before 02/11 13:25 UTC carry `192.168.90.207`.
 - **Left over:** push tags `v2026.11.0` (if not already) and `v2026.11.1`; turn on
   Cloudflare "Always Use HTTPS"; then submit `/sitemap.xml` in Search Console.
+
+## 7. Release record, 03/11/2026 07:52 UTC: AI, WhatsApp and mobile (`v2026.11.2`)
+
+- **Change:** `5f1fb3b`. AI, WhatsApp automation and mobile apps lead the home page and
+  services; new `/services/whatsapp-automation` and `/services/mobile-application-development`;
+  a grouped technology strip on the home page; `/quote` gains a mobile-app type and a
+  WhatsApp question. Owner confirmations in `full-service/06` §6.3a. Config and content
+  only: no migrations, no new dependencies. Tests 172 in all three switch modes.
+- **R1 waived by the owner** ("release now"): PBS was off at 07:50 UTC and today's 15:50
+  SAST run had not happened. The release ran from a copy of `release.sh` with only the R1
+  block replaced; R3, R7, the fast-forward check and the staging tests all ran. The local
+  backup is `~/backups/7hillsdigital/20261103-075248` (database dump, repo bundle,
+  checksums). Today's 15:50 PBS run is the first off-site copy of this release.
+- **Release:** `main` `56e9ceb → 5f1fb3b`, nothing to migrate, 44 sitemap pages and
+  `/admin/login` 200, the gated page 404, `/quote` 200 and linked from the home page.
+- **Checked through Cloudflare:** the home page carries WhatsApp, the technology strip,
+  Python and Android; both new pages, `/services/ai-solutions` and `/quote?type=mobile-app`
+  return 200 and both new pages are in the sitemap; security headers present.
+- **Left over:** push tag `v2026.11.2`; check today's 15:50 PBS run shipped the site.
