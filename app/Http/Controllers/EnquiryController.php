@@ -41,7 +41,9 @@ class EnquiryController extends Controller
          | than lose it at the door.
          */
         try {
-            Mail::to(config('brand.notify_email'))->send(new EnquiryReceived($enquiry));
+            Mail::to(config('brand.notify_email'))
+                ->cc(config('brand.notify_cc'))
+                ->send(new EnquiryReceived($enquiry));
         } catch (\Throwable $e) {
             Log::error('Enquiry notification failed', [
                 'reference' => $enquiry->reference,

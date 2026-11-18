@@ -48,6 +48,20 @@ class EnquiryTest extends TestCase
         Mail::assertSent(EnquiryReceived::class);
     }
 
+    public function test_the_alert_goes_to_the_enquiry_address_and_copies_the_cc_list(): void
+    {
+        config([
+            'brand.notify_email' => 'enquiry@7hillsdigital.co.za',
+            'brand.notify_cc' => ['hello@7hillsdigital.co.za'],
+        ]);
+
+        $this->post('/contact', $this->payload())->assertRedirect(route('contact.thanks'));
+
+        Mail::assertSent(EnquiryReceived::class, fn (EnquiryReceived $mail) =>
+            $mail->hasTo('enquiry@7hillsdigital.co.za')
+            && $mail->hasCc('hello@7hillsdigital.co.za'));
+    }
+
     public function test_popia_provenance_is_captured_at_the_point_of_collection(): void
     {
         $this->withServerVariables(['REMOTE_ADDR' => '196.25.1.1'])

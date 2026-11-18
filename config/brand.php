@@ -125,8 +125,11 @@ return [
         'information_officer_email' => env('COMPANY_INFORMATION_OFFICER_EMAIL', ''),
     ],
 
-    // Where new package enquiries land.
-    'notify_email' => env('SALES_NOTIFY_EMAIL', 'sales@7hillsdigital.co.za'),
+    // Where new enquiries land, and who is copied (comma-separated, may be empty).
+    'notify_email' => env('SALES_NOTIFY_EMAIL', 'enquiry@7hillsdigital.co.za'),
+    'notify_cc' => array_values(array_filter(array_map(
+        'trim', explode(',', (string) env('SALES_NOTIFY_CC', ''))
+    ))),
 
     /*
     | Commercial terms. These appear verbatim on the pricing page and in the

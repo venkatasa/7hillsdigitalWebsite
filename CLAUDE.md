@@ -239,6 +239,8 @@ step. Filament v5 exists but this targets **v4**: layout components live under
   Authenticating as one domain and sending as another is what had Gmail
   rejecting our mail outright. `php artisan mail:check` verifies the three DNS
   records and the credentials in one go.
+- **Enquiry alerts go to `SALES_NOTIFY_EMAIL` (enquiry@) and copy `SALES_NOTIFY_CC`**
+  (hello@, comma-separated), both in `config/brand.php`. Reply-To is the prospect.
 - **The lead is saved before the notification is sent.** `EnquiryController`
   wraps the mail in a try/catch and logs failures. A mail outage must never cost
   an enquiry at the door — better delivered late from `/admin` than lost.
